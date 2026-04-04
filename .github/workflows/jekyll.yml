@@ -18,105 +18,25 @@ concurrency:
 
 jobs:
 
-  # ── Predecessor: validate ToC and internal links ────────────────────────────
+  # Predecessor: validate ToC and internal links
   validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
-      - name: Install PyYAML
+      - name: Install dependencies
         run: pip install pyyaml
-
       - name: Validate ToC and internal links
-        run: |
-          python3 - <<'EOF'
-          import yaml, os, re, sys
+        run: python .github/scripts/validate_docs.py
 
-          errors = []
-          warnings = []
-
-          # ── 1. Load _config.yml nav ──────────────────────────────────────────
-          with open("_config.yml") as f:
-              config = yaml.safe_load(f)
-
-          nav_slugs = {}  # slug -> section title
-          for section in config.get("nav", []):
-              for item in section.get("items", []):
-                  slug = item.get("slug", "")
-                  if slug:
-                      nav_slugs[slug] = section.get("title", "unknown")
-
-          # ── 2. Collect files in _docs/ ───────────────────────────────────────
-          doc_files = set()
-          if os.path.isdir("_docs"):
-              for fname in os.listdir("_docs"):
-                  if fname.endswith(".md"):
-                      doc_files.add(fname[:-3])
-
-          # ── 3. ToC checks ────────────────────────────────────────────────────
-          # Files present in _docs but missing from nav
-          for slug in sorted(doc_files - set(nav_slugs.keys())):
-              warnings.append(
-                  f"[ToC]   _docs/{slug}.md exists but is NOT listed in _config.yml nav"
-              )
-
-          # Nav entries that have no matching file
-          for slug, section in sorted(nav_slugs.items()):
-              if slug not in doc_files:
-                  errors.append(
-                      f"[ToC]   nav entry '{slug}' (section: {section}) has no matching _docs/{slug}.md"
-                  )
-
-          # ── 4. Internal link checks ──────────────────────────────────────────
-          # Matches markdown links whose href starts with /docs/
-          link_re = re.compile(r'\[(?:[^\]]*)\]\((/docs/([^)#\s]+?)(?:/)?(?:#[^)]*)?\)')
-
-          for fname in sorted(os.listdir("_docs")):
-              if not fname.endswith(".md"):
-                  continue
-              filepath = os.path.join("_docs", fname)
-              with open(filepath) as f:
-                  for lineno, line in enumerate(f, 1):
-                      for m in link_re.finditer(line):
-                          href = m.group(1)
-                          slug = m.group(2).strip("/")
-                          if slug not in doc_files:
-                              errors.append(
-                                  f"[Links] {fname}:{lineno} — broken link '{href}' (no _docs/{slug}.md)"
-                              )
-
-          # ── 5. Report ────────────────────────────────────────────────────────
-          if warnings:
-              print("Warnings (not blocking):")
-              for w in warnings:
-                  print(f"  ⚠  {w}")
-              print()
-
-          if errors:
-              print("Errors (blocking build):")
-              for e in errors:
-                  print(f"  ✗  {e}")
-              print()
-              print(f"{len(errors)} error(s) found. Fix before merging.")
-              sys.exit(1)
-          else:
-              print(f"✓  ToC valid — {len(nav_slugs)} nav entries, {len(doc_files)} doc files")
-              print(f"✓  Links valid — no broken internal references")
-              if warnings:
-                  print(f"⚠  {len(warnings)} warning(s) — files in _docs not yet added to nav")
-          EOF
-
-  # ── Build ───────────────────────────────────────────────────────────────────
+  # Build
   build:
     runs-on: ubuntu-latest
     needs: validate
-    # Only deploy on push to main, not on PRs
     if: github.event_name != 'pull_request'
     steps:
       - name: Checkout
@@ -137,7 +57,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 
-  # ── Deploy ──────────────────────────────────────────────────────────────────
+  # Deploy
   deploy:
     environment:
       name: github-pages
