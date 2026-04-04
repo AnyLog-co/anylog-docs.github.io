@@ -1,64 +1,150 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-# Sample workflow for building and deploying a Jekyll site to GitHub Pages
 name: Deploy Jekyll site to Pages
 
 on:
-  # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
-
-  # Allows you to run this workflow manually from the Actions tab
+  pull_request:
+    branches: ["main"]
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  # Build job
-  build:
+
+  # ── Predecessor: validate ToC and internal links ────────────────────────────
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install PyYAML
+        run: pip install pyyaml
+
+      - name: Validate ToC and internal links
+        run: |
+          python3 - <<'EOF'
+          import yaml, os, re, sys
+
+          errors = []
+          warnings = []
+
+          # ── 1. Load _config.yml nav ──────────────────────────────────────────
+          with open("_config.yml") as f:
+              config = yaml.safe_load(f)
+
+          nav_slugs = {}  # slug -> section title
+          for section in config.get("nav", []):
+              for item in section.get("items", []):
+                  slug = item.get("slug", "")
+                  if slug:
+                      nav_slugs[slug] = section.get("title", "unknown")
+
+          # ── 2. Collect files in _docs/ ───────────────────────────────────────
+          doc_files = set()
+          if os.path.isdir("_docs"):
+              for fname in os.listdir("_docs"):
+                  if fname.endswith(".md"):
+                      doc_files.add(fname[:-3])
+
+          # ── 3. ToC checks ────────────────────────────────────────────────────
+          # Files present in _docs but missing from nav
+          for slug in sorted(doc_files - set(nav_slugs.keys())):
+              warnings.append(
+                  f"[ToC]   _docs/{slug}.md exists but is NOT listed in _config.yml nav"
+              )
+
+          # Nav entries that have no matching file
+          for slug, section in sorted(nav_slugs.items()):
+              if slug not in doc_files:
+                  errors.append(
+                      f"[ToC]   nav entry '{slug}' (section: {section}) has no matching _docs/{slug}.md"
+                  )
+
+          # ── 4. Internal link checks ──────────────────────────────────────────
+          # Matches markdown links whose href starts with /docs/
+          link_re = re.compile(r'\[(?:[^\]]*)\]\((/docs/([^)#\s]+?)(?:/)?(?:#[^)]*)?\)')
+
+          for fname in sorted(os.listdir("_docs")):
+              if not fname.endswith(".md"):
+                  continue
+              filepath = os.path.join("_docs", fname)
+              with open(filepath) as f:
+                  for lineno, line in enumerate(f, 1):
+                      for m in link_re.finditer(line):
+                          href = m.group(1)
+                          slug = m.group(2).strip("/")
+                          if slug not in doc_files:
+                              errors.append(
+                                  f"[Links] {fname}:{lineno} — broken link '{href}' (no _docs/{slug}.md)"
+                              )
+
+          # ── 5. Report ────────────────────────────────────────────────────────
+          if warnings:
+              print("Warnings (not blocking):")
+              for w in warnings:
+                  print(f"  ⚠  {w}")
+              print()
+
+          if errors:
+              print("Errors (blocking build):")
+              for e in errors:
+                  print(f"  ✗  {e}")
+              print()
+              print(f"{len(errors)} error(s) found. Fix before merging.")
+              sys.exit(1)
+          else:
+              print(f"✓  ToC valid — {len(nav_slugs)} nav entries, {len(doc_files)} doc files")
+              print(f"✓  Links valid — no broken internal references")
+              if warnings:
+                  print(f"⚠  {len(warnings)} warning(s) — files in _docs not yet added to nav")
+          EOF
+
+  # ── Build ───────────────────────────────────────────────────────────────────
+  build:
+    runs-on: ubuntu-latest
+    needs: validate
+    # Only deploy on push to main, not on PRs
+    if: github.event_name != 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Setup Ruby
-        # https://github.com/ruby/setup-ruby/releases/tag/v1.207.0
         uses: ruby/setup-ruby@4a9ddd6f338a97768b8006bf671dfbad383215f4
         with:
-          ruby-version: '3.1' # Not needed with a .ruby-version file
-          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-          cache-version: 0 # Increment this number if you need to re-download cached gems
+          ruby-version: '3.1'
+          bundler-cache: true
+          cache-version: 0
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
       - name: Build with Jekyll
-        # Outputs to the './_site' directory by default
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
         env:
           JEKYLL_ENV: production
       - name: Upload artifact
-        # Automatically uploads an artifact from the './_site' directory by default
         uses: actions/upload-pages-artifact@v3
 
-  # Deployment job
+  # ── Deploy ──────────────────────────────────────────────────────────────────
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
+    if: github.event_name != 'pull_request'
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

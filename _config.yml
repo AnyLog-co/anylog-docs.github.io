@@ -1,6 +1,6 @@
 title: AnyLog Docs
 description: Technical documentation for AnyLog Edge Data Fabric
-baseurl: "/anylog-docs"
+baseurl: ""
 url: "https://anylog-docs.github.io"
 
 # Build
@@ -32,8 +32,7 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - README.md
-  - vendor/
-  - .bundle/
+  - vendor
 
 # ── Sidebar navigation ──────────────────────────────────
 # Add/reorder entries here as new docs are created.
@@ -45,10 +44,24 @@ nav:
         title: Introduction to AnyLog
       - slug: installing-anylog
         title: Installing & Deploying
-  - title: Data Ingestion
+  - title: Managing Data
     items:
+      - slug: adding-data
+        title: Adding Data
       - slug: data-ingestion
-        title: Ingestion overview & msg client
+        title: Ingestion & msg client
+      - slug: opcua
+        title: OPC-UA
+  - title: Querying Data
+    items:
+      - slug: queries
+        title: Querying Data
+  - title: Monitoring & Operations
+    items:
+      - slug: aggregations
+        title: Aggregations
+      - slug: high-availability
+        title: High Availability
   - title: Tools & UI
     items:
       - slug: remote-gui
