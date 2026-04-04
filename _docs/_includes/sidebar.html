@@ -1,0 +1,35 @@
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-inner">
+    <div class="sidebar-search">
+      <svg class="search-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="6.5" cy="6.5" r="5.5"/><path d="m11 11 3.5 3.5"/>
+      </svg>
+      <input type="search" placeholder="Search docs…" id="doc-search" autocomplete="off" />
+    </div>
+
+    <nav class="sidebar-nav">
+      {% for section in site.nav %}
+      <div class="nav-section">
+        <p class="nav-section-title">{{ section.title }}</p>
+        <ul>
+          {% for item in section.items %}
+          <li>
+            <a href="{{ '/docs/' | append: item.slug | append: '/' | relative_url }}"
+               {% if page.url contains item.slug %}class="active"{% endif %}>
+              {{ item.title }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="https://www.anylog.network/download" target="_blank" rel="noopener">
+        Download AnyLog →
+      </a>
+    </div>
+  </div>
+</aside>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>

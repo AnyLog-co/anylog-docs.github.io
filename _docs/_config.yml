@@ -1,0 +1,53 @@
+title: AnyLog Docs
+description: Technical documentation for AnyLog Edge Data Fabric
+baseurl: ""
+url: "https://anylog-docs.github.io"
+
+# Build
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# Collections
+collections:
+  docs:
+    output: true
+    permalink: /docs/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: docs
+    values:
+      layout: page
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+
+# ── Sidebar navigation ──────────────────────────────────
+# Add/reorder entries here as new docs are created.
+# Each `slug` must match the filename in _docs/ (without .md)
+nav:
+  - title: Getting Started
+    items:
+      - slug: introduction
+        title: Introduction to AnyLog
+      - slug: installing-anylog
+        title: Installing & Deploying
+  - title: Data Ingestion
+    items:
+      - slug: data-ingestion
+        title: Ingestion overview & msg client
+  - title: Tools & UI
+    items:
+      - slug: remote-gui
+        title: Remote GUI
