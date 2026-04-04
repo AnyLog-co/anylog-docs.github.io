@@ -9,10 +9,10 @@ title: AnyLog Documentation
 </div>
 
 <div class="home-cards">
-  <a class="home-card" href="{{ '/docs/getting-started/' | relative_url }}">
-    <div class="home-card-icon">🚀</div>
-    <h3>Getting Started</h3>
-    <p>Deploy your first AnyLog node and connect it to the network.</p>
+  <a class="home-card" href="{{ '/docs/introduction/' | relative_url }}">
+    <div class="home-card-icon">🏗️</div>
+    <h3>Architecture</h3>
+    <p>Node types, network flow, blockchain layer, and how querying works.</p>
   </a>
   <a class="home-card" href="{{ '/docs/data-ingestion-overview/' | relative_url }}">
     <div class="home-card-icon">📥</div>

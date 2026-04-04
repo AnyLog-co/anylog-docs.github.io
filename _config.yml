@@ -39,15 +39,15 @@ exclude:
 nav:
   - title: Getting Started
     items:
-      - slug: getting-started
-        title: Overview
+      - slug: introduction
+        title: Introduction to AnyLog
+      - slug: installing-anylog
+        title: Installing & Deploying
   - title: Data Ingestion
     items:
-      - slug: data-ingestion-overview
-        title: How data is collected
-      - slug: msg-client
-        title: run msg client
-  - title: Querying Data
+      - slug: data-ingestion
+        title: Ingestion overview & msg client
+  - title: Tools & UI
     items:
-      - slug: querying-overview
-        title: Querying overview
+      - slug: remote-gui
+        title: Remote GUI
