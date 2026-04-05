@@ -1,0 +1,53 @@
+name: Validate docs + Jekyll (non-main)
+
+on:
+  push:
+    branches-ignore: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout repo
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ------------------------
+      # Python validation
+      # ------------------------
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: pip install pyyaml
+
+      - name: Validate ToC and internal links
+        run: python .github/scripts/validate_docs.py
+
+      # ------------------------
+      # Jekyll validation
+      # ------------------------
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.1"
+          bundler-cache: true
+
+      - name: Install gems
+        run: bundle install
+
+      - name: Jekyll doctor
+        run: bundle exec jekyll doctor
+
+      - name: Jekyll build (validation only)
+        run: bundle exec jekyll build --trace
+        env:
+          JEKYLL_ENV: production
