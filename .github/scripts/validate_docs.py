@@ -15,8 +15,9 @@ class FileNotFound(Exception):
 # ── Locate repo root ─────────────────────────────────────
 
 ROOT = os.path.dirname(__file__).split(".github")[0]
-
-if not os.path.isdir(ROOT):
+if os.path.isdir(ROOT.replace("anylog-docs", "anylog-docs.github.io", 1)):
+    ROOT = ROOT.replace("anylog-docs", "anylog-docs.github.io", 1)
+elif not os.path.isdir(ROOT) and not os.path.isdir:
     raise DirectoryNotFound(f"Failed to locate directory {ROOT}")
 
 CONFIG = os.path.join(ROOT, "_config.yml")
