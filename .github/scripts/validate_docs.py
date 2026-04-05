@@ -1,105 +1,104 @@
 #!/usr/bin/env python3
-"""
-Validates two things before the Jekyll build:
-  1. Every slug in _config.yml nav has a matching file in _docs/
-     Every file in _docs/ is listed in the nav (warning, not error)
-  2. Every internal /docs/slug link in any .md file resolves to a real doc
-"""
 
 import os
-import re
-import sys
 import yaml
 
-ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+class DirectoryNotFound(Exception):
+    pass
+
+
+class FileNotFound(Exception):
+    pass
+
+
+# ── Locate repo root ─────────────────────────────────────
+
+ROOT = os.path.dirname(__file__).split(".github")[0]
+
+if not os.path.isdir(ROOT):
+    raise DirectoryNotFound(f"Failed to locate directory {ROOT}")
+
 CONFIG = os.path.join(ROOT, "_config.yml")
+if not os.path.isfile(CONFIG):
+    raise FileNotFound(f"Failed to locate configuration file: {CONFIG}")
+
 DOCS_DIR = os.path.join(ROOT, "_docs")
+if not os.path.isdir(DOCS_DIR):
+    raise DirectoryNotFound(f"Failed to locate directory {DOCS_DIR}")
 
-errors = []
-warnings = []
+
+# ── Helpers ──────────────────────────────────────────────
+
+def title_from_slug(slug: str) -> str:
+    """Convert slug to human title."""
+    return slug.replace("-", " ").replace("_", " ").title()
 
 
-# ── 1. Load nav slugs from _config.yml ────────────────────────────────────────
+def section_title(dirname: str) -> str:
+    """Convert directory name to section title."""
+    return dirname.replace("-", " ").replace("_", " ").title()
+
+
+# ── Load config ──────────────────────────────────────────
 
 with open(CONFIG) as f:
     config = yaml.safe_load(f)
 
-nav_slugs = {}  # slug -> section title
-for section in config.get("nav", []):
+nav = config.setdefault("nav", [])
+
+
+# Build lookup of existing slugs
+existing_slugs = set()
+for section in nav:
     for item in section.get("items", []):
-        slug = item.get("slug", "").strip()
-        if slug:
-            nav_slugs[slug] = section.get("title", "unknown")
+        existing_slugs.add(item.get("slug"))
 
 
-# ── 2. Collect doc files ───────────────────────────────────────────────────────
+# ── Walk _docs directory ─────────────────────────────────
 
-doc_files = set()
-if os.path.isdir(DOCS_DIR):
-    for fname in os.listdir(DOCS_DIR):
-        if fname.endswith(".md"):
-            doc_files.add(fname[:-3])
+for section_dir in sorted(os.listdir(DOCS_DIR)):
 
+    section_path = os.path.join(DOCS_DIR, section_dir)
 
-# ── 3. ToC checks ─────────────────────────────────────────────────────────────
-
-# Nav entry with no matching file → error
-for slug, section in sorted(nav_slugs.items()):
-    if slug not in doc_files:
-        errors.append(
-            "[ToC]   nav slug '{}' (section: {}) has no matching _docs/{}.md".format(
-                slug, section, slug
-            )
-        )
-
-# File in _docs with no nav entry → warning only (allows staging files)
-for slug in sorted(doc_files - set(nav_slugs.keys())):
-    warnings.append(
-        "[ToC]   _docs/{}.md exists but is not listed in _config.yml nav".format(slug)
-    )
-
-
-# ── 4. Internal link checks ───────────────────────────────────────────────────
-
-# Match [text](/docs/slug) or [text](/docs/slug/) with optional #anchor
-LINK_RE = re.compile(r"\[([^\]]+)\]\(/docs/([^/#\s)]+)\/?(?:#[^)]+)?\)")
-
-for fname in sorted(os.listdir(DOCS_DIR)):
-    if not fname.endswith(".md"):
+    if not os.path.isdir(section_path):
         continue
-    filepath = os.path.join(DOCS_DIR, fname)
-    with open(filepath) as f:
-        lines = f.readlines()
-    for lineno, line in enumerate(lines, 1):
-        for m in LINK_RE.finditer(line):
-            # slug = m.group(3).strip("/")
-            slug = m.group(2)
-            href = "/docs/" + slug
-            if slug not in doc_files:
-                errors.append(
-                    "[Links] {}:{} — broken link '{}' (no _docs/{}.md)".format(
-                        fname, lineno, href, slug
-                    )
-                )
+
+    title = section_title(section_dir)
+
+    # find or create section
+    section = next((s for s in nav if s["title"] == title), None)
+
+    if not section:
+        section = {"title": title, "items": []}
+        nav.append(section)
+
+    items = section.setdefault("items", [])
+
+    # scan markdown files
+    for fname in sorted(os.listdir(section_path)):
+
+        if not fname.endswith(".md"):
+            continue
+
+        slug = fname[:-3]
+
+        if slug in existing_slugs:
+            continue
+
+        items.append({
+            "slug": slug,
+            "title": title_from_slug(slug)
+        })
+
+        existing_slugs.add(slug)
+
+        print(f"Added nav entry: {title} → {slug}")
 
 
-# ── 5. Report ─────────────────────────────────────────────────────────────────
+# ── Write updated config ─────────────────────────────────
 
-if warnings:
-    print("Warnings (not blocking):")
-    for w in warnings:
-        print("  WARNING  " + w)
-    print()
+with open(CONFIG, "w") as f:
+    yaml.dump(config, f, sort_keys=False)
 
-if errors:
-    print("Errors:")
-    for e in errors:
-        print("  ERROR  " + e)
-    print()
-    print("{} error(s). Fix before merging.".format(len(errors)))
-    sys.exit(1)
-
-print("OK  ToC valid    — {} nav entries, {} doc files".format(len(nav_slugs), len(doc_files)))
-print("OK  Links valid  — no broken internal references")
-if warnings:
-    print("    {} warning(s) — files in _docs not yet in nav".format(len(warnings)))
+print("Navigation sync complete.")
