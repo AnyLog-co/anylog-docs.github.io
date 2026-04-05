@@ -1,5 +1,5 @@
 ---
-title: Querying Data
+title: Querying Data (Northbound)
 description: Run SQL queries across distributed operator nodes, with time-series functions, casting, and formatting options.
 layout: page
 ---

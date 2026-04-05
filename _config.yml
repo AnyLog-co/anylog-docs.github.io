@@ -34,16 +34,20 @@ nav:
     title: Installing & Deploying
 - title: Managing Data
   items:
-  - slug: adding-data
-    title: Adding Data
   - slug: data-ingestion
     title: Ingestion & msg client
   - slug: opcua
     title: OPC-UA
-- title: Querying Data
+- title: Network & Services
+  items:
+  - slug: background-services
+    title: Background Services
+  - slug: blockchain
+    title: Blockchain
+- title: Querying Data (Northbound)
   items:
   - slug: queries
-    title: Querying Data
+    title: Querying Data (Northbound)
   - slug: using-rest
     title: Using Rest
 - title: Monitoring & Operations
@@ -56,13 +60,4 @@ nav:
   items:
   - slug: remote-gui
     title: Remote GUI
-- title: Managing Data (Southbound)
-  items: []
-- title: Network & Services
-  items:
-  - slug: background-services
-    title: Background Services
-  - slug: blockchain
-    title: Blockchain
-- title: Tools & Ui
-  items: []
+
