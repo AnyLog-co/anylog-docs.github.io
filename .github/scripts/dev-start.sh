@@ -13,6 +13,9 @@ bundle config set path '/srv/bundle'
 # Install gems if missing
 if [ ! -d "/srv/bundle" ] || [ -z "$(ls -A /srv/bundle 2>/dev/null)" ]; then
     echo "Installing Ruby gems..."
+    # Ensure bundle cache volume is writable
+    mkdir -p /srv/bundle
+    chmod -R 777 /srv/bundle
     bundle install --jobs 4 --retry 3
 fi
 
