@@ -265,12 +265,211 @@ curl -X GET 127.0.0.1:32349 \
 
 ---
 
+## Live data generator
+
+AnyLog provides a shared MQTT broker with continuously published sample data across several real-world use cases. See the [Live Data Generator](/docs/data-generator/) page for connection details, the full script directory, and how to run each generator.
+
+---
+
 ## Sample scripts
 
-| Script | Description |
-|---|---|
-| [basic_msg_client.al](https://github.com/AnyLog-co/deployment-scripts/blob/main/sample-scripts/basic_msg_client.al) | Basic `run msg client` for MQTT — used when `ENABLE_MQTT=true` in configuration |
-| [basic_kafka_client.al](https://github.com/AnyLog-co/deployment-scripts/blob/main/sample-scripts/basic_kafka_client.al) | Same as above but uses `run kafka consumer` instead of `run msg client` |
-| [edgex.al](https://github.com/AnyLog-co/deployment-scripts/blob/main/sample-scripts/edgex.al) | Mapping policy example for the EdgeX retail-device1 demo (MQTT or REST POST) |
-| [telegraf.al](https://github.com/AnyLog-co/deployment-scripts/blob/main/sample-scripts/telegraf.al) | Mapping policy example for data coming in via Telegraf |
-| [fledge.al](https://github.com/AnyLog-co/deployment-scripts/blob/main/sample-scripts/fledge.al) | Multiple topics handled in a single `run msg client` |
+Each script below is a ready-to-run AnyLog script (`.al` file) that sets up a `run msg client` to subscribe to the live broker for a specific use case. Where relevant, a companion data generator script is linked.
+
+### Basic — random timestamp/value pairs
+
+The simplest example. Subscribes to the `anylog-demo` topic and maps `timestamp` and `value` fields into your default database.
+
+- **Script:** [basic_msg_client.al](https://github.com/AnyLog-co/deployment-scripts/blob/os-dev/sample-scripts/basic_msg_client.al) — configurable via node env vars (`ENABLE_MQTT=true`)
+- **Live generator:** [rand_data.al](https://github.com/AnyLog-co/deployment-scripts/blob/os-dev/data-generator/rand_data.al)
+
+Sample data published:
+```json
+{"timestamp": "2026-04-05T05:23:49.997386", "value": 0.186, "dbms": "mydb", "table": "rand_data"}
+```
+
+```anylog
+<run msg client where
+    broker = 172.104.228.251 and port = 1883 and
+    user = anyloguser and password = mqtt4AnyLog! and
+    log = false and topic = (
+        name = anylog-demo and
+        dbms = !default_dbms and
+        table = "bring [table]" and
+        column.timestamp.timestamp = "bring [timestamp]" and
+        column.value = (type = float and value = "bring [value]")
+    )>
+```
+
+---
+
+### Oil rig drilling data — policy-based, multiple topics
+
+Ingests real-time drilling metrics (depth, ROP, WOB, torque, pressure, flow rate, mud weight) from multiple rig topics. Uses a **mapping policy** for schema definition, making it easy to fan across many topics with a single `run msg client`.
+
+- **Script:** [edgex.al](https://github.com/AnyLog-co/deployment-scripts/blob/os-dev/sample-scripts/edgex.al) (policy-based msg client)
+- **Live generator:** [oil_rig_data.al](https://github.com/AnyLog-co/deployment-scripts/blob/os-dev/data-generator/oil_rig_data.al)
+- **Mapping policy:** [rig_rig-data.al](https://github.com/AnyLog-co/deployment-scripts/blob/os-dev/data-generator/mapping/rig_rig-data.al)
+
+Sample data:
+```json
+{
+  "rig_id": "RIG-TX-001", "rig_name": "Permian Star", "location": "West Texas",
+  "activity": "circulating", "measured_depth": 12518.66, "rop": 0.0, "wob": 0.0,
+  "rpm": 69.94, "torque": 8729.09, "standpipe_pressure": 3012.69,
+  "dbms": "timbergrove_rigs", "table": "rig_data"
+}
+```
+
+```anylog
+<run msg client where
+    broker = 172.104.228.251 and port = 1883 and
+    user = anyloguser and password = mqtt4AnyLog! and
+    log = false and
+    topic = (name = rig-data/rig-1 and policy = rig-data) and
+    topic = (name = rig-data/rig-7 and policy = rig-data) and
+    topic = (name = rig-data/rig-12 and policy = rig-data) and
+    topic = (name = rig-data/rig-23 and policy = rig-data)>
+```
+
+---
+
+### Telegraf — node monitoring data
+
+Ingests system metrics (CPU, memory, network, swap) collected by [Telegraf](https://www.influxdata.com/time-series-platform/telegraf/). Telegraf agents installed on your machines publish metrics to the broker; AnyLog maps them into time-series tables.
+
+The mapping policy uses a wildcard `"*"` schema to dynamically capture all fields from both `fields` and `tags` sections — ideal when the exact field set varies by metric type.
+
+- **Script:** [telegraf.al](https://github.com/AnyLog-co/deployment-scripts/blob/os-dev/sample-scripts/telegraf.al)
+
+Sample data published by Telegraf:
+```json
+{"metrics": [
+  {"fields": {"used_percent": 58.28, "available": 7166590976},
+   "name": "mem", "tags": {"host": "my-server"}, "timestamp": 1715018940},
+  {"fields": {"usage_idle": 89.92, "usage_user": 7.36},
+   "name": "cpu", "tags": {"cpu": "cpu0", "host": "my-server"}, "timestamp": 1715018940}
+]}
+```
+
+**Telegraf output plugin config** (in `telegraf.conf`):
+```toml
+[[outputs.mqtt]]
+  servers = ["tcp://172.104.228.251:1883"]
+  topic = "telegraf-data"
+  username = "anyloguser"
+  password = "mqtt4AnyLog!"
+  data_format = "json"
+```
+
+---
+
+### Wind turbine — multiple policies per topic
+
+Ingests wind turbine operational data (wind speed, RPM, power output, pitch, pressure, humidity) across multiple turbines. Each topic maps to several policies that route different metric groups into separate tables.
+
+- **Live generator:** [wind_turbine_data.al](https://github.com/AnyLog-co/deployment-scripts/blob/os-dev/data-generator/wind_turbine_data.al)
+
+Sample data:
+```json
+{
+  "turbine_id": 6, "wind_avg": 6.7, "wind_max": 10.8, "rpm_avg": 0.85,
+  "power_avg": -8, "pitch_avg": 56.7, "ambient_avg": 244,
+  "dbms": "wind_turbine", "table": "wind_turbine"
+}
+```
+
+```anylog
+<run msg client where
+    broker = 172.104.228.251 and port = 1883 and
+    user = anyloguser and password = mqtt4AnyLog! and
+    log = false and
+    topic = (
+        name = wind-turbine/turbine-1 and
+        policy = available-power and policy = blade-pitch and
+        policy = energy and policy = reactive-power
+    ) and
+    topic = (
+        name = wind-turbine/turbine-2 and
+        policy = available-power and policy = blade-pitch and
+        policy = energy and policy = reactive-power
+    )>
+```
+
+---
+
+### Electric vessel — complex multi-table schema
+
+Ingests high-density battery and charger telemetry from electric boats (DLT/DLB sides). Each topic carries multiple device types, each mapped to its own table via separate policies.
+
+- **Live generator:** [vessel_data.al](https://github.com/AnyLog-co/deployment-scripts/blob/os-dev/data-generator/vessel_data.al)
+
+Tables populated: `BATTERY-PACK-DEVICE-LOGS`, `BATTERY-PACK-LOGS`, `CHARGER-DEVICE-LOGS`, `CHARGER-LOGS`, `VESSEL-POWER-LOGS`, `VESSEL-STATE-LOGS`
+
+```anylog
+<run msg client where
+    broker = 172.104.228.251 and port = 1883 and
+    user = anyloguser and password = mqtt4AnyLog! and
+    log = false and
+    topic = (
+        name = vessel-data/DLT and
+        policy = BATTERY-PACK-DEVICE-LOGS and policy = BATTERY-PACK-LOGS and
+        policy = CHARGER-DEVICE-LOGS and policy = CHARGER-LOGS and
+        policy = VESSEL-POWER-LOGS and policy = VESSEL-STATE-LOGS
+    ) and
+    topic = (
+        name = vessel-data/DLB and
+        policy = BATTERY-PACK-DEVICE-LOGS and policy = BATTERY-PACK-LOGS and
+        policy = CHARGER-DEVICE-LOGS and policy = CHARGER-LOGS and
+        policy = VESSEL-POWER-LOGS and policy = VESSEL-STATE-LOGS
+    )>
+```
+
+---
+
+### Drone telemetry — REST POST with mapping policy
+
+Ingests drone swarm telemetry (position, altitude, heading, speed, battery, leader estimation) via REST POST. Uses a mapping policy to define the schema, with `dbms` and `table` derived dynamically from the payload.
+
+- **Live generator:** [drone_telemetry.al](https://github.com/AnyLog-co/deployment-scripts/blob/os-dev/data-generator/drone_telemetry.al)
+
+Sample data:
+```json
+{
+  "drone_id": "DRONE-001", "role": "follower", "leader_id": "DRONE-000",
+  "latitude": 37.774, "longitude": -122.419, "altitude_m": 120.5,
+  "speed_mps": 8.2, "battery_pct": 74.3, "status": "active",
+  "dbms": "drone_ops", "table": "telemetry"
+}
+```
+
+```anylog
+<run msg client where
+    broker = rest and
+    log = false and
+    user-agent = anylog and
+    topic = (
+        name = drone-telemetry and
+        policy = drone-telemetry
+    )>
+```
+
+---
+
+## Kafka
+
+The `run kafka consumer` command follows the same topic/mapping pattern as `run msg client`:
+
+- **Script:** [basic_kafka_client.al](https://github.com/AnyLog-co/deployment-scripts/blob/os-dev/sample-scripts/basic_kafka_client.al)
+
+```anylog
+<run kafka consumer where
+    ip = [kafka-broker-ip] and port = 9092 and
+    reset = earliest and
+    topic = (
+        name = my-topic and
+        dbms = mydb and
+        table = sensor_data and
+        column.timestamp.timestamp = "bring [timestamp]" and
+        column.value = (type = float and value = "bring [value]")
+    )>
+```

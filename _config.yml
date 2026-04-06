@@ -1,7 +1,7 @@
 title: AnyLog Docs
 description: Technical documentation for AnyLog Edge Data Fabric
-baseurl: ""
-url: "https://anylog-docs.github.io"
+baseurl: ''
+url: https://anylog-docs.github.io
 markdown: kramdown
 highlighter: rouge
 kramdown:
@@ -50,6 +50,10 @@ nav:
     title: Querying Data (Northbound)
   - slug: using-rest
     title: Using Rest
+  - slug: README
+    title: Readme
+  - slug: grafana
+    title: Grafana
 - title: Monitoring & Operations
   items:
   - slug: aggregations
@@ -60,4 +64,17 @@ nav:
   items:
   - slug: remote-gui
     title: Remote GUI
-
+- title: Managing Data (Southbound)
+  items:
+  - slug: grpc
+    title: Grpc
+  - slug: live_data_generator
+    title: Live Data Generator
+  - slug: node-red
+    title: Node Red
+  - slug: syslog
+    title: Syslog
+  - slug: video-streaming
+    title: Video Streaming
+- title: Tools & Ui
+  items: []
