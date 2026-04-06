@@ -6,11 +6,24 @@ layout: page
 
 ## What is AnyLog?
 
-AnyLog turns many independent (industrial) databases into a single logical data network. Applications query a single node and the system automatically locates and retrieves data from wherever it resides across the network.
+AnyLog provides real-time visibility and management of distributed edge data, applications, and infrastructure. It 
+transforms the edge into a scalable data tier optimized for IoT workloads, enabling organizations to generate real-time 
+insights across industries such as manufacturing, utilities, oil and gas, retail, robotics, smart cities, and automotive.
 
-**EdgeLake** is the open-source version of AnyLog, distributed by the Linux Foundation. It provides most — but not all — of AnyLog's functionality.
+When deployed on edge nodes, AnyLog forms a peer-to-peer (P2P) network in which each node contributes data and compute 
+resources. This network allows applications to access distributed IoT data through a **single query point**, as if the 
+data were stored on a single system.
 
-> For installation and deployment instructions, see the [Installing & Deploying AnyLog](https://docs.google.com/presentation/d/1X8hMqmfAlUWNA1V3mqQe0Hi1x82m4vgB6Ai0k-boZdI/edit) guide.
+The architecture consists of two complementary layers:
+* Physical layer – manages and processes data locally on edge nodes.
+* Virtualized data layer – provides unified access to distributed datasets across the network.
+
+Together, these layers create a cloud-like architecture for distributed edge and IoT data, enabling real-time data access 
+without requiring data movement and without locking organizations into specific clouds, applications, or hardware.
+
+
+<a href="https://github.com/EdgeLake/EdgeLake" target="_blank">EdgeLake</a> is the open-source version of AnyLog, 
+distributed by the Linux Foundation. It provides most — but not all — of AnyLog's functionality.
 
 ---
 
@@ -121,6 +134,8 @@ Data travels from sensors → edge hardware → cloud before it is accessible to
 
 **With AnyLog / EdgeLake:**
 Each edge data server becomes an operator node, directly part of the queryable network. Multiple operator nodes together form a virtual data lake. Applications connect to a single query node — not to each data source individually — and AnyLog handles locating and retrieving the data using blockchain metadata. This removes the complexity of managing multiple connections, eliminates the need to know where data physically resides, and dramatically reduces latency.
+
+<img src="../../assets/img/traditional_vs_anylog_architecture.svg" style="height=50%;width=50%;">
 
 ### Application-Facing Architecture
 

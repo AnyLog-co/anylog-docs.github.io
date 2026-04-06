@@ -5,7 +5,9 @@ title: AnyLog Documentation
 
 <div class="home-hero">
   <h1>AnyLog Documentation</h1>
-  <p>Technical guides for deploying, configuring, and integrating with the AnyLog Edge Data Fabric.</p>
+  <div>
+    <p align="justified">AnyLog — Enable independent (industrial) databases to function as a single logical data network.</p>
+  </div>
 </div>
 
 <div class="home-cards">
