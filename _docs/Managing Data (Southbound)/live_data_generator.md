@@ -92,9 +92,7 @@ Each script internally calls the relevant `mapping/*.al` files first, then decla
 
 ## Python data generator
 
-> **Repo:** [AnyLog-co/Sample-Data-Generator](https://github.com/AnyLog-co/Sample-Data-Generator) (branch: `data-generator2`, moving to `main`)
->
-> **Docker image:** `anylogco/sample-data-generator:beta2` (amd64)
+> **Repo:** [AnyLog-co/Sample-Data-Generator](https://github.com/AnyLog-co/Sample-Data-Generator) (branch: `data-generator2`)
 
 ### Architecture
 
@@ -170,17 +168,6 @@ python data_generator_main.py vessel mqtt --control-conn 127.0.0.1:32149 --data-
 
 # Run continuously (repeat=0)
 python data_generator_main.py random mqtt --control-conn 127.0.0.1:32149 --data-conn 127.0.0.1:32150 --repeat 0 --sleep 5
-```
-
-### Docker
-
-```bash
-docker run \
-  -e DATA=rig \
-  -e PUBLISH_FORMAT=mqtt \
-  -e RIG_IDS=1,3 \
-  -e CONN=127.0.0.1:32150 \
-  anylogco/sample-data-generator:beta2
 ```
 
 ---
