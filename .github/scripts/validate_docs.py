@@ -6,7 +6,7 @@ import yaml
 import copy
 import posixpath
 
-from navigation import  ITEM_ORDER
+from navigation import ITEM_ORDER
 
 
 # ── Locate repo root ─────────────────────────────────────
@@ -29,22 +29,47 @@ DOCS_DIR = os.path.join(ROOT, "_docs")
 if not os.path.isdir(DOCS_DIR):
     raise DirectoryNotFound(f"Failed to locate directory {DOCS_DIR}")
 
-# support functions
+
+# ── Support functions ─────────────────────────────────────
+
 def __extract_title(md_path):
-    """Extract `title` from YAML front matter of a Markdown file"""
+    """Extract `title` from YAML front matter of a Markdown file."""
     with open(md_path, "r", encoding="utf-8") as f:
         content = f.read()
     match = re.search(r"^---\s*\n(.*?)\n---", content, re.DOTALL | re.MULTILINE)
     if match:
-        yaml_content = match.group(1)
-        for line in yaml_content.splitlines():
+        for line in match.group(1).splitlines():
             if line.strip().startswith("title:"):
-                # remove 'title:' and any quotes/spaces
                 return line.split(":", 1)[1].strip().strip('"').strip("'")
     return None
 
+
+def __nav_title_override(section, slug):
+    """
+    Return a title override for a slug if navigation.py defines one.
+
+    ITEM_ORDER entries can be either a plain slug string:
+        "getting-started"
+    or a dict with an explicit title:
+        {"slug": "getting-started", "title": "Getting Started Guide"}
+
+    If a dict form is used, that title takes precedence over the front matter title.
+    """
+    for entry in ITEM_ORDER.get(section, []):
+        if isinstance(entry, dict) and entry.get("slug") == slug:
+            return entry.get("title")
+    return None
+
+
+def __slug_from_entry(entry):
+    """Normalise a navigation.py entry to just its slug string."""
+    if isinstance(entry, dict):
+        return entry["slug"]
+    return entry
+
+
 def __order_items(section, items):
-    order = ITEM_ORDER.get(section)
+    order = [__slug_from_entry(e) for e in ITEM_ORDER.get(section, [])]
     if not order:
         return items
 
@@ -55,79 +80,38 @@ def __order_items(section, items):
         if slug in remaining:
             ordered.append(remaining.pop(slug))
 
-    # append any items not listed
     ordered.extend(remaining.values())
-
     return ordered
+
 
 def __order_sections(nav_dict, section_order):
     ordered = []
-
     for section in section_order:
         if section in nav_dict:
             items = __order_items(section, nav_dict[section])
-            ordered.append({
-                "title": section,
-                "items": items
-            })
+            ordered.append({"title": section, "items": items})
 
-    # add sections not listed
     for section, items in nav_dict.items():
         if section not in section_order:
-            ordered.append({
-                "title": section,
-                "items": items
-            })
+            ordered.append({"title": section, "items": items})
 
     return ordered
 
+
 def __dict_to_nav_list(nav_dict):
-    """
-    Convert a dict keyed by section name into a list of dicts suitable for _config.yml
-
-    Input:
-      {
-          'Getting Started': [
-              {'slug': 'getting-started', 'title': 'Introduction', 'file': '...'},
-              ...
-          ],
-          ...
-      }
-
-    Output:
-      [
-          {
-              'title': 'Getting Started',
-              'items': [
-                  {'slug': 'getting-started', 'title': 'Introduction', 'file': '...'},
-                  ...
-              ]
-          },
-          ...
-      ]
-    """
-    nav_list = []
-    # preserve order if Python >=3.7, else sort keys manually
-    for section_name, items in nav_dict.items():
-        nav_list.append({
-            "title": section_name,
-            "items": items
-        })
-
     nav_list = __order_sections(nav_dict, ITEM_ORDER)
     return nav_list
 
 
+# ── Read `_config.yml` ────────────────────────────────────
 
-# ── Read `_config.yml` ─────────────────────────────────────
-# "last" _config.yaml file
 with open(CONFIG) as f:
     config = yaml.safe_load(f)
 
-# ── Get directories within `DOCS_DIR` ─────────────────────────────────────
-# current file struct
+# ── Walk `_docs/` ─────────────────────────────────────────
+
 ROOT_PATHS = {}
-for root, _, file in os.walk(DOCS_DIR): # <-- there are no sub/sub dirs at the moment
+for root, _, file in os.walk(DOCS_DIR):
     dir_name = "root"
     if root:
         if '/' in root:
@@ -140,15 +124,21 @@ for root, _, file in os.walk(DOCS_DIR): # <-- there are no sub/sub dirs at the m
     if file and isinstance(file, list):
         for fname in file:
             if not (fname.endswith(".") or fname == "README.md"):
+                slug = os.path.splitext(fname)[0]
+                nav_title = __nav_title_override(dir_name, slug)
+                file_title = __extract_title(md_path=os.path.join(root, fname))
                 ROOT_PATHS[dir_name].append({
-                    "slug": os.path.splitext(fname)[0],
-                    "title": __extract_title(md_path=os.path.join(root, fname)),
+                    "slug": slug,
+                    "title": nav_title or file_title,
                     "file": posixpath.join(dir_name, fname)
                 })
     elif file and not (file.endswith(".") or file == "README.md"):
+        slug = os.path.splitext(file)[0]
+        nav_title = __nav_title_override("root", slug)
+        file_title = __extract_title(md_path=os.path.join(DOCS_DIR, file))
         ROOT_PATHS[dir_name].append({
-            "slug": os.path.splitext(file)[0],
-            "title": __extract_title(md_path=os.path.join(DOCS_DIR, file)),
+            "slug": slug,
+            "title": nav_title or file_title,
             "file": posixpath.join(file)
         })
 
@@ -158,7 +148,10 @@ for key in ROOT_PATHS:
         navs.pop(key)
 ROOT_PATHS = copy.deepcopy(navs)
 
-# ── Convert to nav logic (slug) ─────────────────────────────────────
+# ── Write updated `_config.yml` ───────────────────────────
+
 config["nav"] = __dict_to_nav_list(nav_dict=ROOT_PATHS)
 with open(CONFIG, 'w') as f:
     yaml.dump(config, f, sort_keys=False)
+
+print("Navigation sync complete.")
