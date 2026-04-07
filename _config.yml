@@ -34,6 +34,9 @@ nav:
   - slug: installing-anylog
     title: Installing & Deploying AnyLog
     file: Getting Started/installing-anylog.md
+  - slug: deployment-scripts
+    title: Deployment Scripts
+    file: Getting Started/deployment-scripts.md
 - title: Network & Services
   items:
   - slug: background-services
@@ -89,3 +92,6 @@ nav:
   - slug: remote-gui
     title: Remote GUI
     file: Tools & UI/remote-gui.md
+  - slug: mcp
+    title: MCP & AI Integration
+    file: Tools & UI/mcp.md
