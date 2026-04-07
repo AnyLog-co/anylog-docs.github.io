@@ -1,7 +1,8 @@
 ITEM_ORDER = {
     "Getting Started": [
         "getting-started",
-        "installing-anylog"
+        "installing-anylog",
+        "deployment-scripts"
     ],
     "Network & Services": [
         "background-services",
