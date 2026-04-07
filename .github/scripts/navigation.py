@@ -27,6 +27,7 @@ ITEM_ORDER = {
         "high-availability"
     ],
     "Tools & UI": [
-        "remote-gui"
+        "remote-gui",
+        "mcp"
     ]
 }

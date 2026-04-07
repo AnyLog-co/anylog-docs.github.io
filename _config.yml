@@ -92,3 +92,6 @@ nav:
   - slug: remote-gui
     title: Remote GUI
     file: Tools & UI/remote-gui.md
+  - slug: mcp
+    title: MCP & AI Integration
+    file: Tools & UI/mcp.md
