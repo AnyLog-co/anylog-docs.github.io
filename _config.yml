@@ -37,6 +37,12 @@ nav:
   - slug: deployment-scripts
     title: Deployment Scripts
     file: Getting Started/deployment-scripts.md
+  - slug: anylog-as-service
+    title: Installing AnyLog as a Service
+    file: Getting Started/anylog-as-service.md
+  - slug: install-ova
+    title: Installing AnyLog via OVA
+    file: Getting Started/install-ova.md
 - title: Network & Services
   items:
   - slug: background-services
@@ -45,6 +51,9 @@ nav:
   - slug: blockchain
     title: Blockchain & Metadata
     file: Network & Services/blockchain.md
+  - slug: network-configurations
+    title: Network Configuration
+    file: Network & Services/network-configurations.md
 - title: Managing Data (Southbound)
   items:
   - slug: data-ingestion
@@ -68,6 +77,9 @@ nav:
   - slug: live-data-generator
     title: Live Data Generator
     file: Managing Data (Southbound)/live-data-generator.md
+  - slug: overview
+    title: Data Ingestion (Southbound)
+    file: Managing Data (Southbound)/overview.md
 - title: Querying Data (Northbound)
   items:
   - slug: queries
@@ -79,6 +91,33 @@ nav:
   - slug: grafana
     title: Grafana
     file: Querying Data (Northbound)/grafana.md
+  - slug: Google
+    title: Google Drive
+    file: Querying Data (Northbound)/Google.md
+  - slug: import-grafana-dashboard
+    title: Grafana Dashboards
+    file: Querying Data (Northbound)/import-grafana-dashboard.md
+  - slug: node-red
+    title: null
+    file: Querying Data (Northbound)/node-red.md
+  - slug: notification
+    title: null
+    file: Querying Data (Northbound)/notification.md
+  - slug: overview
+    title: Northbound Connectors
+    file: Querying Data (Northbound)/overview.md
+  - slug: postgres-connector
+    title: null
+    file: Querying Data (Northbound)/postgres-connector.md
+  - slug: PowerBI
+    title: null
+    file: Querying Data (Northbound)/PowerBI.md
+  - slug: Qlik
+    title: null
+    file: Querying Data (Northbound)/Qlik.md
+  - slug: sql-setup
+    title: SQL & Database Setup
+    file: Querying Data (Northbound)/sql-setup.md
 - title: Monitoring & Operations
   items:
   - slug: aggregations
@@ -87,6 +126,9 @@ nav:
   - slug: high-availability
     title: High Availability (HA)
     file: Monitoring & Operations/high-availability.md
+  - slug: node-monitoring
+    title: Monitoring & Alerts
+    file: Monitoring & Operations/node-monitoring.md
 - title: Tools & UI
   items:
   - slug: remote-gui
@@ -95,3 +137,27 @@ nav:
   - slug: mcp
     title: MCP & AI Integration
     file: Tools & UI/mcp.md
+- title: CLI
+  items:
+  - slug: AnyLog-CLI
+    title: AnyLog CLI
+    file: CLI/AnyLog-CLI.md
+  - slug: get-cmds
+    title: Get Commands
+    file: CLI/get-cmds.md
+  - slug: node-status
+    title: Node Status
+    file: CLI/node-status.md
+- title: Reference
+  items:
+  - slug: FAQ
+    title: FAQ & Troubleshooting
+    file: Reference/FAQ.md
+- title: Version Control
+  items:
+  - slug: SCRIPTS-CHANGELOGS
+    title: Deployment Scripts (Changelog)
+    file: Version Control/SCRIPTS-CHANGELOGS.md
+  - slug: SOURCE-CHANGELOGS
+    title: AnyLog's Source Code (Changelog)
+    file: Version Control/SOURCE-CHANGELOGS.md

@@ -62,38 +62,91 @@ distributed by the Linux Foundation. It provides most — but not all — of Any
 
 ## Node Types
 
-AnyLog uses a single base source code and configuration files. With the exception of Operator and Publisher nodes, any AnyLog agent can run any combination of services.
+AnyLog uses a single codebase across all node types. With the exception of 
+Operator and Publisher — which are mutually exclusive — any AnyLog node can 
+run any combination of services simultaneously.
 
-### Master Node (Blockchain Emulator)
+| Node type | Role | Key characteristic |
+|---|---|---|
+| [Master](#master-node) | Hosts the metadata ledger | Optional — only needed when not using a blockchain platform. One per network (or HA pair). |
+| [Operator](#operator-node) | Stores and serves data | Hosts local databases, answers queries, and receives data from southbound connectors or Publishers. |
+| [Publisher](#publisher-node) | Routes data to Operators | Receives data from devices or connectors, resolves the target Operator from the metadata layer, and forwards the data. Does not store data locally. Cannot run on the same node as an Operator. |
+| [Query](#query-node) | Orchestrates distributed queries | Receives SQL from applications, fans the query out to relevant Operators, and returns aggregated results. Any node can serve as a Query node — it is a role, not a dedicated machine. |
 
-Stores a copy of the network's metadata in a logical database rather than flat files. Systems can replace this node with an actual blockchain if needed.
+### The Cluster
 
-- **Access:** Must be reachable by all nodes in the network
-- **Location:** Cloud or office machine with consistent connectivity
+Before exploring node types in detail, it helps to understand the **cluster** — the metadata concept that ties them together.
+
+A cluster is a policy on the blockchain, not a running process. It declares 
+that one or more Operator nodes are collectively responsible for a specific 
+set of tables. Every table in the network belongs to a cluster. This 
+membership drives two things:
+
+- **Query routing** — the Query Node uses the cluster to find which Operators 
+  hold the data for a given table, then sends the query there.
+- **HA replication** — when multiple Operators share a cluster, data written 
+  to any one of them is automatically replicated to the others.
+
+---
+
+### Master Node
+
+Stores the network's metadata in a local database, making it available to all 
+peer nodes on demand. Acts as a centralized metadata ledger when a blockchain 
+platform is not in use.
+
+- **When to use:** Any deployment that does not use a blockchain platform 
+  (Optimism, Ethereum, etc.) needs a master node. Using a blockchain is 
+  optional but removes the single point of failure.
+- **Access:** Must be continuously reachable by all nodes in the network.
+- **Location:** Cloud or office machine with stable, consistent connectivity.
+
+---
 
 ### Operator Node
 
-Dedicated to storing SQL and NoSQL data — these are the actual databases of the network. Usually deployed at the edge, with optional cloud backups for HA.
+The data layer of the network. Operator nodes host the actual databases — SQL 
+or NoSQL — where time-series and event data is stored and indexed. They respond 
+directly to queries fanned out by Query Nodes.
 
-- **Access:** Must communicate bi-directionally with the master node, query node, and other operators in its cluster
-- **Location:** At the edge; HA replica in the cloud
+- **Access:** Must communicate bi-directionally with the Master Node, Query 
+  Nodes, and peer Operators within the same cluster.
+- **Location:** Typically at the edge, close to data sources. HA deployments 
+  add a cloud-hosted replica in the same cluster.
 
-**Cluster:** An abstract policy that groups metadata within one or more operator nodes. This grouping allows query nodes to know exactly where to route requests to retrieve the relevant data. In a high-availability configuration, multiple operators share a cluster.
+---
+
+### Publisher Node
+
+An optional ingestion router. A Publisher accepts data from multiple sensors 
+or devices, looks up the appropriate Operator for each dataset using the 
+blockchain metadata, and forwards it. It never writes data to a local database.
+
+Use a Publisher when a single ingestion point needs to distribute data across 
+multiple clusters or when you want to decouple data sources from storage 
+topology.
+
+> A node cannot run both Operator and Publisher services. Choose one per node.
+
+- **Access:** Must be able to reach the target Operator node(s).
+- **Location:** At the edge, alongside or near the data sources.
+
+---
 
 ### Query Node
 
-Accepts queries (typically via REST API) from applications and users. Uses blockchain metadata to determine which operator nodes hold the requested data, fans out the query, collects results, and returns them to the caller.
+Accepts SQL queries from external applications — typically via REST — and 
+coordinates execution across the network. It uses the cluster metadata to 
+identify which Operators hold the relevant data, fans the query out in 
+parallel, collects partial results, and returns a unified response.
 
-- **Access:** Must have network access to all operator nodes; individual users may run their own local query node with scoped access
-- **Location:** Same network considerations as the master node
+Any node can serve as a Query Node by enabling the REST service and the query 
+thread pool. A dedicated Query Node is recommended for production workloads 
+handling high query volumes.
 
-### Publisher Node *(AnyLog only)*
-
-An optional edge node that accepts data from multiple sensors or devices and distributes it across the appropriate operator nodes. Used when a single ingestion point needs to fan data out to different clusters.
-
-- **Access:** Must be able to reach the target operator node(s)
-- **Location:** At the edge, alongside or near the data sources
-
+- **Access:** Must have network access to all Operator nodes it may query.
+- **Location:** Same network considerations as the Master Node — cloud or 
+  office with reliable connectivity.
 ---
 
 ## Network Architecture
