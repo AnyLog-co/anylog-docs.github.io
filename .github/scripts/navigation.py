@@ -18,7 +18,7 @@ ITEM_ORDER = {
         "policies-metadata",
     ],
     "Managing Data (Southbound)": [
-        "overview",
+        "southbound-overview",
         "data-ingestion",
         "opcua",
         "grpc",
@@ -29,7 +29,7 @@ ITEM_ORDER = {
         "edgex",
     ],
     "Querying Data (Northbound)": [
-        "overview",
+        "northbound-overview",
         "queries",
         "sql-setup",
         "using-rest",

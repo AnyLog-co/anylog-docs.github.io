@@ -70,9 +70,6 @@ nav:
     file: Network & Services/policies-metadata.md
 - title: Managing Data (Southbound)
   items:
-  - slug: overview
-    title: Data Ingestion (Southbound)
-    file: Managing Data (Southbound)/overview.md
   - slug: data-ingestion
     title: Data Ingestion
     file: Managing Data (Southbound)/data-ingestion.md
@@ -97,11 +94,14 @@ nav:
   - slug: edgex
     title: EdgeX Integration
     file: Managing Data (Southbound)/edgex.md
+  - slug: southound-overview
+    title: Data Ingestion (Southbound)
+    file: Managing Data (Southbound)/southound-overview.md
 - title: Querying Data (Northbound)
   items:
-  - slug: overview
+  - slug: northbound-overview
     title: Northbound Connectors
-    file: Querying Data (Northbound)/overview.md
+    file: Querying Data (Northbound)/northbound-overview.md
   - slug: queries
     title: Querying Data (Northbound)
     file: Querying Data (Northbound)/queries.md
