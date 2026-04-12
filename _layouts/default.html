@@ -12,6 +12,10 @@
 </head>
 <body>
   {% include header.html %}
+  <div class="search-wrapper">
+    <input type="search" id="search-input" placeholder="Search docs…" autocomplete="off" />
+    <ul id="search-results"></ul>
+  </div>
   <div class="page-wrapper">
     {% include sidebar.html %}
     <main class="main-content">

@@ -65,6 +65,9 @@ nav:
   - slug: blockchain
     title: Blockchain & Metadata
     file: Network & Services/blockchain.md
+  - slug: policies-metadata
+    title: Policies & Metadata
+    file: Network & Services/policies-metadata.md
 - title: Managing Data (Southbound)
   items:
   - slug: overview
@@ -91,6 +94,9 @@ nav:
   - slug: live-data-generator
     title: Live Data Generator
     file: Managing Data (Southbound)/live-data-generator.md
+  - slug: edgex
+    title: EdgeX Integration
+    file: Managing Data (Southbound)/edgex.md
 - title: Querying Data (Northbound)
   items:
   - slug: overview
@@ -126,9 +132,6 @@ nav:
   - slug: notification
     title: null
     file: Querying Data (Northbound)/notification.md
-  - slug: node-red
-    title: null
-    file: Querying Data (Northbound)/node-red.md
 - title: Monitoring & Operations
   items:
   - slug: node-monitoring

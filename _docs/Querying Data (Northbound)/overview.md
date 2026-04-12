@@ -1,7 +1,7 @@
 ---
 title: Northbound Connectors
 description: Connect BI tools, dashboards, and applications to AnyLog for querying distributed edge data.
-layout: page
+layout: section
 ---
 
 # Northbound Connectors

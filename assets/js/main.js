@@ -119,3 +119,51 @@ if (headerSearchInput) {
     }
   });
 }
+// ── Search ────────────────────────────────────────────────
+(function () {
+  const input = document.getElementById('search-input');
+  const results = document.getElementById('search-results');
+  if (!input || !results) return;
+
+  let idx, docs;
+
+  // Fetch and build the lunr index once
+  fetch('/search-index.json')
+    .then(r => r.json())
+    .then(data => {
+      docs = data;
+      idx = lunr(function () {
+        this.ref('url');
+        this.field('title', { boost: 10 });
+        this.field('content');
+        data.forEach(d => this.add(d));
+      });
+    });
+
+  input.addEventListener('input', function () {
+    const q = this.value.trim();
+    results.innerHTML = '';
+    if (!q || !idx) { results.classList.remove('active'); return; }
+
+    const hits = idx.search(q + '*');   // trailing wildcard for partial match
+    if (!hits.length) {
+      results.innerHTML = '<li style="padding:.6rem 1rem;color:var(--text-muted,#64748b)">No results</li>';
+    } else {
+      hits.slice(0, 8).forEach(hit => {
+        const doc = docs.find(d => d.url === hit.ref);
+        if (!doc) return;
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="${doc.url}"><strong>${doc.title}</strong><span>${doc.content.slice(0, 80)}…</span></a>`;
+        results.appendChild(li);
+      });
+    }
+    results.classList.add('active');
+  });
+
+  // Close results when clicking outside
+  document.addEventListener('click', e => {
+    if (!input.contains(e.target) && !results.contains(e.target)) {
+      results.classList.remove('active');
+    }
+  });
+})();

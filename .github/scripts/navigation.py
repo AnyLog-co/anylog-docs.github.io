@@ -15,6 +15,7 @@ ITEM_ORDER = {
         "background-services",
         "network-configurations",
         "blockchain",
+        "policies-metadata",
     ],
     "Managing Data (Southbound)": [
         "overview",
@@ -25,6 +26,7 @@ ITEM_ORDER = {
         "syslog",
         "video-streaming",
         "live-data-generator",
+        "edgex",
     ],
     "Querying Data (Northbound)": [
         "overview",
