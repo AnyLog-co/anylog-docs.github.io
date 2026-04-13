@@ -76,6 +76,9 @@ nav:
   - slug: opcua
     title: OPC-UA
     file: Managing Data (Southbound)/opcua.md
+  - slug: etherip
+    title: EtherNet/IP
+    file: Managing Data (Southbound)/etherip.md
   - slug: grpc
     title: gRPC
     file: Managing Data (Southbound)/grpc.md
@@ -159,6 +162,9 @@ nav:
   - slug: SCRIPTS-CHANGELOGS
     title: Deployment Scripts (Changelog)
     file: Version Control/SCRIPTS-CHANGELOGS.md
+  - slug: CHANGELOG
+    title: Changelog
+    file: Version Control/CHANGELOG.md
 - title: Reference
   items:
   - slug: FAQ

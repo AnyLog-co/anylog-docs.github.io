@@ -21,6 +21,7 @@ ITEM_ORDER = {
         "southbound-overview",
         "data-ingestion",
         "opcua",
+        "etherip",
         "grpc",
         "node-red",
         "syslog",
