@@ -11,9 +11,9 @@ layout: page
 
 # Unified Namespace
 
-A Unified Namespace (UNS) is a modeling tool for organizing and representing physical or logical assets in a 
-structured hierarchy — similar in purpose to Historian Asset Frameworks, but designed for decentralized, 
-real-time operational environments.
+A <a href="https://www.iiot.university/blog/what-is-uns%3F" target="_blank">Unified Namespace (UNS)</a> is a modeling 
+tool for organizing and representing physical or logical assets in a structured hierarchy — similar in purpose to 
+Historian Asset Frameworks, but designed for decentralized, real-time operational environments.
 
 Unlike traditional architectures where operational data must be centralized before it becomes broadly accessible, 
 AnyLog's UNS enables systems to interact with data as it is generated across the network. This creates a single, 
@@ -38,9 +38,9 @@ the namespace tree to find any data point without any manual configuration.
 that don't arrive dynamically and gives teams the ability to model assets in a way that reflects their own 
 organizational or project structure. This is an ability most historians do not support.
 
-The UNS structure can follow a rigid standard like ISA-95, or a more flexible project-defined hierarchy. Because 
-AnyLog treats the UNS as a type of metadata, both approaches can coexist — a dynamically generated namespace 
-can be extended or paralleled with additional user-defined context.
+The UNS structure can follow a rigid standard like <a href="https://www.isa.org/standards-and-publications/isa-standards/isa-95-standard" target="_blank">ISA-95</a>, 
+or a more flexible project-defined hierarchy. Because AnyLog treats the UNS as a type of metadata, both approaches can 
+coexist — a dynamically generated namespace can be extended or paralleled with additional user-defined context.
 
 ---
 

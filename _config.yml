@@ -76,6 +76,9 @@ nav:
   - slug: mapping-policies
     title: Mapping Policies
     file: Managing Data (Southbound)/mapping-policies.md
+  - slug: UNS
+    title: Unified Namespace
+    file: Managing Data (Southbound)/UNS.md
   - slug: opcua
     title: OPC-UA
     file: Managing Data (Southbound)/opcua.md

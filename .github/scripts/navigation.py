@@ -21,6 +21,7 @@ ITEM_ORDER = {
         "southbound-overview",
         "data-ingestion",
         "mapping-policies",
+        "UNS",
         "opcua",
         "telegraf",
         "etherip",
