@@ -23,7 +23,7 @@ ITEM_ORDER = {
         "mapping-policies",
         "UNS",
         "opcua",
-        "kafka",
+        "using-kafka",
         "telegraf",
         "etherip",
         "grpc",

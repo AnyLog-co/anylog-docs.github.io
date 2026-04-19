@@ -82,6 +82,9 @@ nav:
   - slug: opcua
     title: OPC-UA
     file: Managing Data (Southbound)/opcua.md
+  - slug: using-kafka
+    title: null
+    file: Managing Data (Southbound)/using-kafka.md
   - slug: telegraf
     title: Telegraf
     file: Managing Data (Southbound)/telegraf.md
@@ -109,9 +112,6 @@ nav:
   - slug: southound-overview
     title: Data Ingestion (Southbound)
     file: Managing Data (Southbound)/southound-overview.md
-  - slug: using-kafka
-    title: null
-    file: Managing Data (Southbound)/using-kafka.md
 - title: Querying Data (Northbound)
   items:
   - slug: northbound-overview
