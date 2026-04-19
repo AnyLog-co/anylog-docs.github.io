@@ -20,7 +20,11 @@ ITEM_ORDER = {
     "Managing Data (Southbound)": [
         "southbound-overview",
         "data-ingestion",
+        "mapping-policies",
+        "UNS",
         "opcua",
+        "using-kafka",
+        "telegraf",
         "etherip",
         "grpc",
         "node-red",
