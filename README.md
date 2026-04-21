@@ -95,15 +95,27 @@ layout: page
 
 ## Contributing
 
-This repo follows a **PR-based workflow** — do not push directly to `main`.
+This repo follows a **PR-based workflow** — do not push directly to `pre-develop` or `main`.
 
-1. Make sure your local branch is in sync with `main`:
+### Branches
+
+| Branch | Purpose |
+|---|---|
+| `main` | Published site — updated on version releases |
+| `pre-develop` | Active development — all PRs target this branch |
+
+### Workflow
+
+1. Make sure your local branch is in sync with `pre-develop`:
    ```bash
    git fetch origin
-   git rebase origin/main
+   git rebase origin/pre-develop
    ```
-2. Create a feature branch, make your changes, then open a pull request **against `main`**
-3. GitHub Pages builds and publishes automatically once the PR is merged
+2. Create a feature branch from `pre-develop`, make your changes, then open a pull request **against `pre-develop`**
+3. PRs are reviewed on a **weekly cadence** — expect feedback or a merge within a week of opening
+4. When a new AnyLog version is released, `pre-develop` is merged into `main` and the published site updates automatically via GitHub Pages
+
+> **Note:** The exact process for promoting `pre-develop` → `main` on version releases is still being decided. This README will be updated once the workflow is confirmed.
 
 ---
 
