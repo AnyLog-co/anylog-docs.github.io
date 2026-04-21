@@ -180,9 +180,6 @@ nav:
   - slug: SCRIPTS-CHANGELOGS
     title: Deployment Scripts (Changelog)
     file: Version Control/SCRIPTS-CHANGELOGS.md
-  - slug: CHANGELOG
-    title: Changelog
-    file: Version Control/CHANGELOG.md
 - title: Reference
   items:
   - slug: FAQ
