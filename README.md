@@ -39,6 +39,11 @@ title: Introduction to AnyLog
 description: Understanding AnyLog's architecture, node types, and core concepts.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+- 2026-05-12 | updated x, y, z
+--> 
 ```
 
 ### 2. Register it in the navigation
@@ -70,7 +75,22 @@ The slug is the filename without the `.md` extension. The order of slugs within 
   <a href="https://example.com" target="_blank">Link text</a>
   ```
 - Keep front matter `description` to a single sentence — it appears as the subtitle under the page title
-
+- The title at the top is also used as the page title, there's no need for double title 
+**Example**: How not to define the Makefile  
+```markdown
+---
+title: Introduction to AnyLog
+description: Understanding AnyLog's architecture, node types, and core concepts.
+layout: page
+---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+- 2026-05-12 | updated x, y, z
+--> 
+# Introduction to AnyLog
+[content] 
+```
 ---
 
 ## Contributing
