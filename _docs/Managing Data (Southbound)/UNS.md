@@ -65,8 +65,8 @@ automatically generates a UNS hierarchy from it.
     )>
 ```
 
-In the example above, the `#` wildcard subscribes to all topics under `Enterprise C/tff/`. Each arriving 
-message — for example `Enterprise C/tff/PCV7X_percent` with value `100` — is stored directly using the topic 
+In the example above, the `#` wildcard subscribes to all topics under `vessel-data/DLT/`. Each arriving 
+message — for example `vessel-data/DLT/PCV7X/percent` with value `100` — is stored directly using the topic 
 path as the namespace address, with no mapping policy required.
 
 ### Example: ProveIt virtual factory (authenticated MQTT)
@@ -121,6 +121,7 @@ Subscription ID: 0001
 User:         unused
 Broker:       192.168.1.88:1883
 Connection:   Connected
+
      Messages    Success     Errors      Last message time    Last error time      Last Error
      ----------  ----------  ----------  -------------------  -------------------  ----------------------------------
              32          32           0  2026-04-22 13:41:43
