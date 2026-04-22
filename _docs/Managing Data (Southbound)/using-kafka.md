@@ -14,8 +14,8 @@ sure it's what we expect.
 
 AnyLog interacts with Kafka in two directions:
 
-- **Consumer** — subscribe to Kafka topics and ingest messages into local databases
-- **Producer** — direct query result sets to a Kafka topic
+- **[Consumer](#consumer--ingest-from-kafka)** — subscribe to Kafka topics and ingest messages into local databases
+- **[Producer](#producer--send-query-results-to-kafka)** — direct query result sets to a Kafka topic
 
 ---
 

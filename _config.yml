@@ -118,6 +118,9 @@ nav:
   - slug: southound-overview
     title: Data Ingestion (Southbound)
     file: Managing Data (Southbound)/southound-overview.md
+  - slug: UNS_custom
+    title: Custom UNS (data stream, ISA-95)
+    file: Managing Data (Southbound)/UNS_custom.md
 - title: Querying Data (Northbound)
   items:
   - slug: northbound-overview
