@@ -106,7 +106,6 @@ The following shows the UNS policies generated for `Enterprise C / tff / PCV7X /
     "uns": {
         "name": "Enterprise_C",
         "namespace": "Enterprise_C",
-        "uns_level": "enterprise",
         "id": "b992dcf093661dc3dc966c6a420ac816",
         "date": "2026-02-16T19:13:14.831323Z",
         "ledger": "global"
@@ -120,7 +119,6 @@ The following shows the UNS policies generated for `Enterprise C / tff / PCV7X /
     "uns": {
         "name": "tff",
         "namespace": "Enterprise_C/tff",
-        "uns_level": "namespace",
         "parent": "b992dcf093661dc3dc966c6a420ac816",
         "dbms": "manufacturing_historian",
         "table": "tff",
@@ -137,7 +135,6 @@ The following shows the UNS policies generated for `Enterprise C / tff / PCV7X /
     "uns": {
         "name": "PCV7X",
         "namespace": "Enterprise_C/tff/PCV7X",
-        "uns_level": "device",
         "parent": "2d8e35eaf0df9bfbdec0d112a410f24e",
         "dbms": "manufacturing_historian",
         "table": "tff_pcv7x",
@@ -154,7 +151,6 @@ The following shows the UNS policies generated for `Enterprise C / tff / PCV7X /
     "uns": {
         "name": "percent",
         "namespace": "Enterprise_C/tff/PCV7X/percent",
-        "uns_level": "sensor",
         "parent": "9a08e1c52440638803215c0c61b9d27d",
         "dbms": "manufacturing_historian",
         "table": "tff_pcv7x_percent",
