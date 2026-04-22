@@ -42,6 +42,8 @@ The UNS structure can follow a rigid standard like <a href="https://www.isa.org/
 or a more flexible project-defined hierarchy. Because AnyLog treats the UNS as a type of metadata, both approaches can 
 coexist — a dynamically generated namespace can be extended or paralleled with additional user-defined context.
 
+For a worked example of hand-authored **`uns`** policies (ISA-95 metadata, **`blockchain insert`**, **`blockchain get uns`**), see [Custom UNS (data stream, ISA-95)](UNS_custom.md).
+
 ---
 
 ## Ingesting Data with `dynamic=true`
