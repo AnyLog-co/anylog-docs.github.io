@@ -6,6 +6,7 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-17 | Created document
+- 2026-04-23 | updates based on changes in MCP-Examples related to CORs + AnyLog-Agent 
 --> 
 
 Every AnyLog query node exposes a **Model Context Protocol (MCP) server** that gives any compatible AI client — Claude Desktop, Claude.ai, Base44 — live access to your network's schema, data, and node topology. No SQL required on your end.
@@ -176,6 +177,34 @@ The MCP connection lets Claude discover your live schema, sample data, and node 
 | `power_plant.md` | SQL queries, UNS panel, charts, drill-down |
 | `node_status.md` | Node health — no SQL, diagnostic commands only |
 | `rig_data.md` | Multi-rig industrial monitor with `increments()` queries |
+| `wind_turbine_mcp.md` | MCP-backed live dashboard — every fetch routed through the MCP proxy at runtime (experimental) |
+| `base44.md` | Hosted Base44 app — generates backend + frontend prompts |
+
+---
+
+## MCP-backed live dashboards (experimental)
+
+Unlike generated dashboards that run over plain REST, an MCP-backed dashboard routes **every data fetch** through the MCP proxy at runtime:
+
+```
+Browser → POST /api/query → anylog_proxy.py (MCP mode) → MCP/SSE → AnyLog
+```
+
+This requires the Flask proxy running in MCP mode — nginx alone cannot support this.
+
+**Costs and constraints to be aware of:**
+
+| Concern | Detail |
+|---|---|
+| **Cost** | Every dashboard refresh triggers LLM-mediated MCP calls — billable on every poll cycle |
+| **Latency** | MCP calls are serialized; polling frequently across many sensors will queue |
+| **Proxy required** | Requires `anylog_proxy.py` in MCP mode |
+| **Query discipline** | All SQL must be bounded (`LIMIT`, narrow time windows) — never `SELECT *` |
+
+**When it makes sense:** prototyping or demos, low-frequency dashboards (refresh ≥ 5 min), or when the MCP endpoint is the only available access path. The `wind_turbine_mcp.html` dashboard includes a built-in query log, error log with `curl` reproduction, and prompt evolution log.
+
+→ See `html/wind_turbine_mcp.html` for a working example  
+→ Use `prompts/wind_turbine_mcp.md` to generate your own
 
 ---
 
@@ -195,7 +224,15 @@ All dashboards support three connection modes selectable from an in-page config 
 
 ## Browser connection modes
 
-Browsers cannot POST directly to AnyLog nodes in most environments due to CORS. Choose one:
+Browsers cannot POST directly to AnyLog nodes in most environments due to CORS. The root cause is that browsers treat `User-Agent` as a reserved header — any attempt to set it via `fetch()` is silently ignored, and cross-origin requests can trigger a CORS preflight (`OPTIONS`) that AnyLog nodes are not configured to answer by default.
+
+**`AnyLog-Agent` is the solution for direct browser calls.** It is a custom header that both the browser and the node control explicitly, allowing the node to whitelist it without triggering preflight. Use it as a body key in POST requests from the browser:
+
+```json
+{ "AnyLog-Agent": "AnyLog/1.23", "command": "...", "destination": "network" }
+```
+
+For environments where the node cannot be configured to return CORS headers at all, route through a proxy instead:
 
 | Mode | How it works | Best for |
 |---|---|---|
@@ -262,9 +299,9 @@ All requests use `POST` with a JSON body.
 curl -X POST http://HOST:PORT \
   -H "Content-Type: application/json" \
   -d '{
-    "User-Agent":  "AnyLog/1.23",
-    "command":     "sql mydb format=json:list and stat=false SELECT * FROM mytable LIMIT 10",
-    "destination": "network"
+    "AnyLog-Agent": "AnyLog/1.23",
+    "command":      "sql mydb format=json:list and stat=false SELECT * FROM mytable LIMIT 10",
+    "destination":  "network"
   }'
 ```
 
@@ -277,8 +314,8 @@ curl -X POST http://HOST:PORT \
 curl -X POST http://HOST:PORT \
   -H "Content-Type: application/json" \
   -d '{
-    "User-Agent": "AnyLog/1.23",
-    "command":    "get status where format=json"
+    "AnyLog-Agent": "AnyLog/1.23",
+    "command":      "get status where format=json"
   }'
 ```
 
@@ -309,10 +346,29 @@ Phase 1 — Claude + AnyLog MCP          Phase 2 — Claude (no MCP)
   (creates AnyLog REST backend)           (creates UI calling backend)
 ```
 
-The Base44 backend calls AnyLog directly over REST (no proxy needed — Base44 runs server-side). Use `format=json:list and stat=false` and parse with:
+The Base44 backend calls AnyLog directly over REST (no proxy needed — Base44 runs server-side, so CORS is not an issue). Use `AnyLog-Agent` in the HTTP header and `format=json:list and stat=false`, then parse with:
 
 ```js
 const rows = Array.isArray(response) ? response : [];
+```
+
+**SQL queries** — require `destination: "network"`:
+```json
+POST http://{node_ip}:{port}
+Headers: { "AnyLog-Agent": "AnyLog/1.23", "Content-Type": "application/json" }
+Body: {
+  "command":     "sql {dbms} format=json:list and stat=false {SQL}",
+  "destination": "network"
+}
+```
+
+**Blockchain / node commands** — no `destination`:
+```json
+POST http://{node_ip}:{port}
+Headers: { "AnyLog-Agent": "AnyLog/1.23", "Content-Type": "application/json" }
+Body: {
+  "command": "blockchain get uns where namespace = {namespace}"
+}
 ```
 
 Use the `prompts/base44.md` template from the MCP-Examples repo.
@@ -323,7 +379,8 @@ Use the `prompts/base44.md` template from the MCP-Examples repo.
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| `Failed to fetch` / CORS error in browser | Browser blocked by CORS | Switch to nginx or Flask proxy mode |
+| `Failed to fetch` / CORS error in browser | Node not returning CORS headers | Switch to nginx or Flask proxy mode, or use `AnyLog-Agent` as a body key for direct POST |
+| Preflight (`OPTIONS`) blocked — `No 'Access-Control-Allow-Origin' header` | Browser triggered CORS preflight due to reserved header or method | Use `AnyLog-Agent` instead of `User-Agent` in the POST body; ensure node whitelists `Access-Control-Allow-Headers: AnyLog-Agent, Content-Type` |
 | All MCP tool calls fail silently | Missing `/mcp/sse` suffix in config | Verify the full URL: `http://HOST:PORT/mcp/sse` |
 | CORS banner persists after switching proxy mode | Stale state | Click ↻ Refresh — clears on next successful fetch |
 | `Is a directory` error on proxy startup | Docker created config as a directory | `docker compose down && rm -rf nginx.conf`, recreate as file |

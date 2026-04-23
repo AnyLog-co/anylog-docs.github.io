@@ -14,6 +14,7 @@ ITEM_ORDER = {
     "Network & Services": [
         "background-services",
         "network-configurations",
+        "using-rest",
         "messaging-services",
         "blockchain",
         "policies-metadata",
@@ -39,7 +40,6 @@ ITEM_ORDER = {
         "northbound-overview",
         "queries",
         "sql-setup",
-        "using-rest",
         "grafana",
         "import-grafana-dashboard",
         "PowerBI",

@@ -62,6 +62,9 @@ nav:
   - slug: network-configurations
     title: Network Configuration
     file: Network & Services/network-configurations.md
+  - slug: using-rest
+    title: Using REST
+    file: Network & Services/using-rest.md
   - slug: messaging-services
     title: Messaging Service
     file: Network & Services/messaging-services.md
@@ -132,9 +135,6 @@ nav:
   - slug: sql-setup
     title: SQL & Database Setup
     file: Querying Data (Northbound)/sql-setup.md
-  - slug: using-rest
-    title: Using REST
-    file: Querying Data (Northbound)/using-rest.md
   - slug: grafana
     title: Grafana
     file: Querying Data (Northbound)/grafana.md
