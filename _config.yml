@@ -62,6 +62,9 @@ nav:
   - slug: network-configurations
     title: Network Configuration
     file: Network & Services/network-configurations.md
+  - slug: messaging-services
+    title: Messaging Service
+    file: Network & Services/messaging-services.md
   - slug: blockchain
     title: Blockchain & Metadata
     file: Network & Services/blockchain.md
@@ -73,9 +76,21 @@ nav:
   - slug: data-ingestion
     title: Data Ingestion
     file: Managing Data (Southbound)/data-ingestion.md
+  - slug: mapping-policies
+    title: Mapping Policies
+    file: Managing Data (Southbound)/mapping-policies.md
+  - slug: UNS
+    title: Unified Namespace
+    file: Managing Data (Southbound)/UNS.md
   - slug: opcua
     title: OPC-UA
     file: Managing Data (Southbound)/opcua.md
+  - slug: using-kafka
+    title: Kafka
+    file: Managing Data (Southbound)/using-kafka.md
+  - slug: telegraf
+    title: Telegraf
+    file: Managing Data (Southbound)/telegraf.md
   - slug: etherip
     title: EtherNet/IP
     file: Managing Data (Southbound)/etherip.md
@@ -85,6 +100,9 @@ nav:
   - slug: node-red
     title: Node-RED
     file: Managing Data (Southbound)/node-red.md
+  - slug: node-monitoring
+    title: Node Monitoring
+    file: Managing Data (Southbound)/node-monitoring.md
   - slug: syslog
     title: Syslog
     file: Managing Data (Southbound)/syslog.md
@@ -100,6 +118,9 @@ nav:
   - slug: southound-overview
     title: Data Ingestion (Southbound)
     file: Managing Data (Southbound)/southound-overview.md
+  - slug: UNS_custom
+    title: Custom UNS (data stream, ISA-95)
+    file: Managing Data (Southbound)/UNS_custom.md
 - title: Querying Data (Northbound)
   items:
   - slug: northbound-overview
@@ -121,19 +142,19 @@ nav:
     title: Grafana Dashboards
     file: Querying Data (Northbound)/import-grafana-dashboard.md
   - slug: PowerBI
-    title: null
+    title: PowerBI
     file: Querying Data (Northbound)/PowerBI.md
   - slug: Qlik
-    title: null
+    title: Qlik
     file: Querying Data (Northbound)/Qlik.md
   - slug: Google
     title: Google Drive
     file: Querying Data (Northbound)/Google.md
   - slug: postgres-connector
-    title: null
+    title: PostgresSQL Connector
     file: Querying Data (Northbound)/postgres-connector.md
   - slug: notification
-    title: null
+    title: Notification Services
     file: Querying Data (Northbound)/notification.md
 - title: Monitoring & Operations
   items:
@@ -162,9 +183,6 @@ nav:
   - slug: SCRIPTS-CHANGELOGS
     title: Deployment Scripts (Changelog)
     file: Version Control/SCRIPTS-CHANGELOGS.md
-  - slug: CHANGELOG
-    title: Changelog
-    file: Version Control/CHANGELOG.md
 - title: Reference
   items:
   - slug: FAQ

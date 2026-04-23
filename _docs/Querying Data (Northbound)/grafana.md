@@ -3,6 +3,10 @@ title: Grafana
 description: Connect Grafana to AnyLog to visualize time-series and metadata using increments, period, and custom SQL queries.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 Grafana is AnyLog's default demo BI tool. It connects via the JSON datasource plugin and issues SQL queries to AnyLog's query node over REST.
 

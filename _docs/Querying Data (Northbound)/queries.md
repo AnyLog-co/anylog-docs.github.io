@@ -3,6 +3,10 @@ title: Querying Data (Northbound)
 description: Run SQL queries across distributed operator nodes, with time-series functions, casting, and formatting options.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 Queries are issued to a **Query Node** which uses blockchain metadata to locate the relevant Operator nodes, distributes the query, and assembles a unified result. See [How Querying Works](/docs/introduction/#how-querying-works) for the architecture background.
 

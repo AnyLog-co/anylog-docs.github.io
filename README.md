@@ -39,6 +39,11 @@ title: Introduction to AnyLog
 description: Understanding AnyLog's architecture, node types, and core concepts.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+- 2026-05-12 | updated x, y, z
+--> 
 ```
 
 ### 2. Register it in the navigation
@@ -70,20 +75,47 @@ The slug is the filename without the `.md` extension. The order of slugs within 
   <a href="https://example.com" target="_blank">Link text</a>
   ```
 - Keep front matter `description` to a single sentence — it appears as the subtitle under the page title
-
+- The title at the top is also used as the page title, there's no need for double title 
+**Example**: How not to define the Makefile  
+```markdown
+---
+title: Introduction to AnyLog
+description: Understanding AnyLog's architecture, node types, and core concepts.
+layout: page
+---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+- 2026-05-12 | updated x, y, z
+--> 
+# Introduction to AnyLog
+[content] 
+```
 ---
 
 ## Contributing
 
-This repo follows a **PR-based workflow** — do not push directly to `main`.
+This repo follows a **PR-based workflow** — do not push directly to `pre-develop` or `main`.
 
-1. Make sure your local branch is in sync with `main`:
+### Branches
+
+| Branch | Purpose |
+|---|---|
+| `main` | Published site — updated on version releases |
+| `pre-develop` | Active development — all PRs target this branch |
+
+### Workflow
+
+1. Make sure your local branch is in sync with `pre-develop`:
    ```bash
    git fetch origin
-   git rebase origin/main
+   git rebase origin/pre-develop
    ```
-2. Create a feature branch, make your changes, then open a pull request **against `main`**
-3. GitHub Pages builds and publishes automatically once the PR is merged
+2. Create a feature branch from `pre-develop`, make your changes, then open a pull request **against `pre-develop`**
+3. PRs are reviewed on a **weekly cadence** — expect feedback or a merge within a week of opening
+4. When a new AnyLog version is released, `pre-develop` is merged into `main` and the published site updates automatically via GitHub Pages
+
+> **Note:** The exact process for promoting `pre-develop` → `main` on version releases is still being decided. This README will be updated once the workflow is confirmed.
 
 ---
 

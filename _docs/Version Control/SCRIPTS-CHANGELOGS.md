@@ -3,6 +3,10 @@ title: Deployment Scripts (Changelog)
 description: Release history and notable changes for AnyLog deployment scripts.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 ## Unreleased
 <!-- last-processed: -->

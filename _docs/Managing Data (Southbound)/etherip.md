@@ -3,6 +3,10 @@ title: EtherNet/IP
 description: Configure AnyLog as an EtherNet/IP client to pull data from industrial PLCs and controllers continuously.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 EtherNet/IP (Ethernet Industrial Protocol) is an industrial network protocol built on the Common Industrial Protocol (CIP) that enables communication between PLCs, sensors, actuators, and control systems over standard Ethernet. AnyLog can act as an EtherNet/IP client, pulling data from any EtherNet/IP device and streaming it into local databases.
 

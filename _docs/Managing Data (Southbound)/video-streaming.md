@@ -3,6 +3,10 @@ title: Video Streaming
 description: Ingest video streams from IP cameras, RTSP feeds, YouTube, and local files — with optional AI inference — into AnyLog.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 AnyLog can connect to video streams, record segmented clips to a blob database, and optionally run AI inference (e.g. YOLOv5 object detection) via a gRPC server.
 

@@ -3,6 +3,10 @@ title: gRPC
 description: Connect AnyLog as a gRPC client to receive data streams from gRPC servers and map them to local database tables.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 gRPC is Google's open-source RPC framework — efficient, language-agnostic, and designed for high-throughput streaming. AnyLog connects as a gRPC **client**, receives data streams from a gRPC server, and maps them to a local database using policies.
 

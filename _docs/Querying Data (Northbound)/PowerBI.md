@@ -1,4 +1,12 @@
-# AnyLog with PowerBI + Microsoft Office Suite 
+---
+title: PowerBI
+description: Generating insight from data using _Microsoft Office_ tools 
+layout: page
+---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 The following provides insight as to how to generate graphs and images using [Microsoft PowerBI](https://powerbi.microsoft.com/en-us/downloads/) with data from AnyLog. 
 The same process can be done with _Excel_ and other Microsoft tools. 

@@ -3,6 +3,10 @@ title: Deployment Scripts
 description: How AnyLog's deployment-scripts repository configures, launches, and customises each node type at startup.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 > This page picks up where [Installing & Deploying](/docs/installing-anylog/) leaves off. It explains what happens *inside* the container after `make up` — how configuration flows from your `.env` file into a running, networked AnyLog node.
 

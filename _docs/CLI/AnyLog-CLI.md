@@ -3,8 +3,10 @@ title: AnyLog CLI
 description: Use and navigate the AnyLog Command Line Interface — help, status checks, running commands on peer nodes, and scripting.
 layout: page
 ---
-
-# AnyLog CLI
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 Each AnyLog node exposes a Command Line Interface (CLI) for direct interaction. The CLI lets you inspect node state, 
 issue commands locally or to peer nodes, run scripts, and manage configuration — all from a text prompt.

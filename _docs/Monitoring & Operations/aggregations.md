@@ -3,6 +3,10 @@ title: Aggregations
 description: Configure rolling time-interval aggregations on streaming data for real-time analytics without batch processing.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 > **AnyLog only.** Aggregation functions are not available in EdgeLake.
 

@@ -3,8 +3,10 @@ title: Installing AnyLog as a Service
 description: Deploy AnyLog directly on bare-metal Linux as a systemd service, without Docker or Kubernetes.
 layout: page
 ---
-
-# Installing AnyLog as a Service
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 By default AnyLog is deployed as a Docker container or via Kubernetes. In some environments — limited disk space, regulatory requirements, network constraints, or hardware without container support — it makes more sense to install AnyLog directly on the host as a systemd service.
 

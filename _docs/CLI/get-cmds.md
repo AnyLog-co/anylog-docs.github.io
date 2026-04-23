@@ -3,8 +3,10 @@ title: Get Commands
 description: Reference for AnyLog's get commands — node status, dictionary, resource monitoring, and help.
 layout: page
 ---
-
-# Get Commands
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 AnyLog's `get` commands provide a unified interface for inspecting every aspect of a running node — its services, data volumes, resource usage, configuration, and connectivity. All `get` commands can be issued locally on the CLI or remotely via `run client`.
 

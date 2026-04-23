@@ -3,6 +3,10 @@ title: Installing & Deploying AnyLog
 description: How to install, configure, and deploy a 3-node AnyLog network using Docker.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 > This guide covers a standard 3-node deployment (master, operator, query) on a single machine. For a conceptual overview of node types, see [Introduction to AnyLog](./getting-started.md).
 

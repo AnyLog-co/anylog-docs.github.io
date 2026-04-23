@@ -3,6 +3,10 @@ title: High Availability (HA)
 description: Configure multiple operator nodes to maintain copies of data so queries survive individual node failures.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 > **AnyLog only.** High Availability is not available in EdgeLake.
 

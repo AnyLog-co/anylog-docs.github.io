@@ -3,8 +3,10 @@ title: Background Services
 description: Enable and monitor the core services that run on each AnyLog node — TCP, REST, operator, broker, Kafka, scheduler, and more.
 layout: page
 ---
-
-# Background Services
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 Background services are optional processes that, when activated, run on dedicated threads according to the node's configuration. Services can be enabled in any of the following ways:
 

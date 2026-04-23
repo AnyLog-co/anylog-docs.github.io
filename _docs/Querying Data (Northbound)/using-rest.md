@@ -3,6 +3,10 @@ title: Using REST
 description: Execute AnyLog commands and publish data over HTTP using GET, PUT, and POST.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 Any AnyLog node with the [REST service enabled](/docs/background-services/#rest-service) can receive commands and data over HTTP. This lets external applications, dashboards, and scripts interact with the network without running AnyLog themselves.
 

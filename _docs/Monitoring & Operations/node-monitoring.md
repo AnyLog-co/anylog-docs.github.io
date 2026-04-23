@@ -3,8 +3,10 @@ title: Monitoring & Alerts
 description: Monitor node health, data volumes, resource usage, and configure automated alerts and scheduled tasks.
 layout: page
 ---
-
-# Monitoring & Alerts
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 AnyLog provides multiple layers of monitoring: real-time inspection via `get` commands, continuous polling via the `continuous` command, scheduler-driven metrics collection, streaming conditions for real-time alerting, and aggregator nodes for network-wide visibility.
 

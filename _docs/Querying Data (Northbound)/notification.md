@@ -1,4 +1,12 @@
-# System Notification 
+---
+title: Notification Services
+description: Utilizing node / data insight to notify users of the state of either data (from sensors) or physical node  
+layout: page
+---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 AnyLog provides services like _REST_, _SMS_ and _STMP_ (eMail) in order allow your network to send notifications regarding 
 the system; this can be things like CPU utilization, data not coming in or simply when ever a partition is being dropped / created.

@@ -3,6 +3,10 @@ title: MCP & AI Integration
 description: Connect Claude and other LLM clients to AnyLog via the Model Context Protocol for live data queries, dashboard generation, and AI-driven edge analytics.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 Every AnyLog query node exposes a **Model Context Protocol (MCP) server** that gives any compatible AI client — Claude Desktop, Claude.ai, Base44 — live access to your network's schema, data, and node topology. No SQL required on your end.
 
