@@ -6,7 +6,8 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-17 | Created document
---> 
+- 2026-04-23 | Added REST/CORS/AnyLog-Agent, POST vs GET, blockchain insert, mapping policy pitfalls, MCP, Docker networking sections
+-->
 
 ---
 
@@ -28,6 +29,49 @@ exit node
 
 **Q: How do I run AnyLog in the background?**  
 Use Docker with `-d` (detached mode), or configure AnyLog as a systemd service. When running in the background, the local CLI is disabled — use the Remote CLI or REST API instead.
+
+---
+
+## REST API
+
+**Q: What is the difference between GET and POST for AnyLog commands?**  
+Both methods execute the same commands. The difference is where the parameters go:
+- **GET** — command and options are passed as HTTP headers (`-H 'command: get status'`)
+- **POST** — the same headers become keys in a JSON body (`{"command": "get status", "AnyLog-Agent": "AnyLog/1.23"}`)
+
+POST is preferred for browser-based clients and any environment where setting custom HTTP headers is restricted.
+
+**Q: Should I use `User-Agent` or `AnyLog-Agent`?**  
+Both are accepted and treated identically by the node. Use `AnyLog-Agent` when calling from a browser. Browsers treat `User-Agent` as a reserved header — `fetch()` cannot set it manually, and cross-origin requests using it can trigger a CORS preflight (`OPTIONS`) that AnyLog nodes are not configured to answer by default. `AnyLog-Agent` is a custom header that sidesteps this entirely.
+
+**Q: My browser dashboard gets a CORS error when posting directly to an AnyLog node.**  
+There are two causes:
+
+1. **Node not returning CORS headers** — the node is not responding with `Access-Control-Allow-Origin: *`. Use the nginx or Flask proxy instead, or launch Chrome with `--disable-web-security` for local dev only.
+
+2. **CORS preflight blocked** — if you see `Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present`, a browser-reserved header triggered an `OPTIONS` preflight. Switch to `AnyLog-Agent` in your POST body and ensure the node whitelists it:
+   ```
+   Access-Control-Allow-Headers: AnyLog-Agent, Content-Type
+   ```
+
+For production, routing through the nginx or Flask proxy eliminates the CORS issue entirely — the browser never sees the cross-origin hop.
+
+**Q: My SQL query via POST returns empty results but node status works.**  
+Missing `"destination": "network"` in the request body. Without it the query runs only on the query node, which holds no operator data:
+```json
+// ❌ Wrong — query node only
+{"AnyLog-Agent": "AnyLog/1.23", "command": "sql mydb format=json:list and stat=false SELECT ..."}
+
+// ✅ Correct — distributed to operator nodes
+{"AnyLog-Agent": "AnyLog/1.23", "command": "sql mydb format=json:list and stat=false SELECT ...", "destination": "network"}
+```
+
+**Q: What is the correct format for PUT vs POST data publishing?**
+
+- **PUT** — bypasses topic mapping. Database and table are specified directly in the HTTP headers. No `run msg client` required.
+- **POST** — requires a `run msg client` with `broker=rest` active on the node, plus a topic mapping. The POST body is the raw data; `command: data` and `topic: [name]` are set as headers (or body keys).
+
+See [Using REST](/docs/network-services/using-rest) for full examples and Python code.
 
 ---
 
@@ -99,6 +143,61 @@ get operator inserts
 get operator summary
 ```
 
+**Q: My `run msg client` with `broker=rest` is configured but POST data isn't being ingested.**  
+Check these in order:
+
+1. Confirm the msg client is running: `get msg clients`
+2. Confirm the `topic` name in the POST request matches exactly the `name` in `run msg client`
+3. Confirm `command: data` is set (as a header for server-side POST, or as a body key for browser POST)
+4. Confirm the Streamer is running: `get processes`
+5. Check for mapping errors: `get error log`
+
+**Q: What is the difference between inline column mapping and a mapping policy?**  
+- **Inline mapping** — column definitions are written directly into the `run msg client` command. Simple, no blockchain dependency, but not reusable across nodes.
+- **Mapping policy** — stored on the blockchain, referenced by ID. Required when using the Operator's `policy` parameter, or when the same mapping needs to be shared across nodes.
+
+Publish a mapping policy with:
+```anylog
+blockchain insert where policy = !mapping_policy and local = true and master = !master_node
+```
+
+---
+
+## Mapping policy pitfalls
+
+**Q: My mapping policy JSON is rejected — what are the most common errors?**
+
+Three issues come up repeatedly:
+
+1. **`Null` instead of `null`** — JSON is case-sensitive. The only valid null literal is lowercase:
+   ```json
+   "default": null   ✅
+   "default": Null   ❌
+   ```
+
+2. **Trailing comma on the last key in an object** — JSON does not allow this:
+   ```json
+   {"type": "bool", "root": true,}   ❌
+   {"type": "bool", "root": true}    ✅
+   ```
+
+3. **Double-opening quote on a string** — easy to miss in copy-paste:
+   ```json
+   "bring": ["success", ""tagName", "value"]   ❌
+   "bring": ["success", "tagName", "value"]    ✅
+   ```
+
+**Q: My mapping policy is published but the Operator isn't using it.**  
+Confirm the policy ID referenced in `run operator` or `run msg client` matches what was actually stored:
+```anylog
+blockchain get mapping where name = [name] bring [id]
+```
+Also confirm the blockchain sync has propagated the new policy to the Operator node:
+```anylog
+run blockchain sync
+get metadata version
+```
+
 ---
 
 ## Queries
@@ -110,6 +209,7 @@ get operator summary
 3. Use `run client (blockchain get operator bring.ip_port) get status` to confirm Operators are reachable
 4. Check that the `dbms` and `table` names in the query match exactly what is in the database
 5. Verify the time filter — `NOW() - N hours` not PostgreSQL `INTERVAL` syntax
+6. For POST-based queries, confirm `"destination": "network"` is in the request body
 
 **Q: Can I query data from a specific node only?**  
 ```anylog
@@ -146,6 +246,15 @@ docker pull anylogco/anylog-network:latest
 docker stop [container-name]
 docker rm [container-name]
 docker run ... anylogco/anylog-network:latest
+```
+
+**Q: nginx (or another Docker service) can't reach an AnyLog node running on the same Windows machine.**  
+Docker containers on Windows cannot reach the host via `localhost`. Use `host.docker.internal` instead, and add the host alias to your `docker-compose.yaml`:
+```yaml
+extra_hosts:
+  - "host.docker.internal:host-gateway"
+environment:
+  - ANYLOG_NODE_URL=http://host.docker.internal:PORT/
 ```
 
 ---
@@ -191,3 +300,38 @@ get metadata version     # confirm the version updated
 ```anylog
 blockchain get [policy-type] where name = [name] bring [id]
 ```
+
+**Q: What is the correct command to publish a policy to the blockchain?**  
+Use `blockchain insert` — the older `blockchain push` command is deprecated:
+```anylog
+blockchain insert where policy = !new_policy and local = true and master = !ledger_conn
+```
+The `master` parameter is optional — include it to also publish to a master ledger node. `local = true` writes the policy to the local blockchain file immediately.
+
+---
+
+## MCP & AI integration
+
+**Q: Claude Desktop shows the AnyLog MCP tools but all tool calls fail.**  
+The MCP endpoint URL is missing the `/mcp/sse` suffix. The bare node URL (`http://HOST:PORT`) appears to connect but all tool calls fail silently. The correct URL is:
+```
+http://HOST:PORT/mcp/sse
+```
+
+**Q: MCP tools are not visible in Claude Desktop after editing the config.**  
+Quit and fully reopen Claude Desktop — it does not hot-reload the config file. Also verify the config is valid JSON (no trailing commas) and the `mcp-proxy` path is correct:
+```bash
+which mcp-proxy       # macOS / Linux
+mcp-proxy --version   # confirm it's installed
+```
+
+**Q: Do I need MCP running at all times to use a generated dashboard?**  
+No. Dashboards generated via Example 1 (the recommended approach) run entirely over plain REST at runtime — MCP is only used once at generation time to discover the schema and topology. Only the experimental MCP-backed live dashboard (Example 3) requires MCP at runtime, and that has real cost and latency implications.
+
+**Q: My generated dashboard works from curl but fails in the browser with a CORS error.**  
+The dashboard is making direct browser-to-node POST calls and the node is not returning CORS headers. Options:
+1. Run the nginx proxy (`proxy-nginx/`) and set Mode → nginx in the dashboard config bar
+2. Run the Flask proxy (`proxy-generic/`) and set Mode → proxy
+3. Use `AnyLog-Agent` as a body key and configure the node to return the required CORS headers
+
+See [MCP & AI Integration](/docs/mcp-ai-integration#browser-connection-modes) for setup details.
