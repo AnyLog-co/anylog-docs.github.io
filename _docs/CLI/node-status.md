@@ -12,13 +12,13 @@ A key component of AnyLog is the having nodes able to communicate between one an
 metadata. As such, validating the state of the node - both in terms of running services and network connectivity is 
 crucial. 
 
-> Parts of this document are a repeat for [AnyLog CLI](/docs/AnyLog-CLI)
+> Parts of this document are a repeat for [AnyLog CLI](./AnyLog-CLI.md)
 
 ## Validating Services 
 
 ### get processes
 
-Lists all background services, their status, and key configuration details. See [Background Services](../Network-Services/background-services/).
+Lists all background services, their status, and key configuration details. See [Background Services](../Network%20%26%20Services/background-services.md).
 
 ```anylog
 get processes
