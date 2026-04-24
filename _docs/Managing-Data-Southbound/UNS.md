@@ -42,7 +42,7 @@ The UNS structure can follow a rigid standard like <a href="https://www.isa.org/
 or a more flexible project-defined hierarchy. Because AnyLog treats the UNS as a type of metadata, both approaches can 
 coexist — a dynamically generated namespace can be extended or paralleled with additional user-defined context.
 
-For a working example of hand-authored UNS policies (ex. ISA-95 metadata) see  , see [Custom UNS (data stream, ISA-95)](UNS_custom/).
+For a working example of hand-authored UNS policies (ex. ISA-95 metadata) see  , see [Custom UNS (data stream, ISA-95)](UNS-custom.md).
 
 ---
 
@@ -176,7 +176,7 @@ The **`#`** multi-level wildcard subscribes to every topic under `M2/PL1/` (for 
 | Policy mapping | Full JSON | Yes (policy) | No |
 | `dynamic=true` | Scalar value | No | Yes (auto) |
 
-> For mapping-based ingestion, see [Mapping Policies](mapping-policies/).
+> For mapping-based ingestion, see [Mapping Policies](mapping-policies.md).
 
 ---
 

@@ -6,10 +6,9 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-17 | Created document
-- 2026-04-24 | Added macOS Docker port binding fix for remote-gui
 --> 
 
-> This guide covers a standard 3-node deployment (master, operator, query) on a single machine. For a conceptual overview of node types, see [Introduction to AnyLog](./getting-started/).
+> This guide covers a standard 3-node deployment (master, operator, query) on a single machine. For a conceptual overview of node types, see [Introduction to AnyLog](./getting-started.md).
 
 ## Prerequisites
 
@@ -138,8 +137,6 @@ node_configs.env
 └── remote-gui  — Companion UI settings
 ```
 
-> **macOS users — `remote-gui` networking:** In the `remote-gui` section, `VITE_API_URL` must use your machine's **LAN IP** (e.g. `http://192.168.x.x:8080`), not `127.0.0.1`. Docker Desktop on Mac only forwards ports to loopback by default, so the browser cannot reach the backend via `127.0.0.1` when connecting from another device or across the LAN. See [macOS Docker port binding](#macos-docker-port-binding) in Troubleshooting.
-
 New users only need to edit **basic** and **secrets**. The other sections are safe to leave at their defaults.
 
 ### Key settings to validate per node
@@ -166,7 +163,7 @@ LEDGER_CONN=127.0.0.1:32048  # Master node IP:port — set this on ALL nodes
 - **Operator node:** `DEFAULT_DBMS` (logical database name) and `DB_TYPE` (physical database type) are set. If using PostgreSQL, also validate `DB_USER`, `DB_PASSWD`, and the DB host/port
 - **Operator node (optional):** If receiving data via MQTT, enable the MQTT service and confirm `MSG_DBMS` matches `DEFAULT_DBMS`
 
-Full configuration reference: [docker-compose/configs.md](https://github.com/AnyLog-co/docker-compose/blob/os-dev/configs/)
+Full configuration reference: [docker-compose/configs.md](https://github.com/AnyLog-co/docker-compose/blob/os-dev/configs.md)
 
 ---
 
@@ -268,7 +265,7 @@ To target a specific remote node, use `-H "destination: [IP:port]"`. To route a 
 | `test node` | Validates network connectivity for this node |
 | `test network` | Validates communication with other nodes |
 
-Full reference: [AnyLog commands documentation](https://github.com/AnyLog-co/documentation/blob/master/anylog%20commands/)
+Full reference: [AnyLog commands documentation](https://github.com/AnyLog-co/documentation/blob/master/anylog%20commands.md)
 
 ---
 
@@ -471,7 +468,6 @@ reset query log
 | `make login` fails | Known bug | Skip it — use `docker login` directly |
 | `test network` shows blank Status | Nodes not communicating | Check `LEDGER_CONN` in all 3 `node_configs.env` files points to master IP:port |
 | `curl` returns chunked-encoding error | Missing newline / line breaks in command | Add `-w "\n"` and ensure the entire command is on one line |
-| Remote GUI unreachable via LAN IP on macOS | Docker Desktop only binds to loopback by default | Add `"ip": "0.0.0.0"` to `~/.docker/daemon.json`, restart Docker, and use your LAN IP in `VITE_API_URL`. See [macOS Docker port binding](#macos-docker-port-binding) |
 | Node shows error on screen | Various | Run `get error log` for the full message |
 
 ### Node communication failures
@@ -488,49 +484,6 @@ To resolve:
 - **Different DNS networks:** Validate that AnyLog's ports are open and accessible externally — check both the machine-level firewall and any router/modem port-forwarding configuration
 
 Reset the error log once resolved: `reset error log`
-
-### macOS Docker port binding
-
-On macOS, Docker Desktop runs containers inside a Linux VM. By default it only forwards ports to the loopback interface (`127.0.0.1`), so `curl 127.0.0.1:<port>` works but `curl <LAN-IP>:<port>` fails — and the remote-gui frontend cannot reach the backend from the browser.
-
-**Symptoms:**
-- `curl 127.0.0.1:8080` ✅ works
-- `curl 192.168.x.x:8080` ❌ `Failed to connect`
-- Remote GUI loads at `localhost:31800` but cannot contact the backend
-
-**Fix — two steps required, both are needed:**
-
-**1. Update `~/.docker/daemon.json`** to bind on all interfaces:
-
-```json
-{
-  "builder": {
-    "gc": {
-      "defaultKeepStorage": "20GB",
-      "enabled": true
-    }
-  },
-  "experimental": false,
-  "ip": "0.0.0.0"
-}
-```
-
-**2. Restart Docker Desktop** to apply the change:
-
-```bash
-killall Docker && open /Applications/Docker.app
-```
-
-**3. Use your LAN IP** (not `127.0.0.1`) in `VITE_API_URL` and anywhere else you reference the node externally:
-
-```yaml
-environment:
-  - VITE_API_URL=http://192.168.x.x:8080   # your Mac's actual LAN IP
-```
-
-Find your LAN IP with: `ipconfig getifaddr en0`
-
-> **Note:** This is a macOS-only requirement. Linux and Windows Docker deployments bind to all interfaces by default and do not need this change.
 
 ### Blockchain validation commands
 

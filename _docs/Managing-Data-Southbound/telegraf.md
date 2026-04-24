@@ -17,7 +17,7 @@ system logs, hardware sensors, applications — to a storage or analytics layer.
 
 This page covers how to configure Telegraf to publish metrics into AnyLog over MQTT. A REST alternative is included 
 in the config but commented out. For details on how AnyLog interprets and stores the incoming data, see 
-[Mapping Policies](mapping-policies/).
+[Mapping Policies](mapping-policies.md).
 
 ---
 

@@ -6,7 +6,6 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-17 | Created document
-- 2026-04-24 | Added Remote Console SSH plugin section; added macOS Docker networking note
 --> 
 
 > **Audience:** This page covers the internal architecture of the Remote GUI and is primarily intended for developers extending or contributing to it. For end-user usage, refer to the GUI itself.
@@ -127,8 +126,6 @@ docker build -f Dockerfile . -t anylogco/remote-gui:latest
 docker compose -f docker-compose.yaml up -d
 ```
 
-> **macOS users:** Docker Desktop on Mac only binds forwarded ports to `127.0.0.1` by default. If the frontend cannot reach the backend via your LAN IP, see [macOS Docker port binding](#macos-docker-port-binding) below.
-
 ---
 
 ## Plugin system
@@ -171,89 +168,6 @@ export default function MyPluginPage() {
 **API calls in frontend:** Use `window._env_?.VITE_API_URL` (or generated `*_api.js` wrappers) with paths under your router prefix.
 
 After changes: restart the backend; rebuild the frontend if running a production build (dev server hot-reloads automatically).
-
----
-
-## Remote Console plugin (SSH)
-
-The Remote Console is a built-in plugin that provides live SSH terminal sessions directly in the browser. It is the primary way to interact with AnyLog nodes or their host machines without leaving the GUI.
-
-### What it provides
-
-- **Live SSH terminal** rendered via [xterm.js](https://xtermjs.org/) over a WebSocket connection to the backend
-- **Multi-session support** — multiple SSH connections can be open simultaneously, each with its own terminal
-- **Encrypted credential vault** — passwords and SSH key files are stored locally using AES encryption (Dexie + dexie-encrypted, unlocked with a master password)
-- **Temporary connections** — ad-hoc connections can be added for the current session without persisting to the vault
-
-### How it connects
-
-The frontend opens a WebSocket to `ws://<VITE_API_URL>/sshclient/ws`. On connect it sends a JSON payload:
-
-```json
-{
-  "action": "direct_ssh",
-  "host": "your-server.com",
-  "user": "ubuntu",
-  "conn_method": {
-    "method": "key-string",
-    "data": "-----BEGIN OPENSSH PRIVATE KEY-----\n..."
-  }
-}
-```
-
-Supported `action` values: `direct_ssh`, `docker_attach`, `docker_exec`.  
-Supported `conn_method.method` values: `password`, `key-string`, `keyfile`.
-
-The backend (FastAPI + Paramiko) authenticates, opens an SSH channel, and streams output back to the terminal in real time. User keystrokes are forwarded from xterm.js → WebSocket → SSH channel.
-
-### Credential vault
-
-The vault is a browser-local encrypted database (Dexie.js + dexie-encrypted). The encryption key is derived from a master password via PBKDF2 (1,000,000 iterations, SHA-256). Credentials are only decrypted into memory after the user unlocks the vault — they are never stored in plaintext. The vault can be accessed from the **Manage Credentials** button in the GUI header.
-
-### Backend plugin files
-
-| Path | Purpose |
-|---|---|
-| `CLI/local-cli-backend/plugins/sshclient/sshclient_router.py` | FastAPI router, exports `api_router` |
-| `CLI/local-cli-fe-full/src/plugins/cli/` | React plugin — `CliPage.js`, `TerminalView.js`, vault components |
-
----
-
-## macOS Docker port binding
-
-When running via Docker on macOS, the frontend may fail to reach the backend via a LAN IP even though `curl 127.0.0.1:8080` works. This affects both the main GUI and the SSH terminal WebSocket.
-
-**Root cause:** Docker Desktop on Mac runs inside a Linux VM and only forwards ports to the loopback interface by default. `VITE_API_URL` is resolved by the **user's browser**, not the container — so the browser needs a reachable address.
-
-**Fix — both steps are required:**
-
-1\. Add `"ip": "0.0.0.0"` to `~/.docker/daemon.json`:
-
-```json
-{
-  "builder": {
-    "gc": {
-      "defaultKeepStorage": "20GB",
-      "enabled": true
-    }
-  },
-  "experimental": false,
-  "ip": "0.0.0.0"
-}
-```
-
-2\. Restart Docker Desktop, then use your Mac's LAN IP (not `127.0.0.1`) in `VITE_API_URL`:
-
-```bash
-killall Docker && open /Applications/Docker.app
-```
-
-```yaml
-environment:
-  - VITE_API_URL=http://192.168.x.x:8080   # find with: ipconfig getifaddr en0
-```
-
-> This is macOS-only. Linux and Windows Docker bind to all interfaces by default.
 
 ---
 

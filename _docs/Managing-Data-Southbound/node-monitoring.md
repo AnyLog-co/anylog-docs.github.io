@@ -10,7 +10,7 @@ layout: page
 
 Each AnyLog node can collect its own health metrics and distribute them in one or both of two ways:
 
-- **Live view** — push metrics to a Query Node and visualise them in the [Remote GUI](../Tools%20%26%20UI/remote-gui/) without storing any data
+- **Live view** — push metrics to a Query Node and visualise them in the [Remote GUI](../Tools%20%26%20UI/remote-gui.md) without storing any data
 - **Persistent storage** — stream metrics into an Operator's database for historical queries and dashboards
 
 The monitoring schedule is deployed as a blockchain policy and activated automatically when `NODE_MONITORING=true` is set in the node configuration.
@@ -54,7 +54,7 @@ The resulting `node_insight` object:
 
 ## Option 1 — Live view via Remote GUI
 
-Each node pushes its `node_insight` to the Query Node, which aggregates status from all participating nodes into a single view. The [Remote GUI](../Tools%20%26%20UI/remote-gui/) reads from the Query Node to display a live network-wide dashboard — no database required.
+Each node pushes its `node_insight` to the Query Node, which aggregates status from all participating nodes into a single view. The [Remote GUI](../Tools%20%26%20UI/remote-gui.md) reads from the Query Node to display a live network-wide dashboard — no database required.
 
 ```
 Node A  ──┐

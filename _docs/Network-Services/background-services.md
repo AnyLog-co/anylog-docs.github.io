@@ -197,7 +197,7 @@ set mcp client config where external_ip = [ip] and external_port = [port] and in
 
 ### Message broker service (local)
 
-Configures the AnyLog node itself as an MQTT broker, allowing third-party clients and devices to publish data directly to it. See [Using EdgeX](../Managing-Data-Southbound/edgex/) for an example integration.
+Configures the AnyLog node itself as an MQTT broker, allowing third-party clients and devices to publish data directly to it. See [Using EdgeX](../Managing%20Data%20(Southbound)/edgex.md) for an example integration.
 
 ```anylog
 <run message broker where
@@ -260,7 +260,7 @@ Example:
 run operator where create_table = true and update_tsd_info = true and archive_json = true and distributor = true and master_node = !master_node and policy = !operator_policy and threads = 3
 ```
 
-> See [File Naming Convention](../Managing-Data-Southbound/managing-data-files.md#file-naming-convention) · [Mapping Data to Tables](../Managing-Data-Southbound/mapping-data/) · [Setting Streaming Thresholds](../Managing-Data-Southbound/data-ingestion.md#streaming-thresholds)
+> See [File Naming Convention](../Managing%20Data%20(Southbound)/managing-data-files.md#file-naming-convention) · [Mapping Data to Tables](../Managing%20Data%20(Southbound)/mapping-data.md) · [Setting Streaming Thresholds](../Managing%20Data%20(Southbound)/data-ingestion.md#streaming-thresholds)
 
 Monitor the Operator:
 ```anylog
@@ -382,7 +382,7 @@ run blockchain sync where source = master and time = 30 seconds and dest = file 
 run blockchain sync where source = blockchain and time = !sync_time and dest = file and platform = optimism
 ```
 
-> See [Master Node](../Network-Services/master-node/) for master node configuration.
+> See [Master Node](../Network%20%26%20Services/master-node.md) for master node configuration.
 
 Force an immediate sync (without waiting for the next scheduled interval):
 ```anylog
@@ -428,7 +428,7 @@ Validates connectivity to every node published on the metadata layer. For each n
 test network
 ```
 
-> See [Test Commands](../Network-Services/test-commands.md#test-network) for full usage and output details.
+> See [Test Commands](../Network%20%26%20Services/test-commands.md#test-network) for full usage and output details.
 
 ---
 
@@ -436,7 +436,7 @@ test network
 
 ### Message client (subscribe to external broker)
 
-Subscribes to a third-party MQTT or REST broker and maps incoming messages to database tables. See [Data Ingestion](../Managing-Data-Southbound/data-ingestion/) for full parameter reference and mapping examples.
+Subscribes to a third-party MQTT or REST broker and maps incoming messages to database tables. See [Data Ingestion](../Managing%20Data%20(Southbound)/data-ingestion.md) for full parameter reference and mapping examples.
 
 ```anylog
 <run msg client where
@@ -464,7 +464,7 @@ get msg client where broker = driver.cloudmqtt.com:18785 and topic = mydata
 The UNS (Unified Namespace) Streamer is automatically activated — no explicit `run` command is required — when data arrives through a dynamic southbound connector:
 
 - **MQTT msg client** configured in dynamic mode (topic and schema determined at runtime)
-- **PLC client** receiving data via [OPC-UA or EtherNet/IP](../Managing-Data-Southbound/opcua/)
+- **PLC client** receiving data via [OPC-UA or EtherNet/IP](../Managing%20Data%20(Southbound)/opcua.md)
 
 When active, the UNS Streamer normalises incoming data into a unified namespace structure before routing it to the appropriate database table.
 
@@ -536,13 +536,13 @@ get grpc client
 
 ### PLC client
 
-Connects to industrial PLCs and controllers via OPC-UA or EtherNet/IP and streams data into the AnyLog network. See [OPC-UA & PLC Integration](../Managing-Data-Southbound/opcua/) for full configuration and examples.
+Connects to industrial PLCs and controllers via OPC-UA or EtherNet/IP and streams data into the AnyLog network. See [OPC-UA & PLC Integration](../Managing%20Data%20(Southbound)/opcua.md) for full configuration and examples.
 
 ---
 
 ### Video processes
 
-Manages ingestion and archival of video streams and image data. See [Video Streaming](../Managing-Data-Southbound/video-streaming/) for full configuration and examples.
+Manages ingestion and archival of video streams and image data. See [Video Streaming](../Managing%20Data%20(Southbound)/video-streaming.md) for full configuration and examples.
 
 ---
 
@@ -554,7 +554,7 @@ Users can define one or more schedulers, each running a set of tasks at a config
 run scheduler [id]
 ```
 
-Tasks can include AnyLog queries, script files, monitoring checks, or [alerts and monitoring](../Monitoring/alerts-and-monitoring/) rules.
+Tasks can include AnyLog queries, script files, monitoring checks, or [alerts and monitoring](../Monitoring/alerts-and-monitoring.md) rules.
 
 Monitor:
 ```anylog
@@ -566,7 +566,7 @@ get scheduler 1
 
 ## SMTP client
 
-Enables email and SMS notifications triggered by the scheduler or rule engine. See [Alerts and Monitoring](../Monitoring/alerts-and-monitoring/) for how to configure notification rules.
+Enables email and SMS notifications triggered by the scheduler or rule engine. See [Alerts and Monitoring](../Monitoring/alerts-and-monitoring.md) for how to configure notification rules.
 
 ```anylog
 <run smtp client where
@@ -602,7 +602,7 @@ run streamer where prep_dir = [path] and watch_dir = [path] and err_dir = [path]
 
 If directories are not specified, the default paths from the AnyLog dictionary are used (`get dictionary` to view them).
 
-> See [Setting and Retrieving Streaming Thresholds](../Managing-Data-Southbound/data-ingestion.md#streaming-thresholds) for threshold configuration.
+> See [Setting and Retrieving Streaming Thresholds](../Managing%20Data%20(Southbound)/data-ingestion.md#streaming-thresholds) for threshold configuration.
 
 Monitor streaming buffer status:
 ```anylog

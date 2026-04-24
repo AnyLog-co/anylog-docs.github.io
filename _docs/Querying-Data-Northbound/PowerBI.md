@@ -81,7 +81,7 @@ This will show the different JSON keys that’ll be converted to table columns
 The following shows 3 diagrams, each is assigned to its own query
    * The table shows number of rows per table in the database
    * The bar graph shows _MIN_, _MAX_, _AVG_ and _Row Count_ difference between 2021 and 2022. 
-   * The line graph uses [increments function](/docs/querying-data/queries/#the-increment-function) to _MIN_, _MAX_ and _AVG_ over time 
+   * The line graph uses [increments function](../queries.md#the-increment-function) to _MIN_, _MAX_ and _AVG_ over time 
 
 
 ## Using Excel and other Microsft Office tools to view data
