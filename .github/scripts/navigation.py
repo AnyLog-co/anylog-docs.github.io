@@ -12,6 +12,7 @@ ITEM_ORDER = {
         "get-cmds",
     ],
     "Network & Services": [
+        "node-architecture.md",
         "background-services",
         "network-configurations",
         "using-rest",

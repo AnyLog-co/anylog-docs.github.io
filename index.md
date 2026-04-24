@@ -9,7 +9,7 @@ title: AnyLog Documentation
 </div>
 
 <div class="home-diagram" align="center">
-    <img src="{{ '/assets/img/anylog_block_architecture.svg' | relative_url }}" alt="AnyLog architecture diagram" height="30%" width="30%">
+    <img src="{{ '/assets/img/anylog_network_fabric_animated.svg' | relative_url }}" alt="AnyLog network architecture diagram" height="30%" width="30%">
 </div>
 
 <div class="home-cards" align="center">

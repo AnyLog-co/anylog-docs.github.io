@@ -27,168 +27,171 @@ exclude:
 - README.md
 - vendor
 nav:
-- title: CLI
+- title: Getting Started
   items:
-  - slug: AnyLog-CLI
-    title: AnyLog CLI
-    file: CLI/AnyLog-CLI.md
-  - slug: node-status
-    title: Node Status
-    file: CLI/node-status.md
-  - slug: get-cmds
-    title: Get Commands
-    file: CLI/get-cmds.md
-- title: Reference
-  items:
-  - slug: FAQ
-    title: FAQ & Troubleshooting
-    file: Reference/FAQ.md
-- title: Getting-Started
-  items:
-  - slug: anylog-as-service
-    title: Installing AnyLog as a Service
-    file: Getting-Started/anylog-as-service.md
-  - slug: deployment-scripts
-    title: Deployment Scripts
-    file: Getting-Started/deployment-scripts.md
-  - slug: getting-started
+  - slug: Getting-Started/getting-started
     title: Introduction to AnyLog
     file: Getting-Started/getting-started.md
-  - slug: install-ova
-    title: Installing AnyLog via OVA
-    file: Getting-Started/install-ova.md
-  - slug: installing-anylog
+  - slug: Getting-Started/installing-anylog
     title: Installing & Deploying AnyLog
     file: Getting-Started/installing-anylog.md
-- title: Managing-Data-Southbound
+  - slug: Getting-Started/install-ova
+    title: Installing AnyLog via OVA
+    file: Getting-Started/install-ova.md
+  - slug: Getting-Started/anylog-as-service
+    title: Installing AnyLog as a Service
+    file: Getting-Started/anylog-as-service.md
+  - slug: Getting-Started/deployment-scripts
+    title: Deployment Scripts
+    file: Getting-Started/deployment-scripts.md
+- title: CLI
   items:
-  - slug: data-ingestion
-    title: Data Ingestion
-    file: Managing-Data-Southbound/data-ingestion.md
-  - slug: edgex
-    title: EdgeX Integration
-    file: Managing-Data-Southbound/edgex.md
-  - slug: etherip
-    title: EtherNet/IP
-    file: Managing-Data-Southbound/etherip.md
-  - slug: grpc
-    title: gRPC
-    file: Managing-Data-Southbound/grpc.md
-  - slug: live-data-generator
-    title: Live Data Generator
-    file: Managing-Data-Southbound/live-data-generator.md
-  - slug: mapping-policies
-    title: Mapping Policies
-    file: Managing-Data-Southbound/mapping-policies.md
-  - slug: node-monitoring
-    title: Node Monitoring
-    file: Managing-Data-Southbound/node-monitoring.md
-  - slug: node-red
-    title: Node-RED
-    file: Managing-Data-Southbound/node-red.md
-  - slug: opcua
-    title: OPC-UA
-    file: Managing-Data-Southbound/opcua.md
-  - slug: southbound-overview
-    title: Data Ingestion (Southbound)
-    file: Managing-Data-Southbound/southbound-overview.md
-  - slug: syslog
-    title: Syslog
-    file: Managing-Data-Southbound/syslog.md
-  - slug: telegraf
-    title: Telegraf
-    file: Managing-Data-Southbound/telegraf.md
-  - slug: UNS-custom
-    title: Custom UNS (data stream, ISA-95)
-    file: Managing-Data-Southbound/UNS-custom.md
-  - slug: UNS
-    title: Unified Namespace
-    file: Managing-Data-Southbound/UNS.md
-  - slug: using-kafka
-    title: Kafka
-    file: Managing-Data-Southbound/using-kafka.md
-  - slug: video-streaming
-    title: Video Streaming
-    file: Managing-Data-Southbound/video-streaming.md
-- title: Monitoring-Operations
+  - slug: CLI/AnyLog-CLI
+    title: AnyLog CLI
+    file: CLI/AnyLog-CLI.md
+  - slug: CLI/node-status
+    title: Node Status
+    file: CLI/node-status.md
+  - slug: CLI/get-cmds
+    title: Get Commands
+    file: CLI/get-cmds.md
+- title: Network & Services
   items:
-  - slug: aggregations
-    title: Aggregations
-    file: Monitoring-Operations/aggregations.md
-  - slug: high-availability
-    title: High Availability (HA)
-    file: Monitoring-Operations/high-availability.md
-  - slug: node-monitoring
-    title: Monitoring & Alerts
-    file: Monitoring-Operations/node-monitoring.md
-- title: Network-Services
-  items:
-  - slug: background-services
+  - slug: Network-Services/background-services
     title: Background Services
     file: Network-Services/background-services.md
-  - slug: blockchain
-    title: Blockchain & Metadata
-    file: Network-Services/blockchain.md
-  - slug: messaging-services
-    title: Messaging Service
-    file: Network-Services/messaging-services.md
-  - slug: network-configurations
+  - slug: Network-Services/network-configurations
     title: Network Configuration
     file: Network-Services/network-configurations.md
-  - slug: policies-metadata
-    title: Policies & Metadata
-    file: Network-Services/policies-metadata.md
-  - slug: using-rest
+  - slug: Network-Services/using-rest
     title: Using REST
     file: Network-Services/using-rest.md
-- title: Querying-Data-Northbound
+  - slug: Network-Services/messaging-services
+    title: Messaging Service
+    file: Network-Services/messaging-services.md
+  - slug: Network-Services/blockchain
+    title: Blockchain & Metadata
+    file: Network-Services/blockchain.md
+  - slug: Network-Services/policies-metadata
+    title: Policies & Metadata
+    file: Network-Services/policies-metadata.md
+  - slug: Network-Services/node-architecture
+    title: Node Architecture
+    file: Network-Services/node-architecture.md
+- title: Managing Data (Southbound)
   items:
-  - slug: Google
-    title: Google Drive
-    file: Querying-Data-Northbound/Google.md
-  - slug: grafana
-    title: Grafana
-    file: Querying-Data-Northbound/grafana.md
-  - slug: import-grafana-dashboard
-    title: Grafana Dashboards
-    file: Querying-Data-Northbound/import-grafana-dashboard.md
-  - slug: northbound-overview
+  - slug: Managing-Data-Southbound/southbound-overview
+    title: Data Ingestion (Southbound)
+    file: Managing-Data-Southbound/southbound-overview.md
+  - slug: Managing-Data-Southbound/data-ingestion
+    title: Data Ingestion
+    file: Managing-Data-Southbound/data-ingestion.md
+  - slug: Managing-Data-Southbound/mapping-policies
+    title: Mapping Policies
+    file: Managing-Data-Southbound/mapping-policies.md
+  - slug: Managing-Data-Southbound/UNS
+    title: Unified Namespace
+    file: Managing-Data-Southbound/UNS.md
+  - slug: Managing-Data-Southbound/UNS-custom
+    title: Custom UNS (data stream, ISA-95)
+    file: Managing-Data-Southbound/UNS-custom.md
+  - slug: Managing-Data-Southbound/opcua
+    title: OPC-UA
+    file: Managing-Data-Southbound/opcua.md
+  - slug: Managing-Data-Southbound/using-kafka
+    title: Kafka
+    file: Managing-Data-Southbound/using-kafka.md
+  - slug: Managing-Data-Southbound/telegraf
+    title: Telegraf
+    file: Managing-Data-Southbound/telegraf.md
+  - slug: Managing-Data-Southbound/etherip
+    title: EtherNet/IP
+    file: Managing-Data-Southbound/etherip.md
+  - slug: Managing-Data-Southbound/grpc
+    title: gRPC
+    file: Managing-Data-Southbound/grpc.md
+  - slug: Managing-Data-Southbound/node-red
+    title: Node-RED
+    file: Managing-Data-Southbound/node-red.md
+  - slug: Managing-Data-Southbound/node-monitoring
+    title: Node Monitoring
+    file: Managing-Data-Southbound/node-monitoring.md
+  - slug: Managing-Data-Southbound/syslog
+    title: Syslog
+    file: Managing-Data-Southbound/syslog.md
+  - slug: Managing-Data-Southbound/video-streaming
+    title: Video Streaming
+    file: Managing-Data-Southbound/video-streaming.md
+  - slug: Managing-Data-Southbound/live-data-generator
+    title: Live Data Generator
+    file: Managing-Data-Southbound/live-data-generator.md
+  - slug: Managing-Data-Southbound/edgex
+    title: EdgeX Integration
+    file: Managing-Data-Southbound/edgex.md
+- title: Querying Data (Northbound)
+  items:
+  - slug: Querying-Data-Northbound/northbound-overview
     title: Northbound Connectors
     file: Querying-Data-Northbound/northbound-overview.md
-  - slug: notification
-    title: Notification Services
-    file: Querying-Data-Northbound/notification.md
-  - slug: postgres-connector
-    title: PostgresSQL Connector
-    file: Querying-Data-Northbound/postgres-connector.md
-  - slug: PowerBI
-    title: PowerBI
-    file: Querying-Data-Northbound/PowerBI.md
-  - slug: Qlik
-    title: Qlik
-    file: Querying-Data-Northbound/Qlik.md
-  - slug: queries
+  - slug: Querying-Data-Northbound/queries
     title: Querying Data (Northbound)
     file: Querying-Data-Northbound/queries.md
-  - slug: sql-setup
+  - slug: Querying-Data-Northbound/sql-setup
     title: SQL & Database Setup
     file: Querying-Data-Northbound/sql-setup.md
-- title: Tools-UI
+  - slug: Querying-Data-Northbound/grafana
+    title: Grafana
+    file: Querying-Data-Northbound/grafana.md
+  - slug: Querying-Data-Northbound/import-grafana-dashboard
+    title: Grafana Dashboards
+    file: Querying-Data-Northbound/import-grafana-dashboard.md
+  - slug: Querying-Data-Northbound/PowerBI
+    title: PowerBI
+    file: Querying-Data-Northbound/PowerBI.md
+  - slug: Querying-Data-Northbound/Qlik
+    title: Qlik
+    file: Querying-Data-Northbound/Qlik.md
+  - slug: Querying-Data-Northbound/Google
+    title: Google Drive
+    file: Querying-Data-Northbound/Google.md
+  - slug: Querying-Data-Northbound/postgres-connector
+    title: PostgresSQL Connector
+    file: Querying-Data-Northbound/postgres-connector.md
+  - slug: Querying-Data-Northbound/notification
+    title: Notification Services
+    file: Querying-Data-Northbound/notification.md
+- title: Monitoring & Operations
   items:
-  - slug: mcp
+  - slug: Monitoring-Operations/node-monitoring
+    title: Monitoring & Alerts
+    file: Monitoring-Operations/node-monitoring.md
+  - slug: Monitoring-Operations/aggregations
+    title: Aggregations
+    file: Monitoring-Operations/aggregations.md
+  - slug: Monitoring-Operations/high-availability
+    title: High Availability (HA)
+    file: Monitoring-Operations/high-availability.md
+- title: Tools & UI
+  items:
+  - slug: Tools-UI/mcp
     title: MCP & AI Integration
     file: Tools-UI/mcp.md
-  - slug: remote-gui
+  - slug: Tools-UI/remote-gui
     title: Remote GUI
     file: Tools-UI/remote-gui.md
-- title: Version-Control
+- title: Version Control
   items:
-  - slug: DEPLOYMENT_SCRIPTS-CHANGELOGS
+  - slug: Version-Control/DEPLOYMENT_SCRIPTS-CHANGELOGS
     title: Deployment Scripts (Changelog)
     file: Version-Control/DEPLOYMENT_SCRIPTS-CHANGELOGS.md
-  - slug: DOCKER_COMPOSE-CHANGELOG
+  - slug: Version-Control/DOCKER_COMPOSE-CHANGELOG
     title: Changelog
     file: Version-Control/DOCKER_COMPOSE-CHANGELOG.md
-  - slug: SOURCE-CHANGELOGS
+  - slug: Version-Control/SOURCE-CHANGELOGS
     title: AnyLog's Source Code (Changelog)
     file: Version-Control/SOURCE-CHANGELOGS.md
+- title: Reference
+  items:
+  - slug: Reference/FAQ
+    title: FAQ & Troubleshooting
+    file: Reference/FAQ.md
