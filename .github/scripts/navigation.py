@@ -14,16 +14,23 @@ ITEM_ORDER = {
     "Network & Services": [
         "background-services",
         "network-configurations",
+        "using-rest",
+        "messaging-services",
         "blockchain",
         "policies-metadata",
     ],
     "Managing Data (Southbound)": [
         "southbound-overview",
         "data-ingestion",
+        "mapping-policies",
+        "UNS",
         "opcua",
+        "using-kafka",
+        "telegraf",
         "etherip",
         "grpc",
         "node-red",
+        "node-monitoring",
         "syslog",
         "video-streaming",
         "live-data-generator",
@@ -33,7 +40,6 @@ ITEM_ORDER = {
         "northbound-overview",
         "queries",
         "sql-setup",
-        "using-rest",
         "grafana",
         "import-grafana-dashboard",
         "PowerBI",
@@ -53,8 +59,9 @@ ITEM_ORDER = {
         "remote-gui",
     ],
     "Version Control": [
-        "SOURCE-CHANGELOGS",
         "SCRIPTS-CHANGELOGS",
+        "DEPLOYMENT_SCRIPTS-CHANGELOGS",
+        "DOCKER_COMPOSE-CHANGELOG"
     ],
     "Reference": [
         "FAQ",

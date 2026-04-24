@@ -3,8 +3,10 @@ title: SQL & Database Setup
 description: Connect databases, configure partitioning, and understand AnyLog's SQL dialect for querying distributed edge data.
 layout: page
 ---
-
-# SQL & Database Setup
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 AnyLog stores data in local relational databases on Operator nodes. Queries issued against the network are translated into SQL and executed on the relevant Operators, with results aggregated and returned to the querying node.
 

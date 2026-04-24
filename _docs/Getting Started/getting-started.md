@@ -3,6 +3,10 @@ title: Introduction to AnyLog
 description: Understanding AnyLog's architecture, node types, and core concepts.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 ## What is AnyLog?
 

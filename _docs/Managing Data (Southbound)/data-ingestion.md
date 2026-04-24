@@ -3,6 +3,10 @@ title: Data Ingestion
 description: How to get data into AnyLog using REST, MQTT, Kafka, OPC-UA, and gRPC.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 ## Southbound services overview
 

@@ -3,8 +3,11 @@ title: Data Ingestion (Southbound)
 description: Overview of southbound data ingestion in AnyLog — connectors, mapping, file pipeline, and prerequisites.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
-# Data Ingestion (Southbound)
 
 AnyLog receives data from edge devices, sensors, and applications through a set of **southbound connectors**. All connectors ultimately produce JSON files that flow through a common pipeline: Watch Directory → Operator → Local Database.
 

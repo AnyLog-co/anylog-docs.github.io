@@ -3,6 +3,10 @@ title: AnyLog's Source Code (Changelog)
 description: Release history and notable changes across all AnyLog Network versions.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 ## Unreleased
 <!-- last-processed: a3cd593 -->

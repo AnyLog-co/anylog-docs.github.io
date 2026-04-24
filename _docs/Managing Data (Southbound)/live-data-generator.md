@@ -3,6 +3,10 @@ title: Live Data Generator
 description: Connect to AnyLog's shared data generator and ingest synthetic industrial data in minutes.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 AnyLog provides two tools that work together for testing and demos:
 

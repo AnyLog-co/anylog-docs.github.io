@@ -3,6 +3,10 @@ title: OPC-UA
 description: Configure AnyLog as an OPC-UA client to pull data from industrial devices continuously.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 OPC Unified Architecture (OPC UA) is a platform-independent industrial communication protocol with built-in security (encryption, authentication, access control). AnyLog can act as an OPC-UA client, pulling data from any OPC-UA server and streaming it into local databases.
 

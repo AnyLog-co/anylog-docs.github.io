@@ -3,6 +3,10 @@ title: Remote GUI
 description: Architecture and developer reference for the AnyLog Remote GUI.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 > **Audience:** This page covers the internal architecture of the Remote GUI and is primarily intended for developers extending or contributing to it. For end-user usage, refer to the GUI itself.
 

@@ -3,6 +3,10 @@ title: Syslog
 description: Ingest BSD and IETF syslog messages from Linux, Mac, and network devices directly into AnyLog.
 layout: page
 ---
+<!--
+## Changelog
+- 2026-04-17 | Created document
+--> 
 
 AnyLog can act as a syslog receiver, accepting messages from any host that supports TCP syslog output. Rules map incoming messages to logical databases and tables.
 
