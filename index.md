@@ -9,10 +9,10 @@ title: AnyLog Documentation
 </div>
 
 <div class="home-diagram" align="center">
-    <img src="{{ '/assets/img/anylog_block_architecture.svg' | relative_url }}" alt="AnyLog architecture diagram" height="40%" width="40%">
+    <img src="{{ '/assets/img/anylog_block_architecture.svg' | relative_url }}" alt="AnyLog architecture diagram" height="30%" width="30%">
 </div>
 
-<div class="home-cards">
+<div class="home-cards" align="center">
   <a class="home-card" href="{{ '/docs/getting-started/' | relative_url }}">
     <div class="home-card-icon">🚀</div>
     <h3>Getting Started</h3>
