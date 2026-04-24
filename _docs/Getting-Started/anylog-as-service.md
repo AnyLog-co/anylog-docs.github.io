@@ -10,7 +10,7 @@ layout: page
 
 By default AnyLog is deployed as a Docker container or via Kubernetes. In some environments — limited disk space, regulatory requirements, network constraints, or hardware without container support — it makes more sense to install AnyLog directly on the host as a systemd service.
 
-> When running as a service the local CLI is disabled. All interaction with the node after startup is done via REST. See [AnyLog CLI](../Getting%20Started/AnyLog-CLI.md) and [Using REST](../Querying%20Data%20(Northbound)/using-rest.md) for reference.
+> When running as a service the local CLI is disabled. All interaction with the node after startup is done via REST. See [AnyLog CLI](../Getting-Started/AnyLog-CLI/) and [Using REST](../Querying%20Data%20(Northbound)/using-rest/) for reference.
 
 ---
 
@@ -91,7 +91,7 @@ DB_PORT=5432
 LEDGER_CONN=127.0.0.1:32048   # IP:Port of the master node
 ```
 
-See [Deployment Scripts](../Getting%20Started/deployment-scripts.md) for the full list of configuration options.
+See [Deployment Scripts](../Getting-Started/deployment-scripts/) for the full list of configuration options.
 
 ### 4. Create the systemd service file
 
@@ -258,4 +258,4 @@ curl -X GET 127.0.0.1:32549 \
   -H "User-Agent: AnyLog/1.23"
 ```
 
-See [Using REST](../Querying%20Data%20(Northbound)/using-rest.md) and [Background Services](../Network%20%26%20Services/background-services.md) for full configuration reference.
+See [Using REST](../Querying%20Data%20(Northbound)/using-rest/) and [Background Services](../Network-Services/background-services/) for full configuration reference.

@@ -44,7 +44,7 @@ run client 10.0.0.78:7848 get status
 
 ### get processes
 
-Lists all background services, their status, and key configuration details. See [Background Services](../Network%20%26%20Services/background-services.md).
+Lists all background services, their status, and key configuration details. See [Background Services](../Network-Services/background-services/).
 
 ```anylog
 get processes

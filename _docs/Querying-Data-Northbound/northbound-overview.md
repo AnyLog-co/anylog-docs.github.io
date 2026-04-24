@@ -45,7 +45,7 @@ curl -X POST http://[ip]:[port] \
   -d '{"command": "sql my_data format=json \"select * from ping_sensor limit 10\""}'
 ```
 
-See [Using REST](../Querying%20Data%20(Northbound)/using-rest.md) for the full REST API reference.
+See [Using REST](../Querying%20Data%20(Northbound)/using-rest/) for the full REST API reference.
 
 ---
 
@@ -58,7 +58,7 @@ Key configuration:
 - **Plugin**: JSON API (or SimpleJSON)
 - **Query**: AnyLog SQL passed as the metric/query body
 
-See [Grafana Integration](../Querying%20Data%20(Northbound)/grafana.md) for step-by-step setup and dashboard examples.
+See [Grafana Integration](../Querying%20Data%20(Northbound)/grafana/) for step-by-step setup and dashboard examples.
 
 ---
 
@@ -175,7 +175,7 @@ See [Monitoring & Alerts — streaming conditions](../Monitoring%20%26%20Operati
 
 The Remote CLI is a browser-based interface for issuing AnyLog commands and queries without a local terminal. It connects to any node over REST.
 
-See [Remote CLI](../Tools%20%26%20UI/remote-gui.md) for setup and usage.
+See [Remote CLI](../Tools%20%26%20UI/remote-gui/) for setup and usage.
 
 ---
 
@@ -183,13 +183,13 @@ See [Remote CLI](../Tools%20%26%20UI/remote-gui.md) for setup and usage.
 
 The MCP server exposes AnyLog to AI assistants and LLM-based tools via the Model Context Protocol. Once enabled, tools like Claude can query your edge network in natural language.
 
-See [MCP](../Tools%20%26%20UI/mcp.md) for configuration.
+See [MCP](../Tools%20%26%20UI/mcp/) for configuration.
 
 ---
 
 ## Query reference
 
-All northbound connectors ultimately issue SQL queries through AnyLog. See [Queries](../Querying%20Data%20(Northbound)/queries.md) for the full SQL reference including:
+All northbound connectors ultimately issue SQL queries through AnyLog. See [Queries](../Querying%20Data%20(Northbound)/queries/) for the full SQL reference including:
 
 - Network-distributed queries (`run client ()`)
 - Time filters (`NOW() - N hours`)

@@ -68,17 +68,17 @@ run blockchain sync where source = master and time = 30 seconds and dest = file 
 
 | Connector | How data arrives | Page |
 |---|---|---|
-| **REST PUT/POST** | HTTP PUT or POST directly to the node | [Data Ingestion](../Managing%20Data%20(Southbound)/data-ingestion.md) |
-| **MQTT (msg client)** | Subscribe to external MQTT broker | [Data Ingestion](../Managing%20Data%20(Southbound)/data-ingestion.md) |
-| **Local Broker** | Node acts as the MQTT broker | [Background Services](../Network%20%26%20Services/background-services.md#message-broker-service-local) |
-| **Kafka** | Subscribe to Kafka topic | [Background Services](../Network%20%26%20Services/background-services.md#kafka-consumer) |
-| **gRPC** | Subscribe to gRPC stream | [gRPC](../Managing%20Data%20(Southbound)/grpc.md) |
-| **OPC-UA / PLC** | Active pull from industrial PLCs | [OPC-UA & PLC](../Managing%20Data%20(Southbound)/opcua.md) |
-| **EtherNet/IP** | Active pull from EtherNet/IP devices | [OPC-UA & PLC](../Managing%20Data%20(Southbound)/opcua.md) |
-| **Syslog** | Receive syslog messages | [Syslog](../Managing%20Data%20(Southbound)/syslog.md) |
-| **Node-RED** | Via Node-RED flow (REST/MQTT) | [Node-RED](../Managing%20Data%20(Southbound)/node-red.md) |
-| **EdgeX** | Via EdgeX southbound framework | [EdgeX](../Managing%20Data%20(Southbound)/edgex.md) |
-| **Video** | Video stream ingestion | [Video Streaming](../Managing%20Data%20(Southbound)/video-streaming.md) |
+| **REST PUT/POST** | HTTP PUT or POST directly to the node | [Data Ingestion](../Managing-Data-Southbound/data-ingestion/) |
+| **MQTT (msg client)** | Subscribe to external MQTT broker | [Data Ingestion](../Managing-Data-Southbound/data-ingestion/) |
+| **Local Broker** | Node acts as the MQTT broker | [Background Services](../Network-Services/background-services.md#message-broker-service-local) |
+| **Kafka** | Subscribe to Kafka topic | [Background Services](../Network-Services/background-services.md#kafka-consumer) |
+| **gRPC** | Subscribe to gRPC stream | [gRPC](../Managing-Data-Southbound/grpc/) |
+| **OPC-UA / PLC** | Active pull from industrial PLCs | [OPC-UA & PLC](../Managing-Data-Southbound/opcua/) |
+| **EtherNet/IP** | Active pull from EtherNet/IP devices | [OPC-UA & PLC](../Managing-Data-Southbound/opcua/) |
+| **Syslog** | Receive syslog messages | [Syslog](../Managing-Data-Southbound/syslog/) |
+| **Node-RED** | Via Node-RED flow (REST/MQTT) | [Node-RED](../Managing-Data-Southbound/node-red/) |
+| **EdgeX** | Via EdgeX southbound framework | [EdgeX](../Managing-Data-Southbound/edgex/) |
+| **Video** | Video stream ingestion | [Video Streaming](../Managing-Data-Southbound/video-streaming/) |
 
 ---
 

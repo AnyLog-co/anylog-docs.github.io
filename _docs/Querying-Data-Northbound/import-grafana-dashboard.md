@@ -8,7 +8,7 @@ layout: page
 - 2026-04-17 | Created document
 --> 
 
-Instructions to create and manage your Grafana instance with AnyLog, can be found in [Using Grafana](using%20grafana.md) 
+Instructions to create and manage your Grafana instance with AnyLog, can be found in [Using Grafana](using%20grafana/) 
 
 
 The following document provides 3 sample Grafana dashboards

@@ -8,7 +8,7 @@ layout: page
 - 2026-04-17 | Created document
 --> 
 
-> This guide covers a standard 3-node deployment (master, operator, query) on a single machine. For a conceptual overview of node types, see [Introduction to AnyLog](./getting-started.md).
+> This guide covers a standard 3-node deployment (master, operator, query) on a single machine. For a conceptual overview of node types, see [Introduction to AnyLog](./getting-started/).
 
 ## Prerequisites
 
@@ -163,7 +163,7 @@ LEDGER_CONN=127.0.0.1:32048  # Master node IP:port — set this on ALL nodes
 - **Operator node:** `DEFAULT_DBMS` (logical database name) and `DB_TYPE` (physical database type) are set. If using PostgreSQL, also validate `DB_USER`, `DB_PASSWD`, and the DB host/port
 - **Operator node (optional):** If receiving data via MQTT, enable the MQTT service and confirm `MSG_DBMS` matches `DEFAULT_DBMS`
 
-Full configuration reference: [docker-compose/configs.md](https://github.com/AnyLog-co/docker-compose/blob/os-dev/configs.md)
+Full configuration reference: [docker-compose/configs.md](https://github.com/AnyLog-co/docker-compose/blob/os-dev/configs/)
 
 ---
 
@@ -265,7 +265,7 @@ To target a specific remote node, use `-H "destination: [IP:port]"`. To route a 
 | `test node` | Validates network connectivity for this node |
 | `test network` | Validates communication with other nodes |
 
-Full reference: [AnyLog commands documentation](https://github.com/AnyLog-co/documentation/blob/master/anylog%20commands.md)
+Full reference: [AnyLog commands documentation](https://github.com/AnyLog-co/documentation/blob/master/anylog%20commands/)
 
 ---
 

@@ -129,7 +129,7 @@ test node 10.0.0.78:32048
 run client 10.0.0.78:32048 get status
 ```
 
-See [CLI — test node and test network](../Getting%20Started/AnyLog-CLI.md#test-node-and-test-network) for full details.
+See [CLI — test node and test network](../Getting-Started/AnyLog-CLI.md#test-node-and-test-network) for full details.
 
 ---
 
@@ -183,4 +183,4 @@ run tcp server where external_ip = !ip and external_port = !anylog_server_port a
 run rest server where external_ip = !ip and external_port = !anylog_rest_port and timeout = 20
 ```
 
-See [Deployment Scripts](../Getting%20Started/deployment-scripts.md) for the full configuration workflow.
+See [Deployment Scripts](../Getting-Started/deployment-scripts/) for the full configuration workflow.

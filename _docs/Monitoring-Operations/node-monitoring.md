@@ -25,7 +25,7 @@ get node info cpu_percent  # CPU usage
 get disk free .         # available disk space
 ```
 
-See [Get Commands](../Getting%20Started/get-commands.md) for the full reference.
+See [Get Commands](../Getting-Started/get-commands/) for the full reference.
 
 ---
 
@@ -48,7 +48,7 @@ continuous 10 run client () sql my_data select max(timestamp), count(*) from pin
 
 ## Scheduler-based monitoring
 
-The scheduler runs tasks periodically without manual intervention. See [Background Services — Scheduler](../Network%20%26%20Services/background-services.md#scheduler) for how to start it.
+The scheduler runs tasks periodically without manual intervention. See [Background Services — Scheduler](../Network-Services/background-services.md#scheduler) for how to start it.
 
 ### Schedule a monitoring task
 
@@ -147,7 +147,7 @@ email to recipient@company.com where subject = "Alert" and message = "Node disk 
 sms to 6508147334 where gateway = tmomail.net and subject = "Alert" and message = "Threshold exceeded"
 ```
 
-See [Background Services — SMTP](../Network%20%26%20Services/background-services.md#smtp-client).
+See [Background Services — SMTP](../Network-Services/background-services.md#smtp-client).
 
 ---
 
@@ -240,4 +240,4 @@ get node info net_io_counters bytes_recv
 get os process anylog
 ```
 
-See [Get Commands — Resource monitoring](../Getting%20Started/get-commands.md#resource-monitoring) for the full list.
+See [Get Commands — Resource monitoring](../Getting-Started/get-commands.md#resource-monitoring) for the full list.
