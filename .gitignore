@@ -2,7 +2,7 @@ _site/
 .sass-cache/
 .jekyll-cache/
 .jekyll-metadata
-Gemfile.lock
+.github/scripts/Gemfile.lock
 .bundle/
 vendor/
 node_modules/
@@ -12,3 +12,4 @@ venv/
 __pycache__/
 _site/
 _vender/
+Gemfile.lock
