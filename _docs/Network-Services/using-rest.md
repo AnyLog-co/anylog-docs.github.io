@@ -42,7 +42,7 @@ Browsers treat `User-Agent` as a reserved header — `fetch()` cannot set it man
 Access-Control-Allow-Headers: AnyLog-Agent, Content-Type
 ```
 
-See [Network and Services — REST service](/docs/network-services/#rest-service) and the [MCP-Examples CORS guide](https://github.com/AnyLog-co/MCP-Examples) for proxy-based solutions when direct browser access is not possible.
+See <a href="{{ '/docs/network-services//#rest-service' | relative_url }}">Network and Services — REST service</a> and the [MCP-Examples CORS guide](https://github.com/AnyLog-co/MCP-Examples) for proxy-based solutions when direct browser access is not possible.
 
 ---
 
@@ -149,15 +149,15 @@ curl -X POST 'http://10.0.0.78:32349' \
 #### Reset the error log
 ```bash
 curl -X POST 'http://10.0.0.78:32349' \
-  -H 'Content-Type: application/json' \
-  -d '{"command": "reset error log", "AnyLog-Agent": "AnyLog/1.23"}'
+  -H "command: reset error log" \
+  -H "AnyLoog-Agent: AnyLog/1.23"
 ```
 
 #### Set a variable
 ```bash
 curl -X POST 'http://10.0.0.78:32349' \
-  -H 'Content-Type: application/json' \
-  -d '{"command": "set company_name = AnyLog", "AnyLog-Agent": "AnyLog/1.23"}'
+  -H "command: set company_name = AnyLog" \
+  -H "AnyLoog-Agent: AnyLog/1.23"
 ```
 
 ### Publish a mapping policy to the blockchain
@@ -166,11 +166,8 @@ Before publishing data via POST topic mapping, a mapping policy must exist on th
 
 ```bash
 curl -X POST 'http://10.0.0.78:32349' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "command": "blockchain insert where policy=!new_policy and local=true and master=!ledger_conn",
-    "AnyLog-Agent": "AnyLog/1.23"
-  }'
+  -H "command: blockchain insert where policy=!new_policy and local=true and master=!ledger_conn" \
+  -H "AnyLoog-Agent: AnyLog/1.23"
 ```
 
 > The `master=!ledger_conn` parameter is optional — include it to also publish the policy to a master ledger node.
