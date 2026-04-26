@@ -13,9 +13,16 @@ title: AnyLog Documentation
   <p>AnyLog — Enable independent (industrial) databases to function as a single logical data network.</p>
 </div>
 
+[//]: # (<div class="home-diagram" align="center">)
+
+[//]: # (    <object type="image/svg+xml" data="{{ '/assets/img/anylog_network_fabric_animated.svg' | relative_url }}" width="50%" height="50%">)
+
+[//]: # (    </object>)
+
+[//]: # (</div>)
+
 <div class="home-diagram" align="center">
-    <object type="image/svg+xml" data="{{ '/assets/img/anylog_network_fabric_animated.svg' | relative_url }}" width="50%" height="50%">
-    </object>
+  {% include anylog_network_fabric_animated.svg %}
 </div>
 
 <div class="home-cards" align="center">
