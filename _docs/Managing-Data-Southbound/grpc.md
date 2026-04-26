@@ -6,9 +6,10 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-17 | Created document
+- 2026-04-25 | hyperlinks
 --> 
 
-gRPC is Google's open-source RPC framework — efficient, language-agnostic, and designed for high-throughput streaming. AnyLog connects as a gRPC **client**, receives data streams from a gRPC server, and maps them to a local database using policies.
+<a href="https://en.wikipedia.org/wiki/GRPC" target="_blank">gRPC</a> is Google's open-source RPC framework — efficient, language-agnostic, and designed for high-throughput streaming. AnyLog connects as a gRPC **client**, receives data streams from a gRPC server, and maps them to a local database using policies.
 
 ---
 
@@ -152,4 +153,6 @@ exit grpc all
 
 ## gRPC for video inference
 
-When used with video streaming, the gRPC client connects to a YOLOv5 (or similar) inference server. See <a href="{{ '/docs/video-streaming//' | relative_url }}">Video Streaming</a> for the full configuration including `video connect` and `run video stream`.
+When used with video streaming, the gRPC client connects to a YOLOv5 (or similar) inference server. 
+See <a href="{{ '/docs/Managing-Data-Southbound/video-streaming/' | relative_url }}">Video Streaming</a> for the full 
+configuration including `video connect` and `run video stream`.

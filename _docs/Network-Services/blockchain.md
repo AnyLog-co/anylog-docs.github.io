@@ -6,11 +6,14 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-17 | Created document
+- 2026-04-25 | hyperlinks
 --> 
 
 AnyLog maintains a distributed metadata ledger using either a **master node** (a simple AnyLog node hosting the ledger in a local database) or a **blockchain platform** (e.g. Optimism, Ethereum). Every node maintains a local copy of the relevant metadata and uses it to route data, resolve queries, and enforce configuration — without depending on the availability of the global ledger at runtime.
 
-The metadata is organized as **policies** — JSON objects with a single root key (the policy type). See <a href="{{ '/docs/Network-Services/policies-and-metadata/' | relative_url }}">Policies & Metadata</a> for policy types and structure.
+The metadata is organized as **policies** — JSON objects with a single root key (the policy type). 
+See <a href="{{ '/docs/Network-Services/policies-metadata/' | relative_url }}">Policies & Metadata</a> for policy types 
+and structure.
 
 ---
 
@@ -62,8 +65,6 @@ Verify the connection:
 ```anylog
 get platforms
 ```
-
-> See <a href="{{ '/docs/Network-Services/blockchain-ethereum/' | relative_url }}">Using Ethereum</a> for contract deployment and full Ethereum setup.
 
 ---
 

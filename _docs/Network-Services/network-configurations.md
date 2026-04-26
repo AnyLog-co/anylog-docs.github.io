@@ -138,7 +138,9 @@ See <a href="{{ '/docs/Reference/troubleshooting' | relative_url }}">CLI — tes
 
 ## Overlay networks
 
-For deployments where nodes are on isolated networks or across cloud providers, an overlay network creates a virtual private network across all nodes. AnyLog supports [Nebula](https://github.com/slackhq/nebula) as an overlay layer.
+For deployments where nodes are on isolated networks or across cloud providers, an overlay network creates a virtual 
+private network across all nodes. AnyLog supports <a href="https://github.com/slackhq/nebula" target="_blank">Nebula</a> 
+as an overlay layer.
 
 In an overlay setup:
 - Each node is assigned a virtual overlay IP (e.g. `192.168.100.x`)

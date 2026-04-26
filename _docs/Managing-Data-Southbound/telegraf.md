@@ -9,9 +9,10 @@ layout: page
 - 2026-04-17 | Created document
 - 2026-04-18 | Simplified to Telegraf setup only; mapping details moved to mapping-policies.md
 - 2026-04-21 | Remove title (#Telegraf) 
+- 2026-04-25 | hyperlinks
 -->
 
-<a href="https://www.influxdata.com/time-series-platform/telegraf/" target="_blank">Telegraf</a> is _InfluxData_'s 
+<a href="https://www.influxdata.com/time-b-platform/telegraf/" target="_blank">Telegraf</a> is _InfluxData_'s 
 open-source agent for collecting, processing, and forwarding metrics and events. It connects southbound data sources — 
 system logs, hardware sensors, applications — to a storage or analytics layer.
 
@@ -36,9 +37,9 @@ automatically.
 ## Setup
 
 ### 1. Deploy an AnyLog Operator Node
-
+To query the ingested data directly: 
 Deploy an AnyLog operator node with a local message broker enabled. See 
-<a href="{{ '/docs/Managing-Data-Southbound/background-processes/#operator-process' | relative_url }}">background processes</a> for configuration details.
+<a href="{{ '/docs/Network-Services/background-services/#operator-process' | relative_url }}">background processes</a> for configuration details.
 
 ### 2. Attach to the AnyLog Node
 
@@ -227,8 +228,8 @@ SQL Errors |      0|        0|00:00:00    |         |          |         0|     
 ```
 
 * To query the ingested data directly:
-```anylog
 
+```anylog
 AL anylog-standalone-operator > run client () sql !default_dbms format=table "select * from cpu limit 10"
 
 row_id insert_timestamp           tsd_name tsd_id timestamp             fields_usage_guest fields_usage_guest_nice fields_usage_idle fields_usage_iowait fields_usage_irq fields_usage_nice fields_usage_softirq fields_usage_steal fields_usage_system fields_usage_user tags_cpu tags_host

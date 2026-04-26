@@ -121,15 +121,15 @@ nav:
   - slug: Managing-Data-Southbound/syslog
     title: Syslog
     file: Managing-Data-Southbound/syslog.md
+  - slug: Managing-Data-Southbound/video-streaming
+    title: Video Streaming
+    file: Managing-Data-Southbound/video-streaming.md
   - slug: Managing-Data-Southbound/live-data-generator
     title: Live Data Generator
     file: Managing-Data-Southbound/live-data-generator.md
   - slug: Managing-Data-Southbound/edgex
     title: EdgeX Integration
     file: Managing-Data-Southbound/edgex.md
-  - slug: Managing-Data-Southbound/video_streaming
-    title: Video Streaming
-    file: Managing-Data-Southbound/video_streaming.md
 - title: Querying Data (Northbound)
   items:
   - slug: Querying-Data-Northbound/northbound-overview

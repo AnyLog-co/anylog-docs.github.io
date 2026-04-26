@@ -7,6 +7,7 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-18 | Created document; covers UNS concept, auto-generated vs user-defined, dynamic=true ingestion, and UNS policy structure
+- 2026-04-25 | hyperlinks
 -->
 
 # Unified Namespace
@@ -23,7 +24,9 @@ requiring large-scale data movement.
 From AnyLog's point of view, a UNS is metadata about the actual data stored on the blockchain. It is up to the 
 user to decide how and where to use it within their infrastructure.
 
-!<a href="{{ '/docs/assets/img/uns_mqtt_tree.svg/' | relative_url }}">MQTT data struct</a>
+<a href="{{ '/assets/img/uns_mqtt_tree.svg' | relative_url }}" target="_blank" rel="noopener">
+  <img src="{{ '/assets/img/uns_mqtt_tree.svg' | relative_url }}" alt="MQTT data struct">
+</a>
 ---
 
 ## Auto-Generated vs. User-Defined
@@ -94,7 +97,10 @@ The **ProveIt** demo MQTT broker **`virtualfactory.proveit.services`** exposes r
 
 ### Example: Mosquitto (dev) on a LAN broker
 
-[Mosquitto](https://mosquitto.org/) is a common MQTT broker for local development. In this pattern, Mosquitto listens on **`192.168.1.88:1883`**, and the AnyLog **master** (ledger) is reachable at **`192.168.1.88:32048`**. Connect the logical DBMS on the operator, then start the message client with **`dynamic=true`** so topic paths under **`M2/PL1/`** drive auto-generated UNS and storage under **`new_company`**.
+<a href="https://mosquitto.org/" target="_blank"> Mosquitto</a>> is a common MQTT broker for local development. In this 
+pattern, Mosquitto listens on **`192.168.1.88:1883`**, and the AnyLog **master** (ledger) is reachable 
+at **`192.168.1.88:32048`**. Connect the logical DBMS on the operator, then start the message client with 
+**`dynamic=true`** so topic paths under **`M2/PL1/`** drive auto-generated UNS and storage under **`new_company`**.
 
 ```anylog
 connect dbms new_company where type = sqlite
@@ -111,7 +117,8 @@ connect dbms new_company where type = sqlite
     )>
 ```
 
-With the [Mosquitto clients](https://mosquitto.org/download/) installed, you can publish scalar payloads to the same broker for testing (`-m` is the message body, `-t` is the topic):
+With the <a href="https://mosquitto.org/download/" target="_blank">Mosquitto clients</a> installed, you can publish 
+scalar payloads to the same broker for testing (`-m` is the message body, `-t` is the topic):
 
 ```bash
 mosquitto_pub -p 1883 -h 192.168.1.88 -m 98.3 -t M2/PL1/DEV1/power
@@ -119,7 +126,8 @@ mosquitto_pub -p 1883 -h 192.168.1.88 -m 1 -t M2/PL1/DEV1/active
 mosquitto_pub -p 1883 -h 192.168.1.88 -m "stopped" -t M2/PL1/DEV1/status
 ```
 
-On the operator, **`get msg client`** shows the subscription, message counters, and how **`dynamic=true`** materialized topics into tables under **`new_company`**:
+On the operator, **`get msg client`** shows the subscription, message counters, and how **`dynamic=true`** materialized 
+topics into tables under **`new_company`**:
 
 ```text
 AL op1 > get msg client
@@ -146,7 +154,8 @@ Connection:   Connected
 AL op1 >
 ```
 
-**`get streaming`** shows streaming statistics for the same dynamic tables (rows staged, buffer fill, time until the next process cycle):
+**`get streaming`** shows streaming statistics for the same dynamic tables (rows staged, buffer fill, time until the 
+next process cycle):
 
 ```text
 AL op1 > get streaming
@@ -164,11 +173,18 @@ new_company.altitude_1|     0|    0| |       10|       10|     0|         0|    
 AL op1 >
 ```
 
-In the **Remote GUI**, the same dynamic hierarchy appears as a drill-down tree — for example **`Root / m2 / pl1 / dev2`** with leaves such as **`altitude`**, **`power`**, and **`temperature`**. **Item Details** shows recent scalar samples and a chart for the selected metric. Hovering a leaf surfaces the **`uns`** policy: **`namespace`** (for example **`m2/pl1/dev2/altitude`**), **`dbms`** (**`new_company`**), **`table`** (**`altitude_2`**), and **`source_node`** (**`op1@192.168.1.88:32148`**), consistent with ingestion from the operator on **`192.168.1.88`**.
+In the **Remote GUI**, the same dynamic hierarchy appears as a drill-down tree — for example **`Root / m2 / pl1 / dev2`** 
+with leaves such as **`altitude`**, **`power`**, and **`temperature`**. **Item Details** shows recent scalar samples and 
+a chart for the selected metric. Hovering a leaf surfaces the **`uns`** policy: **`namespace`** (for example 
+**`m2/pl1/dev2/altitude`**), **`dbms`** (**`new_company`**), **`table`** (**`altitude_2`**), and 
+**`source_node`** (**`op1@192.168.1.88:32148`**), consistent with ingestion from the operator on **`192.168.1.88`**.
 
-<img src="../../assets/img/uns_dynamic_item_details.png" alt="Dynamic UNS in the web UI: tree m2/pl1/dev2, Item Details for temperature, policy tooltip on altitude" width="75%" />
+<img src="../../assets/img/uns_dynamic_item_details.png" alt="Dynamic UNS in the web UI: tree m2/pl1/dev2, Item Details 
+for temperature, policy tooltip on altitude" width="75%" />
 
-The **`#`** multi-level wildcard subscribes to every topic under `M2/PL1/` (for example `M2/PL1/temperature` with a scalar payload). Replace host, ports, topic prefix, **`dbms`**, and **`master_node`** with the values for your environment (you can use **`master_node = !ledger_conn`** if that is already set in the dictionary).
+The **`#`** multi-level wildcard subscribes to every topic under `M2/PL1/` (for example `M2/PL1/temperature` with a 
+scalar payload). Replace host, ports, topic prefix, **`dbms`**, and **`master_node`** with the values for your 
+environment (you can use **`master_node = !ledger_conn`** if that is already set in the dictionary).
 
 | Mode | Input format | Schema required | UNS generated |
 |:---|:---:|:---:|:---:|

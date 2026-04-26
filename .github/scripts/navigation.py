@@ -12,9 +12,9 @@ ITEM_ORDER = {
         "get-cmds",
     ],
     "Network & Services": [
-        "node-architecture.md",
         "background-services",
         "network-configurations",
+        "node-architecture.md",
         "using-rest",
         "messaging-services",
         "blockchain",

@@ -6,6 +6,7 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-17 | Created document
+- 2026-04-25 | hyperlinks
 --> 
 
 ## Southbound services overview
@@ -271,7 +272,9 @@ curl -X GET 127.0.0.1:32349 \
 
 ## Live data generator
 
-AnyLog provides a shared MQTT broker with continuously published sample data across several real-world use cases. See the <a href="{{ '/docs/data-generator//' | relative_url }}">Live Data Generator</a> page for connection details, the full script directory, and how to run each generator.
+AnyLog provides a shared MQTT broker with continuously published sample data across several real-world use cases. See 
+the <a href="{{ '/docs/Managing-Data-Southbound/live-data-generator/' | relative_url }}">Live Data Generator</a> page 
+for connection details, the full script directory, and how to run each generator.
 
 ---
 

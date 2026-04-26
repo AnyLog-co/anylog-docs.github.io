@@ -6,6 +6,7 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-17 | Created document
+- 2026-04-25 | hyperlinks 
 --> 
 
 AnyLog exposes query and data access through a REST API, enabling standard BI tools, dashboards, and applications to query distributed edge data as if it were a single database.
@@ -45,7 +46,8 @@ curl -X POST http://[ip]:[port] \
   -d '{"command": "sql my_data format=json \"select * from ping_sensor limit 10\""}'
 ```
 
-See <a href="{{ '/docs/Querying-Data-Northbound/Querying%20Data%20(Northbound/' | relative_url }}">Using REST</a>/using-rest.md) for the full REST API reference.
+See <a href="{{ '/docs/Querying-Data-Northbound/using-rest/' | relative_url }}">Using REST</a> for the full REST API 
+reference.
 
 ---
 
@@ -58,7 +60,8 @@ Key configuration:
 - **Plugin**: JSON API (or SimpleJSON)
 - **Query**: AnyLog SQL passed as the metric/query body
 
-See <a href="{{ '/docs/Querying-Data-Northbound/Querying%20Data%20(Northbound/' | relative_url }}">Grafana Integration</a>/grafana.md) for step-by-step setup and dashboard examples.
+See <a href="{{ '/docs/Querying-Data-Northbound/grafana' | relative_url }}">Grafana Integration</a> for step-by-step 
+setup and dashboard examples.
 
 ---
 
@@ -145,7 +148,7 @@ AnyLog can export query results directly to Google Sheets or Google Drive for sh
    schedule time = 1 hour and name = "Export to Drive" task ...
    ```
 
-See the <a href="{{ '/docs/Querying-Data-Northbound/Querying%20Data%20(Northbound/' | relative_url }}">Google Drive connector documentation</a>/) for OAuth setup and examples.
+See the <a href="{{ '/docs/Querying-Data-Northbound/Google/' | relative_url }}">Google Drive connector documentation</a> for OAuth setup and examples.
 
 ---
 
@@ -189,7 +192,7 @@ See <a href="{{ '/docs/Tools-UI/mcp/' | relative_url }}">MCP</a> for configurati
 
 ## Query reference
 
-All northbound connectors ultimately issue SQL queries through AnyLog. See <a href="{{ '/docs/Querying-Data-Northbound/Querying%20Data%20(Northbound/' | relative_url }}">Queries</a>/queries.md) for the full SQL reference including:
+All northbound connectors ultimately issue SQL queries through AnyLog. See <a href="{{ '/docs/Querying-Data-Northbound/queries/' | relative_url }}">Queries</a> for the full SQL reference including:
 
 - Network-distributed queries (`run client ()`)
 - Time filters (`NOW() - N hours`)

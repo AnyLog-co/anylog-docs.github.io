@@ -6,6 +6,7 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-17 | Created document
+- 2026-04-25 | hyperlink
 --> 
 
 [EdgeX Foundry](https://www.edgexfoundry.org) is an open source, vendor-neutral edge computing framework under the LF Edge umbrella. It provides a southbound platform for connecting IoT devices using standard protocols including Modbus, MQTT, BACnet, SNMP, OPC-UA, REST, and more.
@@ -206,7 +207,9 @@ The `bring` expressions in the `run msg client` command extract values from this
 | `value` | `bring [readings][][value]` | First reading value |
 | `name` | `bring [readings][][name]` | First reading name |
 
-Adjust the mapping to match the actual structure of your EdgeX device readings. See <a href="{{ '/docs/Managing-Data-Southbound/Managing%20Data%20(Southbound/' | relative_url }}">Data Ingestion — column mapping</a>/data-ingestion.md) for the full `bring` syntax reference.
+Adjust the mapping to match the actual structure of your EdgeX device readings. 
+See <a href="{{ '/docs/Managing-Data-Southbound/Managing-Data-Southbound/data-ingestion/' | relative_url }}">Data Ingestion — column mapping</a> 
+for the full `bring` syntax reference.
 
 ---
 

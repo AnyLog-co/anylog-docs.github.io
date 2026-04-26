@@ -6,6 +6,7 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-17 | Created document
+- 2026-04-25 | hyperlink
 --> 
 
 Every AnyLog node exposes three network services: **TCP** (peer-to-peer), **REST** (external API), and **Messaging** — a dedicated port that acts as a unified southbound ingestion endpoint. The Messaging service is started with `run message broker` and appears alongside TCP and REST in `get connections`.
@@ -56,7 +57,8 @@ run streamer
 run operator where create_table = true and update_tsd_info = true and archive_json = true and master_node = !master_node and policy = !operator_policy
 ```
 
-See <a href="{{ '/docs/Network-Services/Managing%20Data%20(Southbound/' | relative_url }}">Managing Data (Southbound)</a>/overview.md) for the full ingestion pipeline.
+See <a href="{{ '/docs/Network-Services/Managing-Data-Southbound/southbound-overview/' | relative_url }}">Managing Data (Southbound)</a>
+for the full ingestion pipeline.
 
 ---
 
@@ -97,7 +99,8 @@ Example:
 
 ## MQTT — AnyLog as the broker
 
-With `broker = local`, AnyLog subscribes to its own Messaging service rather than a third-party broker. Data is delivered directly to the Messaging port without any external dependency.
+With `broker = local`, AnyLog subscribes to its own Messaging service rather than a third-party broker. Data is 
+delivered directly to the Messaging port without any external dependency.
 
 ```anylog
 <run msg client where
@@ -124,7 +127,9 @@ get local broker
 
 ### Dynamic mode (UNS)
 
-Setting `dynamic = true` enables automatic table creation from topic structure and automatic generation of UNS policies — no explicit column mapping needed. If the data is JSON, attribute names become column names. If not JSON, column names are derived from the topic segments.
+Setting `dynamic = true` enables automatic table creation from topic structure and automatic generation of UNS policies 
+— no explicit column mapping needed. If the data is JSON, attribute names become column names. If not JSON, column 
+names are derived from the topic segments.
 
 ```anylog
 <run msg client where
@@ -145,7 +150,8 @@ run uns streamer where frequency = 3
 
 ## Kafka
 
-AnyLog can consume from Kafka topics and ingest the data into local databases. The `run kafka consumer` command connects to the Kafka broker and maps messages to database tables using the same topic mapping syntax as MQTT.
+AnyLog can consume from Kafka topics and ingest the data into local databases. The `run kafka consumer` command 
+connects to the Kafka broker and maps messages to database tables using the same topic mapping syntax as MQTT.
 
 ```anylog
 <run kafka consumer where
@@ -187,7 +193,9 @@ run client () sql my_dbms format = json:output and stat = false and dest = kafka
 
 ## Syslog
 
-AnyLog's Messaging service accepts Syslog messages over TCP (BSD RFC 3164 and IETF RFC 5424 formats). Configure the syslog sender to direct output to the Messaging IP and port, then set a rule on the AnyLog node to route incoming messages to a database table.
+AnyLog's Messaging service accepts Syslog messages over TCP (BSD RFC 3164 and IETF RFC 5424 formats). Configure the 
+syslog sender to direct output to the Messaging IP and port, then set a rule on the AnyLog node to route incoming 
+messages to a database table.
 
 ### 1. Set a rule
 
@@ -241,7 +249,8 @@ trace level = 2 run message broker
 
 ## REST POST
 
-Data can also be delivered to AnyLog via HTTP POST with `broker = rest`. AnyLog's REST service maps the posted payload to a database table based on the topic header.
+Data can also be delivered to AnyLog via HTTP POST with `broker = rest`. AnyLog's REST service maps the posted payload 
+to a database table based on the topic header.
 
 ```anylog
 run msg client where broker = rest and user-agent = anylog and topic = (
@@ -308,7 +317,8 @@ get msg brokers                                           # registered brokers
 
 ### Streaming thresholds
 
-Incoming messages are buffered and flushed to files based on time and volume thresholds (default: 60 seconds or 10,000 bytes):
+Incoming messages are buffered and flushed to files based on time and volume thresholds (default: 60 seconds or 
+10,000 bytes):
 
 ```anylog
 get streaming
@@ -324,7 +334,7 @@ exit msg client all      # terminate all clients
 ```
 
 ### Debug
-
+    
 ```anylog
 set mqtt debug on        # print incoming messages to stdout
 set mqtt debug off

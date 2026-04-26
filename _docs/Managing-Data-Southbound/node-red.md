@@ -6,6 +6,7 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-17 | Created document
+- 2026-04-25 | hyperlinks
 --> 
 
 [Node-RED](https://nodered.org/) is an open-source flow-based programming tool for connecting hardware, APIs, and services visually. This guide shows how to stream timestamp/value data from a Node-RED flow into an AnyLog operator via REST POST.
@@ -15,7 +16,7 @@ layout: page
 ## Prerequisites
 
 - [Node-RED installed](https://nodered.org/docs/getting-started/local)
-- An AnyLog operator node running with REST service enabled (see <a href="{{ '/docs/background-services//#rest-service' | relative_url }}">Background Services</a>)
+- An AnyLog operator node running with REST service enabled (see <a href="{{ '/docs/Network-Services/background-services//#rest-service' | relative_url }}">Background Services</a>)
 
 ---
 
@@ -116,4 +117,4 @@ row_id  insert_timestamp            timestamp                value
 
 ## How it fits in the southbound picture
 
-Node-RED uses the same **REST POST + msg client** pattern as any other POST-based ingestion. The `topic` header is the bridge between the HTTP request and the `run msg client` mapping rule on the operator. See <a href="{{ '/docs/data-ingestion//' | relative_url }}">Data Ingestion</a> for the full pattern.
+Node-RED uses the same **REST POST + msg client** pattern as any other POST-based ingestion. The `topic` header is the bridge between the HTTP request and the `run msg client` mapping rule on the operator. See <a href="{{ '/docs/Monitoring-Data-Southbound/data-ingestion/' | relative_url }}">Data Ingestion</a> for the full pattern.

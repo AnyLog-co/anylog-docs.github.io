@@ -193,7 +193,9 @@ Mapping policies define how incoming JSON data is transformed into database rows
 }
 ```
 
-See <a href="{{ '/docs/Network-Services/Managing%20Data%20(Southbound/' | relative_url }}">Data Southbound — Mapping</a>/data-southbound.md#mapping-data-to-tables) for full mapping configuration.
+See 
+<a href="{{ '/docs/Network-Services/Managing-Data-Southbound/data-ingestion/#Using-a-mapping-policy' | relative_url }}">Data Southbound — Mapping</a> 
+for full mapping configuration.
 
 ---
 
@@ -201,7 +203,8 @@ See <a href="{{ '/docs/Network-Services/Managing%20Data%20(Southbound/' | relati
 
 ### Local blockchain file
 
-Each node maintains a local JSON file containing the metadata relevant to its operation. The path is stored in the dictionary:
+Each node maintains a local JSON file containing the metadata relevant to its operation. The path is stored in the 
+dictionary:
 
 ```anylog
 get !blockchain_file        # path to local blockchain file

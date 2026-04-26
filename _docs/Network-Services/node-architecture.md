@@ -6,6 +6,7 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-24 | Created document
+- 2026-04-25 | hyperlink 
 -->
 
 AnyLog is a **peer-to-peer data fabric**. There is no central broker or cloud gateway — each node connects directly to 
@@ -24,9 +25,17 @@ The orchestration column on the left runs continuously in the background, keepin
 network.
 
 <div class="home-diagram" align="center">
-    <img src="{{ '/assets/img/anylog_block_architecture.svg' | relative_url }}" alt="AnyLog node architecture diagram" height="60%" width="60%">
+  <a href="{{ '/assets/img/anylog_block_architecture.svg' | relative_url }}"
+     target="_blank"
+     rel="noopener"
+     title="Click to view full size">
+    <img src="{{ '/assets/img/anylog_block_architecture.svg' | relative_url }}"
+         alt="AnyLog node architecture diagram"
+         height="60%"
+         width="60%"
+         style="cursor: zoom-in;">
+  </a>
 </div>
-
 
 ### Data in
 Data enters a node from the edge: sensors, PLCs, cameras, historians, or any system that can speak REST, MQTT, Kafka, 

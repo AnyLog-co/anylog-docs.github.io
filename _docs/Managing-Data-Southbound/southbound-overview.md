@@ -6,6 +6,7 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-17 | Created document
+- 2026-04-25 | hyperlinks fixed
 --> 
 
 
@@ -68,18 +69,17 @@ run blockchain sync where source = master and time = 30 seconds and dest = file 
 
 | Connector | How data arrives | Page |
 |---|---|---|
-| **REST PUT/POST** | HTTP PUT or POST directly to the node | <a href="{{ '/docs/Managing-Data-Southbound/Managing%20Data%20(Southbound/' | relative_url }}">Data Ingestion</a>/data-ingestion.md) |
-| **MQTT (msg client)** | Subscribe to external MQTT broker | <a href="{{ '/docs/Managing-Data-Southbound/Managing%20Data%20(Southbound/' | relative_url }}">Data Ingestion</a>/data-ingestion.md) |
-| **Local Broker** | Node acts as the MQTT broker | <a href="{{ '/docs/Network-Services/background-services/#message-broker-service-local' | relative_url }}">Background Services</a> |
-| **Kafka** | Subscribe to Kafka topic | <a href="{{ '/docs/Network-Services/background-services/#kafka-consumer' | relative_url }}">Background Services</a> |
-| **gRPC** | Subscribe to gRPC stream | <a href="{{ '/docs/Managing-Data-Southbound/Managing%20Data%20(Southbound/' | relative_url }}">gRPC</a>/grpc.md) |
-| **OPC-UA / PLC** | Active pull from industrial PLCs | <a href="{{ '/docs/Managing-Data-Southbound/Managing%20Data%20(Southbound/' | relative_url }}">OPC-UA & PLC</a>/opcua.md) |
-| **EtherNet/IP** | Active pull from EtherNet/IP devices | <a href="{{ '/docs/Managing-Data-Southbound/Managing%20Data%20(Southbound/' | relative_url }}">OPC-UA & PLC</a>/opcua.md) |
-| **Syslog** | Receive syslog messages | <a href="{{ '/docs/Managing-Data-Southbound/Managing%20Data%20(Southbound/' | relative_url }}">Syslog</a>/syslog.md) |
-| **Node-RED** | Via Node-RED flow (REST/MQTT) | <a href="{{ '/docs/Managing-Data-Southbound/Managing%20Data%20(Southbound/' | relative_url }}">Node-RED</a>/node-red.md) |
-| **EdgeX** | Via EdgeX southbound framework | <a href="{{ '/docs/Managing-Data-Southbound/Managing%20Data%20(Southbound/' | relative_url }}">EdgeX</a>/edgex.md) |
-| **Video** | Video stream ingestion | <a href="{{ '/docs/Managing-Data-Southbound/Managing%20Data%20(Southbound/' | relative_url }}">Video Streaming</a>/video-streaming.md) |
-
+| **REST PUT/POST** | HTTP PUT or POST directly to the node | [Data Ingestion](/docs/managing-data-southbound/data-ingestion/) |
+| **MQTT (msg client)** | Subscribe to external MQTT broker | [Data Ingestion](/docs/managing-data-southbound/data-ingestion/) |
+| **Local Broker** | Node acts as the MQTT broker | [Background Services](/docs/network-services/background-services/#message-broker-service-local) |
+| **Kafka** | Subscribe to Kafka topic | [Background Services](/docs/network-services/background-services/#kafka-consumer) |
+| **gRPC** | Subscribe to gRPC stream | [gRPC](/docs/managing-data-southbound/grpc/) |
+| **OPC-UA / PLC** | Active pull from industrial PLCs | [OPC-UA](/docs/managing-data-southbound/opcua/) |
+| **EtherNet/IP** | Active pull from EtherNet/IP devices | [EtherNet/IP](/docs/managing-data-southbound/etherip/) |
+| **Syslog** | Receive syslog messages | [Syslog](/docs/managing-data-southbound/syslog/) |
+| **Node-RED** | Via Node-RED flow (REST/MQTT) | [Node-RED](/docs/managing-data-southbound/node-red/) |
+| **EdgeX** | Via EdgeX southbound framework | [EdgeX](/docs/managing-data-southbound/edgex/) |
+| **Video** | Video stream ingestion | [Video Streaming](/docs/managing-data-southbound/video-streaming/) |
 ---
 
 ## Knowing your topics and schemas

@@ -51,7 +51,7 @@ Access-Control-Allow-Headers: AnyLog-Agent, Content-Type
 
  
 See <a href="{{ '/docs/network-services/using-rest/#rest-service' | relative_url }}">Network and Services — REST service</a> 
-and the <a target="https://github.com/AnyLog-co/MCP-Examples" target="_blank">MCP-Examples CORS guide</a> for 
+and the <a href="https://github.com/AnyLog-co/MCP-Examples" target="_blank">MCP-Examples CORS guide</a> for 
 proxy-based solutions when direct browser access is not possible.
 
 ---

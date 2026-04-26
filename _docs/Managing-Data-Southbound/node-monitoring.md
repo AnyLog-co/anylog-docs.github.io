@@ -76,11 +76,15 @@ run client (!view_monitoring_dest) monitor operators where info = !node_insight
 
 The Remote GUI Monitor Node section shows a live table of all nodes pushing metrics to the Query Node:
 
-!<a href="{{ '/docs/assets/img/remote_gui_monitoring.png/' | relative_url }}">Monitor Node Section in Remote GUI</a>
+<a href="{{ '/assets/img/remote_gui_monitoring.png' | relative_url }}" target="_blank" rel="noopener">
+  <img src="{{ '/assets/img/remote_gui_monitoring.png' | relative_url }}" alt="Monitor Node Section in Remote GUI">
+</a>
 
-Each row represents one node, showing its name, operational time, elapsed time since last update, new and total rows ingested, and the hardware metrics — free disk space, CPU usage, network packets, and error count.
+Each row represents one node, showing its name, operational time, elapsed time since last update, new and total rows 
+ingested, and the hardware metrics — free disk space, CPU usage, network packets, and error count.
 
-The **Add Threshold Monitor** panel at the top lets you set alert thresholds on any column — for example, alert when CPU Percent exceeds 80 or Free Space Percent drops below 20.
+The **Add Threshold Monitor** panel at the top lets you set alert thresholds on any column — for example, alert when 
+CPU Percent exceeds 80 or Free Space Percent drops below 20.
 
 **View from the CLI:**
 ```anylog
@@ -89,13 +93,15 @@ get monitored operators                # current status from all nodes
 reset monitored operators              # clear the aggregated list
 ```
 
-This option requires no storage configuration — metrics are held in memory on the Query Node and reflect the current state only.
+This option requires no storage configuration — metrics are held in memory on the Query Node and reflect the current 
+state only.
 
 ---
 
 ## Option 2 — Persistent storage across Operators
 
-When `STORE_MONITORING=true`, each node streams its `node_insight` into a `monitoring.node_insight` table on an Operator node, enabling historical queries and Grafana dashboards.
+When `STORE_MONITORING=true`, each node streams its `node_insight` into a `monitoring.node_insight` table on an 
+Operator node, enabling historical queries and Grafana dashboards.
 
 ```
 Node A  ──┐
@@ -141,7 +147,8 @@ run client () sql monitoring format = table "select timestamp, node_type, cpu_pe
 
 ## Using both options together
 
-Options 1 and 2 are not mutually exclusive. Most deployments run both — live view for real-time dashboards and persistent storage for historical analysis and alerting.
+Options 1 and 2 are not mutually exclusive. Most deployments run both — live view for real-time dashboards and 
+persistent storage for historical analysis and alerting.
 
 ---
 
