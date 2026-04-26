@@ -6,6 +6,7 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-17 | Created document
+- 2026-04-25 | hyperlinks
 --> 
 
 AnyLog stores data in local relational databases on Operator nodes. Queries issued against the network are translated into SQL and executed on the relevant Operators, with results aggregated and returned to the querying node.
@@ -120,7 +121,7 @@ schedule time = 1 day and start = +1d and name = "Drop old data" task drop parti
 
 ## Querying data
 
-AnyLog uses a SQL dialect that routes queries across the network. See <a href="{{ '/docs/Querying-Data-Northbound/Querying%20Data%20(Northbound/' | relative_url }}">Queries</a>/queries.md) for the full reference. Key points:
+AnyLog uses a SQL dialect that routes queries across the network. See <a href="{{ '/docs/Querying-Data-Northbound/queries/' | relative_url }}">Queries</a> for the full reference. Key points:
 
 ### Local query
 ```anylog

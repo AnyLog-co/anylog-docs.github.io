@@ -269,7 +269,9 @@ Example:
 run operator where create_table = true and update_tsd_info = true and archive_json = true and distributor = true and master_node = !master_node and policy = !operator_policy and threads = 3
 ```
 
-> See <a href="{{ '/docs/Network-Services/Managing%20Data%20(Southbound/' | relative_url }}">File Naming Convention</a>/managing-data-files.md#file-naming-convention) · <a href="{{ '/docs/Network-Services/Managing%20Data%20(Southbound/' | relative_url }}">Mapping Data to Tables</a>/mapping-data.md) · <a href="{{ '/docs/Network-Services/Managing%20Data%20(Southbound/' | relative_url }}">Setting Streaming Thresholds</a>/data-ingestion.md#streaming-thresholds)
+> See <a href="{{ '/docs/Managing-Data-Southbound/southbound-overview/#the-file-naming-convention' | relative_url }}">File Naming Convention</a> · 
+> <a href="{{ '/docs/Managing-Data-Southbound/mapping-policies/' | relative_url }}">Mapping Data to Tables</a> · 
+> <a href="{{ '/docs/Managing-Data-Southbound/data-ingestion/' | relative_url }}">Setting Streaming Thresholds</a>
 
 Monitor the Operator:
 ```anylog
@@ -630,7 +632,7 @@ run streamer where prep_dir = [path] and watch_dir = [path] and err_dir = [path]
 
 If directories are not specified, the default paths from the AnyLog dictionary are used (`get dictionary` to view them).
 
-> See <a href="{{ '/docs/Network-Services/Managing%20Data%20(Southbound/' | relative_url }}">Setting and Retrieving Streaming Thresholds</a>/data-ingestion.md#streaming-thresholds) for threshold configuration.
+> See Setting and Retrieving Streaming Thresholds for threshold configuration.
 
 Monitor streaming buffer status:
 ```anylog

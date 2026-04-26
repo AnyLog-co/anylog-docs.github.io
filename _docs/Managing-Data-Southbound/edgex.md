@@ -240,4 +240,4 @@ See the [EdgeX Quick Start](https://docs.edgexfoundry.org/latest/getting-started
 - [EdgeX Foundry documentation](https://docs.edgexfoundry.org/latest/)
 - [EdgeX Device Services — supported protocols](https://wiki.edgexfoundry.org/display/FA/Device+Services)
 - <a href="{{ '/docs/Network-Services/background-services/#message-broker-service-local' | relative_url }}">AnyLog Message Broker service</a>
-- <a href="{{ '/docs/Managing-Data-Southbound/Managing%20Data%20(Southbound/' | relative_url }}">AnyLog Data Ingestion — run msg client</a>/data-ingestion.md)
+- <a href="{{ '/docs/Managing-Data-Southbound/data-ingestion/' | relative_url }}">AnyLog Data Ingestion — run msg client</a>
