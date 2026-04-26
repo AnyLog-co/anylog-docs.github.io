@@ -69,7 +69,7 @@ https://hooks.slack.com/services/T9EB83JTF/B06Q4F5R0QK/<token>
 ## Send Notifications via AnyLog
 
 ### Slack Webhooks
-AnyLog allows to send cURL requests the [_rest_ command](../anylog%20commands.md#rest-command). Since _Webhooks_ are 
+AnyLog allows to send cURL requests the <a href="{{ '/docs/Querying-Data-Northbound/anylog%20commands/#rest-command' | relative_url }}">_rest_ command</a>. Since _Webhooks_ are 
 essentially URLs to send messages into a system, we'll be using the _rest_ command to send notifictaions from AnyLog into
 Slack.
 

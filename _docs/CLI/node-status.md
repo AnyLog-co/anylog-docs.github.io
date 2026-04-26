@@ -6,19 +6,20 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-17 | Created document
+- 2026-04-25 | updated hyperlinks
 --> 
 
 A key component of AnyLog is the having nodes able to communicate between one another, in order to share both data and 
 metadata. As such, validating the state of the node - both in terms of running services and network connectivity is 
 crucial. 
 
-> Parts of this document are a repeat for [AnyLog CLI](./AnyLog-CLI.md)
+> Parts of this document are a repeat for <a href="{{ '/docs/CLI/AnyLog-CLI/' | relative_url }}">AnyLog CLI</a>
 
 ## Validating Services 
 
 ### get processes
 
-Lists all background services, their status, and key configuration details. See [Background Services](../Network%20%26%20Services/background-services.md).
+Lists all background services, their status, and key configuration details. See <a href="{{ '/docs/Network-Services/background-services/' | relative_url }}">Background Services</a>.
 
 ```anylog
 get processes

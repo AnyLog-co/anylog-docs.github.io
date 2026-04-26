@@ -29,7 +29,7 @@ AnyLog can connect to video streams, record segmented clips to a blob database, 
 
 - MongoDB connected as the blob database (stores video segments)
 - PostgreSQL or SQLite connected as the SQL database (stores metadata and detections)
-- (Optional) A YOLOv5 inference gRPC server for object detection — see [gRPC](/docs/grpc/)
+- (Optional) A YOLOv5 inference gRPC server for object detection — see <a href="{{ '/docs/grpc//' | relative_url }}">gRPC</a>
 
 ---
 
@@ -86,7 +86,7 @@ set function params where import_name = imshow and param_name = host and param_v
 
 ### With object detection inference
 
-First start the gRPC inference client (see [gRPC](/docs/grpc/) for setup):
+First start the gRPC inference client (see <a href="{{ '/docs/grpc//' | relative_url }}">gRPC</a> for setup):
 
 ```anylog
 <run grpc client where

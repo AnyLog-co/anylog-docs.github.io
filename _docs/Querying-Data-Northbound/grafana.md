@@ -205,4 +205,4 @@ Display node metadata in a table:
 
 - Set **Max data points** in Query Options to control result density for time-series panels — without it, min/max/avg lines collapse into a single line
 - Use `format_as: timeseries` for time-series panels (Time series, Gauge) and `table` for table panels
-- See [Querying Data](/docs/queries/) for full details on `increments`, `period`, and query options like `include` and `extend`
+- See <a href="{{ '/docs/queries//' | relative_url }}">Querying Data</a> for full details on `increments`, `period`, and query options like `include` and `extend`

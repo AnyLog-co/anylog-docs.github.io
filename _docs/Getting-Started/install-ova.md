@@ -228,6 +228,6 @@ Once the demo environment is running, explore it via the GUI at `http://localhos
 - **Query node endpoint:** `http://VM_IP:32349`
 
 To move beyond the demo and deploy a production-grade environment, see:
-- [Installing AnyLog via Docker](../Getting%20Started/installing-anylog.md)
-- [Installing AnyLog as a Service](../Getting%20Started/anylog-as-service.md)
-- [Deployment Scripts](../Getting%20Started/deployment-scripts.md)
+- <a href="{{ '/docs/Getting-Started/installing-anylog/' | relative_url }}">Installing AnyLog via Docker</a>
+- <a href="{{ '/docs/Getting-Started/anylog-as-service/' | relative_url }}">Installing AnyLog as a Service</a>
+- <a href="{{ '/docs/Getting-Started/deployment-scripts/' | relative_url }}">Deployment Scripts</a>

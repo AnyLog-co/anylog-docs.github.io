@@ -23,7 +23,7 @@ requiring large-scale data movement.
 From AnyLog's point of view, a UNS is metadata about the actual data stored on the blockchain. It is up to the 
 user to decide how and where to use it within their infrastructure.
 
-![MQTT data struct](../../assets/img/uns_mqtt_tree.svg)
+!<a href="{{ '/docs/assets/img/uns_mqtt_tree.svg/' | relative_url }}">MQTT data struct</a>
 ---
 
 ## Auto-Generated vs. User-Defined
@@ -42,7 +42,7 @@ The UNS structure can follow a rigid standard like <a href="https://www.isa.org/
 or a more flexible project-defined hierarchy. Because AnyLog treats the UNS as a type of metadata, both approaches can 
 coexist — a dynamically generated namespace can be extended or paralleled with additional user-defined context.
 
-For a working example of hand-authored UNS policies (ex. ISA-95 metadata) see  , see [Custom UNS (data stream, ISA-95)](UNS-custom.md).
+For a working example of hand-authored UNS policies (ex. ISA-95 metadata) see  , see <a href="{{ '/docs/Managing-Data-Southbound/UNS-custom/' | relative_url }}">Custom UNS (data stream, ISA-95)</a>.
 
 ---
 
@@ -176,7 +176,7 @@ The **`#`** multi-level wildcard subscribes to every topic under `M2/PL1/` (for 
 | Policy mapping | Full JSON | Yes (policy) | No |
 | `dynamic=true` | Scalar value | No | Yes (auto) |
 
-> For mapping-based ingestion, see [Mapping Policies](mapping-policies.md).
+> For mapping-based ingestion, see <a href="{{ '/docs/Managing-Data-Southbound/mapping-policies/' | relative_url }}">Mapping Policies</a>.
 
 ---
 

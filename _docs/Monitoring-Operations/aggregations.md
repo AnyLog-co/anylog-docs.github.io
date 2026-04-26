@@ -200,4 +200,4 @@ To pull aggregations from Grafana, set the following in the dashboard **Payload*
 
 ## OPC-UA with aggregations
 
-See [OPC-UA — Declaring aggregations](/docs/opcua/#example---declaring-opc-ua-with-aggregations) for a full configuration walkthrough.
+See <a href="{{ '/docs/opcua//#example---declaring-opc-ua-with-aggregations' | relative_url }}">OPC-UA — Declaring aggregations</a> for a full configuration walkthrough.

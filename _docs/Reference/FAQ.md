@@ -71,7 +71,7 @@ Missing `"destination": "network"` in the request body. Without it the query run
 - **PUT** — bypasses topic mapping. Database and table are specified directly in the HTTP headers. No `run msg client` required.
 - **POST** — requires a `run msg client` with `broker=rest` active on the node, plus a topic mapping. The POST body is the raw data; `command: data` and `topic: [name]` are set as headers (or body keys).
 
-See [Using REST](/docs/network-services/using-rest) for full examples and Python code.
+See <a href="{{ '/docs/network-services/using-rest/' | relative_url }}">Using REST</a> for full examples and Python code.
 
 ---
 
@@ -334,4 +334,4 @@ The dashboard is making direct browser-to-node POST calls and the node is not re
 2. Run the Flask proxy (`proxy-generic/`) and set Mode → proxy
 3. Use `AnyLog-Agent` as a body key and configure the node to return the required CORS headers
 
-See [MCP & AI Integration](/docs/mcp-ai-integration#browser-connection-modes) for setup details.
+See <a href="{{ '/docs/docs/mcp-ai-integration/#browser-connection-modes' | relative_url }}">MCP & AI Integration</a> for setup details.

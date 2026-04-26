@@ -12,7 +12,7 @@ layout: page
 Every AnyLog query node exposes a **Model Context Protocol (MCP) server** that gives any compatible AI client — Claude Desktop, Claude.ai, Base44 — live access to your network's schema, data, and node topology. No SQL required on your end.
 
 > **Prerequisite:** The query node must have `SYSTEM_QUERY=true` and `ENABLE_MCP=true` set in `node_configs.env`, and the 
-> REST service must be running. See [Deployment Scripts](/docs/deployment-scripts/#southbound--data-ingestion-all-off-by-default).
+> REST service must be running. See <a href="{{ '/docs/deployment-scripts//#southbound--data-ingestion-all-off-by-default' | relative_url }}">Deployment Scripts</a>.
 
 ---
 

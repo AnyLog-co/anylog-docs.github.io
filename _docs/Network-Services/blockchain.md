@@ -10,7 +10,7 @@ layout: page
 
 AnyLog maintains a distributed metadata ledger using either a **master node** (a simple AnyLog node hosting the ledger in a local database) or a **blockchain platform** (e.g. Optimism, Ethereum). Every node maintains a local copy of the relevant metadata and uses it to route data, resolve queries, and enforce configuration — without depending on the availability of the global ledger at runtime.
 
-The metadata is organized as **policies** — JSON objects with a single root key (the policy type). See [Policies & Metadata](../Network%20%26%20Services/policies-and-metadata.md) for policy types and structure.
+The metadata is organized as **policies** — JSON objects with a single root key (the policy type). See <a href="{{ '/docs/Network-Services/policies-and-metadata/' | relative_url }}">Policies & Metadata</a> for policy types and structure.
 
 ---
 
@@ -63,13 +63,13 @@ Verify the connection:
 get platforms
 ```
 
-> See [Using Ethereum](../Network%20%26%20Services/blockchain-ethereum.md) for contract deployment and full Ethereum setup.
+> See <a href="{{ '/docs/Network-Services/blockchain-ethereum/' | relative_url }}">Using Ethereum</a> for contract deployment and full Ethereum setup.
 
 ---
 
 ## Blockchain sync
 
-Every non-master node should run the blockchain sync service to keep its local copy up to date. See [Background Services — Blockchain sync](../Network%20%26%20Services/background-services.md#blockchain-sync-service) for full options.
+Every non-master node should run the blockchain sync service to keep its local copy up to date. See <a href="{{ '/docs/Network-Services/background-services/#blockchain-sync-service' | relative_url }}">Background Services — Blockchain sync</a> for full options.
 
 ### Sync with a master node
 ```anylog

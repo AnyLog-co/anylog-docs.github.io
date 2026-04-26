@@ -39,7 +39,7 @@ EdgeX  →  MQTT Broker (Mosquitto / HiveMQ)  →  AnyLog msg client
 ## Prerequisites
 
 - EdgeX deployed via Docker (see [EdgeX Quick Start](https://docs.edgexfoundry.org/latest/getting-started/quick-start/))
-- An AnyLog node with TCP, REST, Streamer, and Operator services running — see [Background Services](../Network%20%26%20Services/background-services.md)
+- An AnyLog node with TCP, REST, Streamer, and Operator services running — see <a href="{{ '/docs/Network-Services/background-services/' | relative_url }}">Background Services</a>
 - For Option A: the AnyLog Message Broker service running on the receiving node
 
 ---
@@ -206,7 +206,7 @@ The `bring` expressions in the `run msg client` command extract values from this
 | `value` | `bring [readings][][value]` | First reading value |
 | `name` | `bring [readings][][name]` | First reading name |
 
-Adjust the mapping to match the actual structure of your EdgeX device readings. See [Data Ingestion — column mapping](../Managing%20Data%20(Southbound)/data-ingestion.md) for the full `bring` syntax reference.
+Adjust the mapping to match the actual structure of your EdgeX device readings. See <a href="{{ '/docs/Managing-Data-Southbound/Managing%20Data%20(Southbound/' | relative_url }}">Data Ingestion — column mapping</a>/data-ingestion.md) for the full `bring` syntax reference.
 
 ---
 
@@ -236,5 +236,5 @@ See the [EdgeX Quick Start](https://docs.edgexfoundry.org/latest/getting-started
 
 - [EdgeX Foundry documentation](https://docs.edgexfoundry.org/latest/)
 - [EdgeX Device Services — supported protocols](https://wiki.edgexfoundry.org/display/FA/Device+Services)
-- [AnyLog Message Broker service](../Network%20%26%20Services/background-services.md#message-broker-service-local)
-- [AnyLog Data Ingestion — run msg client](../Managing%20Data%20(Southbound)/data-ingestion.md)
+- <a href="{{ '/docs/Network-Services/background-services/#message-broker-service-local' | relative_url }}">AnyLog Message Broker service</a>
+- <a href="{{ '/docs/Managing-Data-Southbound/Managing%20Data%20(Southbound/' | relative_url }}">AnyLog Data Ingestion — run msg client</a>/data-ingestion.md)

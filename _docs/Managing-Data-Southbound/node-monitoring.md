@@ -10,7 +10,7 @@ layout: page
 
 Each AnyLog node can collect its own health metrics and distribute them in one or both of two ways:
 
-- **Live view** — push metrics to a Query Node and visualise them in the [Remote GUI](../Tools%20%26%20UI/remote-gui.md) without storing any data
+- **Live view** — push metrics to a Query Node and visualise them in the <a href="{{ '/docs/Tools-UI/remote-gui/' | relative_url }}">Remote GUI</a> without storing any data
 - **Persistent storage** — stream metrics into an Operator's database for historical queries and dashboards
 
 The monitoring schedule is deployed as a blockchain policy and activated automatically when `NODE_MONITORING=true` is set in the node configuration.
@@ -54,7 +54,7 @@ The resulting `node_insight` object:
 
 ## Option 1 — Live view via Remote GUI
 
-Each node pushes its `node_insight` to the Query Node, which aggregates status from all participating nodes into a single view. The [Remote GUI](../Tools%20%26%20UI/remote-gui.md) reads from the Query Node to display a live network-wide dashboard — no database required.
+Each node pushes its `node_insight` to the Query Node, which aggregates status from all participating nodes into a single view. The <a href="{{ '/docs/Tools-UI/remote-gui/' | relative_url }}">Remote GUI</a> reads from the Query Node to display a live network-wide dashboard — no database required.
 
 ```
 Node A  ──┐
@@ -76,7 +76,7 @@ run client (!view_monitoring_dest) monitor operators where info = !node_insight
 
 The Remote GUI Monitor Node section shows a live table of all nodes pushing metrics to the Query Node:
 
-![Monitor Node Section in Remote GUI](../../assets/img/remote_gui_monitoring.png)
+!<a href="{{ '/docs/assets/img/remote_gui_monitoring.png/' | relative_url }}">Monitor Node Section in Remote GUI</a>
 
 Each row represents one node, showing its name, operational time, elapsed time since last update, new and total rows ingested, and the hardware metrics — free disk space, CPU usage, network packets, and error count.
 

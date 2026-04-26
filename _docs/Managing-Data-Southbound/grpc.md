@@ -152,4 +152,4 @@ exit grpc all
 
 ## gRPC for video inference
 
-When used with video streaming, the gRPC client connects to a YOLOv5 (or similar) inference server. See [Video Streaming](/docs/video-streaming/) for the full configuration including `video connect` and `run video stream`.
+When used with video streaming, the gRPC client connects to a YOLOv5 (or similar) inference server. See <a href="{{ '/docs/video-streaming//' | relative_url }}">Video Streaming</a> for the full configuration including `video connect` and `run video stream`.

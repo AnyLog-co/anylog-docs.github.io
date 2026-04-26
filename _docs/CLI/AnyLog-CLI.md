@@ -6,12 +6,13 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-17 | Created document
+- 2026-04-25 | updated hyperlinks
 --> 
 
 Each AnyLog node exposes a Command Line Interface (CLI) for direct interaction. The CLI lets you inspect node state, 
 issue commands locally or to peer nodes, run scripts, and manage configuration — all from a text prompt.
 
-> If AnyLog is running as a background process, the local CLI is disabled. Use the [Remote-GUI](../Tools%20&%20UI/remote-gui.md) 
+> If AnyLog is running as a background process, the local CLI is disabled. Use the <a href="{{ '/docs/Tools-UI/remote-gui/' | relative_url }}">Remote-GUI</a> 
 > instead to interact with the node over REST.
 
 ---
@@ -79,7 +80,7 @@ The `help` output includes a description, usage syntax, and examples — making 
 
 ### get processes
 
-Lists all background services, their current status, and key configuration details. See [Background Services](../Network%20&%20Services/background-services.md) 
+Lists all background services, their current status, and key configuration details. See <a href="{{ '/docs/Network-Services/background-services/' | relative_url }}">Background Services</a> 
 for how to enable each service.
 
 ```anylog

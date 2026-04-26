@@ -45,7 +45,7 @@ The `Messaging` port accepts:
     bind = false and threads = 6>
 ```
 
-See [Background Services](../Network%20%26%20Services/background-services.md#message-broker-service-local) for full options.
+See <a href="{{ '/docs/Network-Services/background-services/#message-broker-service-local' | relative_url }}">Background Services</a> for full options.
 
 ## Prerequisites for data ingestion
 
@@ -56,7 +56,7 @@ run streamer
 run operator where create_table = true and update_tsd_info = true and archive_json = true and master_node = !master_node and policy = !operator_policy
 ```
 
-See [Managing Data (Southbound)](../Managing%20Data%20(Southbound)/overview.md) for the full ingestion pipeline.
+See <a href="{{ '/docs/Network-Services/Managing%20Data%20(Southbound/' | relative_url }}">Managing Data (Southbound)</a>/overview.md) for the full ingestion pipeline.
 
 ---
 

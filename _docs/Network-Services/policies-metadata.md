@@ -193,7 +193,7 @@ Mapping policies define how incoming JSON data is transformed into database rows
 }
 ```
 
-See [Data Southbound — Mapping](../Managing%20Data%20(Southbound)/data-southbound.md#mapping-data-to-tables) for full mapping configuration.
+See <a href="{{ '/docs/Network-Services/Managing%20Data%20(Southbound/' | relative_url }}">Data Southbound — Mapping</a>/data-southbound.md#mapping-data-to-tables) for full mapping configuration.
 
 ---
 

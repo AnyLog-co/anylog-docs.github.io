@@ -45,7 +45,7 @@ curl -X POST http://[ip]:[port] \
   -d '{"command": "sql my_data format=json \"select * from ping_sensor limit 10\""}'
 ```
 
-See [Using REST](../Querying%20Data%20(Northbound)/using-rest.md) for the full REST API reference.
+See <a href="{{ '/docs/Querying-Data-Northbound/Querying%20Data%20(Northbound/' | relative_url }}">Using REST</a>/using-rest.md) for the full REST API reference.
 
 ---
 
@@ -58,7 +58,7 @@ Key configuration:
 - **Plugin**: JSON API (or SimpleJSON)
 - **Query**: AnyLog SQL passed as the metric/query body
 
-See [Grafana Integration](../Querying%20Data%20(Northbound)/grafana.md) for step-by-step setup and dashboard examples.
+See <a href="{{ '/docs/Querying-Data-Northbound/Querying%20Data%20(Northbound/' | relative_url }}">Grafana Integration</a>/grafana.md) for step-by-step setup and dashboard examples.
 
 ---
 
@@ -145,7 +145,7 @@ AnyLog can export query results directly to Google Sheets or Google Drive for sh
    schedule time = 1 hour and name = "Export to Drive" task ...
    ```
 
-See the [Google Drive connector documentation](../Querying%20Data%20(Northbound)/) for OAuth setup and examples.
+See the <a href="{{ '/docs/Querying-Data-Northbound/Querying%20Data%20(Northbound/' | relative_url }}">Google Drive connector documentation</a>/) for OAuth setup and examples.
 
 ---
 
@@ -167,7 +167,7 @@ Notifications are typically triggered from:
 - **Streaming conditions** — fire when incoming data meets a threshold
 - **Scheduled tasks** — run on a schedule and push results
 
-See [Monitoring & Alerts — streaming conditions](../Monitoring%20%26%20Operations/monitoring.md#streaming-conditions-real-time-alerts) for configuration.
+See <a href="{{ '/docs/Monitoring-Operations/monitoring/#streaming-conditions-real-time-alerts' | relative_url }}">Monitoring & Alerts — streaming conditions</a> for configuration.
 
 ---
 
@@ -175,7 +175,7 @@ See [Monitoring & Alerts — streaming conditions](../Monitoring%20%26%20Operati
 
 The Remote CLI is a browser-based interface for issuing AnyLog commands and queries without a local terminal. It connects to any node over REST.
 
-See [Remote CLI](../Tools%20%26%20UI/remote-gui.md) for setup and usage.
+See <a href="{{ '/docs/Tools-UI/remote-gui/' | relative_url }}">Remote CLI</a> for setup and usage.
 
 ---
 
@@ -183,13 +183,13 @@ See [Remote CLI](../Tools%20%26%20UI/remote-gui.md) for setup and usage.
 
 The MCP server exposes AnyLog to AI assistants and LLM-based tools via the Model Context Protocol. Once enabled, tools like Claude can query your edge network in natural language.
 
-See [MCP](../Tools%20%26%20UI/mcp.md) for configuration.
+See <a href="{{ '/docs/Tools-UI/mcp/' | relative_url }}">MCP</a> for configuration.
 
 ---
 
 ## Query reference
 
-All northbound connectors ultimately issue SQL queries through AnyLog. See [Queries](../Querying%20Data%20(Northbound)/queries.md) for the full SQL reference including:
+All northbound connectors ultimately issue SQL queries through AnyLog. See <a href="{{ '/docs/Querying-Data-Northbound/Querying%20Data%20(Northbound/' | relative_url }}">Queries</a>/queries.md) for the full SQL reference including:
 
 - Network-distributed queries (`run client ()`)
 - Time filters (`NOW() - N hours`)

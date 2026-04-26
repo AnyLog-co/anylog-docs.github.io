@@ -8,7 +8,7 @@ layout: page
 - 2026-04-17 | Created document
 --> 
 
-> This guide covers a standard 3-node deployment (master, operator, query) on a single machine. For a conceptual overview of node types, see [Introduction to AnyLog](./getting-started.md).
+> This guide covers a standard 3-node deployment (master, operator, query) on a single machine. For a conceptual overview of node types, see <a href="{{ '/docs/./getting-started/' | relative_url }}">Introduction to AnyLog</a>.
 
 ## Prerequisites
 

@@ -120,7 +120,7 @@ schedule time = 1 day and start = +1d and name = "Drop old data" task drop parti
 
 ## Querying data
 
-AnyLog uses a SQL dialect that routes queries across the network. See [Queries](../Querying%20Data%20(Northbound)/queries.md) for the full reference. Key points:
+AnyLog uses a SQL dialect that routes queries across the network. See <a href="{{ '/docs/Querying-Data-Northbound/Querying%20Data%20(Northbound/' | relative_url }}">Queries</a>/queries.md) for the full reference. Key points:
 
 ### Local query
 ```anylog
@@ -216,7 +216,7 @@ backup table where dbms = my_data and table = ping_sensor and partition = [parti
 
 ### Archive and cleanup
 
-The Operator service can be configured to archive processed JSON and SQL files. See [Background Services — Operator](../Network%20%26%20Services/background-services.md#operator-service) for `archive_json` and `archive_sql` options.
+The Operator service can be configured to archive processed JSON and SQL files. See <a href="{{ '/docs/Network-Services/background-services/#operator-service' | relative_url }}">Background Services — Operator</a> for `archive_json` and `archive_sql` options.
 
 Delete archived files older than N days:
 ```anylog

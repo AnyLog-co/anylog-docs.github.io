@@ -155,7 +155,7 @@ connect dbms new_company where type = sqlite
 >
 ```
 
-> [Mapping Policies](mapping-policies.md) define how to interpret incoming data from Kafka — the same way they work for MQTT and REST POST requests.
+> <a href="{{ '/docs/Managing-Data-Southbound/mapping-policies/' | relative_url }}">Mapping Policies</a> define how to interpret incoming data from Kafka — the same way they work for MQTT and REST POST requests.
 
 **Verify data is flowing**:
 

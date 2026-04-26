@@ -73,7 +73,7 @@ Expected response: `{"AnyLog.status":"Success", "AnyLog.hash": "0"}`
 
 ## REST POST
 
-Used when data is published through the message client mapping layer (see [`run msg client`](/docs/msg-client/) below). The POST goes to the operator's REST port with a topic header instead of direct table/database headers.
+Used when data is published through the message client mapping layer (see <a href="{{ '/docs/msg-client//' | relative_url }}">`run msg client`</a> below). The POST goes to the operator's REST port with a topic header instead of direct table/database headers.
 
 ```bash
 curl -X POST "http://127.0.0.1:32149" \
@@ -271,7 +271,7 @@ curl -X GET 127.0.0.1:32349 \
 
 ## Live data generator
 
-AnyLog provides a shared MQTT broker with continuously published sample data across several real-world use cases. See the [Live Data Generator](/docs/data-generator/) page for connection details, the full script directory, and how to run each generator.
+AnyLog provides a shared MQTT broker with continuously published sample data across several real-world use cases. See the <a href="{{ '/docs/data-generator//' | relative_url }}">Live Data Generator</a> page for connection details, the full script directory, and how to run each generator.
 
 ---
 

@@ -6,11 +6,14 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-17 | Created document
+- 2026-04-25 | updated hyperlinks
 --> 
 
 By default AnyLog is deployed as a Docker container or via Kubernetes. In some environments — limited disk space, regulatory requirements, network constraints, or hardware without container support — it makes more sense to install AnyLog directly on the host as a systemd service.
 
-> When running as a service the local CLI is disabled. All interaction with the node after startup is done via REST. See [AnyLog CLI](../Getting%20Started/AnyLog-CLI.md) and [Using REST](../Querying%20Data%20(Northbound)/using-rest.md) for reference.
+> When running as a service the local CLI is disabled. All interaction with the node after startup is done via REST. 
+> See <a href="{{ '/docs/CLI/AnyLog-CLI/' | relative_url }}">AnyLog CLI</a> and
+> <a href="{{ '/docs/Network-Services/using-rest/ | relative_url }}">Using REST</a> for reference.
 
 ---
 
@@ -40,7 +43,8 @@ Replace `anylog_v0.0.0_x86_64` with the actual build filename for your target ve
 
 ## Option A — Deploy using the deployment scripts (recommended)
 
-This path uses the same deployment scripts as a Docker-based deployment, with the AnyLog binary substituted for the container image.
+This path uses the same deployment scripts as a Docker-based deployment, with the AnyLog binary substituted for the 
+container image.
 
 ### 1. Clone the deployment scripts
 
@@ -91,7 +95,8 @@ DB_PORT=5432
 LEDGER_CONN=127.0.0.1:32048   # IP:Port of the master node
 ```
 
-See [Deployment Scripts](../Getting%20Started/deployment-scripts.md) for the full list of configuration options.
+See <a href="{{ '/docs/Getting-Started/deployment-scripts/' | relative_url }}">Deployment Scripts</a> for the full list 
+of configuration options.
 
 ### 4. Create the systemd service file
 
@@ -142,7 +147,8 @@ curl -X GET 127.0.0.1:32549 \
 
 ## Option B — Minimal startup + REST-based configuration
 
-This path starts the node with only TCP and REST enabled, then configures all other services via the REST API. It gives you full programmatic control over the node with no dependency on the deployment scripts.
+This path starts the node with only TCP and REST enabled, then configures all other services via the REST API. It gives 
+you full programmatic control over the node with no dependency on the deployment scripts.
 
 ### 1. Create a minimal startup script
 
@@ -218,7 +224,8 @@ Group=root
 WantedBy=multi-user.target
 ```
 
-`ExecStartPost` runs your Python configuration script after the node starts. Remove that line if you are configuring the node manually via REST.
+`ExecStartPost` runs your Python configuration script after the node starts. Remove that line if you are configuring 
+the node manually via REST.
 
 ### 4. Start and verify
 
@@ -250,7 +257,8 @@ journalctl -u anylog.service -f         # tail the service log
 
 ## Next steps
 
-Once the node is running, configure it via REST using the same commands you would use on the CLI — wrap any AnyLog command in a REST GET request with the `command` header:
+Once the node is running, configure it via REST using the same commands you would use on the CLI — wrap any AnyLog 
+command in a REST GET request with the `command` header:
 
 ```shell
 curl -X GET 127.0.0.1:32549 \
@@ -258,4 +266,6 @@ curl -X GET 127.0.0.1:32549 \
   -H "User-Agent: AnyLog/1.23"
 ```
 
-See [Using REST](../Querying%20Data%20(Northbound)/using-rest.md) and [Background Services](../Network%20%26%20Services/background-services.md) for full configuration reference.
+See <a href="{{ '/docs/Network-Services/using-rest/ | relative_url }}">Using REST</a> and
+<a href="{{ '/docs/Network-Services/background-services/' | relative_url }}">Background Services</a> for full 
+configuration reference.

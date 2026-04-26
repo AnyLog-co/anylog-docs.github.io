@@ -8,7 +8,7 @@ layout: page
 - 2026-04-17 | Created document
 --> 
 
-Queries are issued to a **Query Node** which uses blockchain metadata to locate the relevant Operator nodes, distributes the query, and assembles a unified result. See [How Querying Works](/docs/introduction/#how-querying-works) for the architecture background.
+Queries are issued to a **Query Node** which uses blockchain metadata to locate the relevant Operator nodes, distributes the query, and assembles a unified result. See <a href="{{ '/docs/introduction//#how-querying-works' | relative_url }}">How Querying Works</a> for the architecture background.
 
 ---
 

@@ -6,9 +6,12 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-17 | Created document
+- 2026-04-25 | updated hyperlinks
 --> 
 
-AnyLog's `get` commands provide a unified interface for inspecting every aspect of a running node — its services, data volumes, resource usage, configuration, and connectivity. All `get` commands can be issued locally on the CLI or remotely via `run client`.
+AnyLog's `get` commands provide a unified interface for inspecting every aspect of a running node — its services, data 
+volumes, resource usage, configuration, and connectivity. All `get` commands can be issued locally on the CLI or 
+remotely via `run client`.
 
 ---
 
@@ -44,7 +47,7 @@ run client 10.0.0.78:7848 get status
 
 ### get processes
 
-Lists all background services, their status, and key configuration details. See [Background Services](../Network%20%26%20Services/background-services.md).
+Lists all background services, their status, and key configuration details. See <a href="{{ '/docs/Network-Services/background-services/' | relative_url }}">Background Services</a>.
 
 ```anylog
 get processes
@@ -80,7 +83,8 @@ get platform info
 
 ## Dictionary
 
-Each node maintains a key-value dictionary storing paths, IPs, ports, and user-defined variables. Variables are referenced in scripts and commands using the `!` prefix.
+Each node maintains a key-value dictionary storing paths, IPs, ports, and user-defined variables. Variables are 
+referenced in scripts and commands using the `!` prefix.
 
 ### get dictionary
 
@@ -144,7 +148,8 @@ get operator config
 
 ## Resource monitoring
 
-These commands require [psutil](https://psutil.readthedocs.io/en/latest/) to be installed on the node.
+These commands require <a href="https://psutil.readthedocs.io/en/latest/" target="_blank">psutil</a> to be installed on 
+the node.
 
 ### Memory, CPU, disk
 
@@ -171,7 +176,8 @@ get os process list         # process names and PIDs
 
 ### get node info
 
-Maps to psutil calls and returns structured system metrics. Values can be stored in a database table or sent to an aggregator node.
+Maps to psutil calls and returns structured system metrics. Values can be stored in a database table or sent to an 
+aggregator node.
 
 ```anylog
 get node info cpu_percent

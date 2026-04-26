@@ -17,7 +17,7 @@ system logs, hardware sensors, applications — to a storage or analytics layer.
 
 This page covers how to configure Telegraf to publish metrics into AnyLog over MQTT. A REST alternative is included 
 in the config but commented out. For details on how AnyLog interprets and stores the incoming data, see 
-[Mapping Policies](mapping-policies.md).
+<a href="{{ '/docs/Managing-Data-Southbound/mapping-policies/' | relative_url }}">Mapping Policies</a>.
 
 ---
 
@@ -38,7 +38,7 @@ automatically.
 ### 1. Deploy an AnyLog Operator Node
 
 Deploy an AnyLog operator node with a local message broker enabled. See 
-[background processes](../background-processes.md#operator-process) for configuration details.
+<a href="{{ '/docs/Managing-Data-Southbound/background-processes/#operator-process' | relative_url }}">background processes</a> for configuration details.
 
 ### 2. Attach to the AnyLog Node
 
