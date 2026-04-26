@@ -8,9 +8,12 @@ layout: page
 - 2026-04-17 | Created document
 - 2026-04-23 | Moved to Network and Services; added POST as GET alternative, AnyLog-Agent header, blockchain insert command, Python examples
 - 2026-04-24 | there was an issue with the REST POST of commands example 
+- 2026-04-25 | REST GET via browser support 
+- 2026-04-25 | hyperlink support
 -->
 
-Any AnyLog node with the REST service enabled, can receive commands and data over HTTP. This lets external applications, dashboards, and scripts interact with the network without running AnyLog themselves.
+Any AnyLog node with the REST service enabled, can receive commands and data over HTTP. This lets external applications, 
+dashboards, and scripts interact with the network without running AnyLog themselves.
 
 ---
 
@@ -38,13 +41,18 @@ Both are accepted by the node and treated identically. For server-side code eith
 
 ### Why AnyLog-Agent for browser clients
 
-Browsers treat `User-Agent` as a reserved header — `fetch()` cannot set it manually, and its presence in a cross-origin request triggers a CORS preflight (`OPTIONS`) that AnyLog nodes are not configured to answer. `AnyLog-Agent` is a custom header that both the browser and the node control explicitly, allowing the node to whitelist it:
+Browsers treat `User-Agent` as a reserved header — `fetch()` cannot set it manually, and its presence in a cross-origin 
+request triggers a CORS preflight (`OPTIONS`) that AnyLog nodes are not configured to answer. `AnyLog-Agent` is a 
+custom header that both the browser and the node control explicitly, allowing the node to whitelist it:
 
 ```
 Access-Control-Allow-Headers: AnyLog-Agent, Content-Type
 ```
 
-See <a href="{{ '/docs/network-services//#rest-service' | relative_url }}">Network and Services — REST service</a> and the [MCP-Examples CORS guide](https://github.com/AnyLog-co/MCP-Examples) for proxy-based solutions when direct browser access is not possible.
+ 
+See <a href="{{ '/docs/network-services/using-rest/#rest-service' | relative_url }}">Network and Services — REST service</a> 
+and the <a target="https://github.com/AnyLog-co/MCP-Examples" target="_blank">MCP-Examples CORS guide</a> for 
+proxy-based solutions when direct browser access is not possible.
 
 ---
 
@@ -293,7 +301,8 @@ def post_data(conn: str, topic: str, payload: str, auth: tuple = (), timeout: in
 
 ## PUT requests — publish data directly
 
-PUT bypasses topic mapping entirely. The target database and table are specified directly in the request headers, and data is written to the node immediately (or buffered in streaming mode).
+PUT bypasses topic mapping entirely. The target database and table are specified directly in the request headers, and 
+data is written to the node immediately (or buffered in streaming mode).
 
 ### Required headers
 
