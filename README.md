@@ -100,11 +100,16 @@ The slug is the filename without the `.md` extension. The order of slugs within 
 
 ## Editing/Writing Guidelines
 
-- **Use relative paths** for links between doc pages (e.g. `[Install](installing-anylog.md)`)
+- **Use absolute permalink paths** for links between doc pages — Jekyll builds each page at `/docs/<section>/<slug>/` regardless of which folder the source file is in, so relative paths will break:
+```markdown
+  [Install](/docs/getting-started/installing-anylog/)
+  [Background Services](/docs/network-services/background-services/#rest-service)
+```
+  The slug is always the filename without `.md`, lowercased, under its section directory name (also lowercased with hyphens).
 - **External links** must open in a new tab:
-  ```html
+```html
   <a href="https://example.com" target="_blank">Link text</a>
-  ```
+```
 - Keep front matter `description` to a single sentence — it appears as the subtitle under the page title
 - Keep to short sentences, add drawings/pics (PNG files) to make it easy to understand for readers that probably will be more OT than IT skills base
 
@@ -126,6 +131,57 @@ layout: page
 # Introduction to AnyLog
 [content] 
 ```
+
+---
+
+## Leveraging Claude LLM to Update a Doc Page
+
+A reliable pattern for getting Claude to rewrite or update a page while keeping it consistent with the rest of the docs:
+
+1. Provide the **raw GitHub URL** of the file to update — in GitHub, open the file and click **Raw**, then copy the address bar URL
+2. Provide the **raw GitHub URL** of an existing page whose layout you want the output to match
+3. Include the required front matter block in your prompt
+4. Ask Claude to rewrite the first file to match the structure and style of the second
+
+Keep the prompt substantive — include at least a short paragraph describing the intent and audience for each major section you want changed, not just bullet points. The more context you give about tone, audience, and structure, the better the result.
+
+### Sample prompt
+
+The following is a real example using `remote-gui.md`. Copy and adapt it for any page you want to update.
+
+---
+
+> I need you to update the AnyLog documentation page for the Remote GUI.
+>
+> **File to update (raw URL):**
+> `https://raw.githubusercontent.com/AnyLog-co/anylog-docs.github.io/refs/heads/main/_docs/Tools-UI/remote-gui.md`
+>
+> **Example file to match in style and structure (raw URL):**
+> `https://raw.githubusercontent.com/AnyLog-co/anylog-docs.github.io/refs/heads/main/_docs/Getting-Started/getting-started.md`
+>
+> **Required front matter — keep this exactly at the top of the file:**
+> ```yaml
+> ---
+> title: Remote GUI
+> description: Architecture and developer reference for the AnyLog Remote GUI.
+> layout: page
+> ---
+> ```
+>
+> **What to change:**
+>
+> The current page reads like internal notes — it's dense and assumes the reader already knows the codebase. Rewrite it so a new developer joining the project can follow it from top to bottom. The architecture diagram and key terminology table are good and should stay, but the surrounding prose needs more context.
+>
+> The "Running locally" section currently has two terminal blocks with commands that aren't explained — add a sentence before each block describing what it does and why. The `uvicorn` command in particular looks like it may have a path issue (`CLI.local-cli-backend.main:app` uses dots but the `cd` above already entered the subdirectory); please flag that or correct it.
+>
+> The "Plugin system" section is the most important part for contributors — expand the intro paragraph to explain *when* someone would want to build a plugin versus modifying a core feature. Keep the code examples as-is.
+>
+> Use absolute permalink paths for links to other pages in `_docs/` — e.g. `/docs/network-services/background-services/`. Any link to an external repo or external site should use `<a href="URL" target="_blank">` format. Do not change any section headings — the navigation relies on them.
+
+---
+
+Adjust the URLs, front matter, and the description of changes to match whatever page you are working on.
+
 ---
 
 ## Contributing
