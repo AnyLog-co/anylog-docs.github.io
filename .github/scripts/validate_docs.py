@@ -8,6 +8,20 @@ import posixpath
 
 from navigation import ITEM_ORDER
 
+# Map filesystem folder names to ITEM_ORDER section keys
+# Add an entry here whenever a new _docs/ subfolder is created
+FOLDER_TO_SECTION = {
+    "Getting-Started":            "Getting Started",
+    "CLI":                        "CLI",
+    "Network-Services":           "Network & Services",
+    "Managing-Data-Southbound":   "Managing Data (Southbound)",
+    "Querying-Data-Northbound":   "Querying Data (Northbound)",
+    "Monitoring-Operations":      "Monitoring & Operations",
+    "Tools-UI":                   "Tools & UI",
+    "Version-Control":            "Version Control",
+    "Reference":                  "Reference",
+}
+
 
 # ── Locate repo root ─────────────────────────────────────
 class DirectoryNotFound(Exception):
@@ -74,7 +88,9 @@ def __order_items(section, items):
         return items
 
     ordered = []
-    remaining = {item["slug"]: item for item in items}
+    # Index by bare filename slug (last path component) so navigation.py entries
+    # like "AnyLog-CLI" match items whose full slug is "CLI/AnyLog-CLI"
+    remaining = {item["slug"].split("/")[-1]: item for item in items}
 
     for slug in order:
         if slug in remaining:
@@ -112,25 +128,30 @@ with open(CONFIG) as f:
 
 ROOT_PATHS = {}
 for root, _, file in os.walk(DOCS_DIR):
-    dir_name = "root"
+    folder_name = "root"
     if root:
         if '/' in root:
-            dir_name = root.rsplit('/', 1)[-1]
+            folder_name = root.rsplit('/', 1)[-1]
         elif '\\' in root:
-            dir_name = root.rsplit('\\', 1)[-1]
+            folder_name = root.rsplit('\\', 1)[-1]
+    # Translate folder name to ITEM_ORDER section key; fall back to folder name
+    dir_name = FOLDER_TO_SECTION.get(folder_name, folder_name)
     if ROOT_PATHS.get(dir_name) is None:
         ROOT_PATHS[dir_name] = []
 
     if file and isinstance(file, list):
         for fname in file:
             if not (fname.endswith(".") or fname == "README.md"):
-                slug = os.path.splitext(fname)[0]
-                nav_title = __nav_title_override(dir_name, slug)
+                bare_slug = os.path.splitext(fname)[0]
+                # Include subfolder in slug so sidebar.html builds the correct URL
+                # e.g. "CLI/AnyLog-CLI" -> /docs/CLI/AnyLog-CLI/
+                slug = posixpath.join(folder_name, bare_slug) if folder_name != "root" else bare_slug
+                nav_title = __nav_title_override(dir_name, bare_slug)
                 file_title = __extract_title(md_path=os.path.join(root, fname))
                 ROOT_PATHS[dir_name].append({
                     "slug": slug,
                     "title": nav_title or file_title,
-                    "file": posixpath.join(dir_name, fname)
+                    "file": posixpath.join(folder_name, fname)
                 })
     elif file and not (file.endswith(".") or file == "README.md"):
         slug = os.path.splitext(file)[0]
