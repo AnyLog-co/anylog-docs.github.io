@@ -80,6 +80,8 @@ run blockchain sync where source = master and time = 30 seconds and dest = file 
 | **Node-RED** | Via Node-RED flow (REST/MQTT) | [Node-RED](/docs/managing-data-southbound/node-red/) |
 | **EdgeX** | Via EdgeX southbound framework | [EdgeX](/docs/managing-data-southbound/edgex/) |
 | **Video** | Video stream ingestion | [Video Streaming](/docs/managing-data-southbound/video-streaming/) |
+
+
 ---
 
 ## Knowing your topics and schemas
