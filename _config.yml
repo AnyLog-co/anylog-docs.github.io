@@ -27,7 +27,9 @@ exclude:
 - README.md
 - vendor
 include:
-- assets/img/node_configs.env
+- _includes/sample-post.py
+- _includes/sample-put.py
+- _includes/node_configs.env
 nav:
 - title: Getting Started
   items:
@@ -183,15 +185,15 @@ nav:
     file: Tools-UI/remote-gui.md
 - title: Version Control
   items:
+  - slug: Version-Control/SOURCE-CHANGELOGS
+    title: Source Changelog
+    file: Version-Control/SOURCE-CHANGELOGS.md
   - slug: Version-Control/DEPLOYMENT_SCRIPTS-CHANGELOGS
-    title: Deployment Scripts (Changelog)
+    title: Deployment-Scripts Changelog
     file: Version-Control/DEPLOYMENT_SCRIPTS-CHANGELOGS.md
   - slug: Version-Control/DOCKER_COMPOSE-CHANGELOG
-    title: Changelog
+    title: Docker-Compose Changelog
     file: Version-Control/DOCKER_COMPOSE-CHANGELOG.md
-  - slug: Version-Control/SOURCE-CHANGELOGS
-    title: AnyLog's Source Code (Changelog)
-    file: Version-Control/SOURCE-CHANGELOGS.md
 - title: Reference
   items:
   - slug: Reference/FAQ

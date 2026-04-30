@@ -31,6 +31,7 @@ class DirectoryNotFound(Exception):
 class FileNotFound(Exception):
     pass
 
+
 ROOT = os.path.dirname(__file__).rsplit(".github", 1)[0]
 if not os.path.isdir(ROOT) and not os.path.isdir:
     raise DirectoryNotFound(f"Failed to locate directory {ROOT}")
@@ -82,47 +83,71 @@ def __slug_from_entry(entry):
     return entry
 
 
-def __order_items(section, items):
-    order = [__slug_from_entry(e) for e in ITEM_ORDER.get(section, [])]
-    if not order:
-        return items
-
-    ordered = []
-    # Index by bare filename slug (last path component) so navigation.py entries
-    # like "AnyLog-CLI" match items whose full slug is "CLI/AnyLog-CLI"
-    remaining = {item["slug"].split("/")[-1]: item for item in items}
-
-    for slug in order:
-        if slug in remaining:
-            ordered.append(remaining.pop(slug))
-
-    ordered.extend(remaining.values())
-    return ordered
+def __existing_nav_index(existing_nav: list) -> dict:
+    """
+    Build a lookup of what's already in _config.yml nav.
+    Returns: { section_title: { bare_slug: item_dict } }
+    """
+    index = {}
+    for section in existing_nav or []:
+        title = section.get("title", "")
+        index[title] = {}
+        for item in section.get("items", []):
+            bare = item.get("slug", "").split("/")[-1]
+            index[title][bare] = item
+    return index
 
 
-def __order_sections(nav_dict, section_order):
-    ordered = []
-    for section in section_order:
-        if section in nav_dict:
-            items = __order_items(section, nav_dict[section])
-            ordered.append({"title": section, "items": items})
+def __merge_nav(existing_nav: list, discovered: dict) -> list:
+    """
+    Core logic: _config.yml is the source of truth.
 
-    for section, items in nav_dict.items():
-        if section not in section_order:
-            ordered.append({"title": section, "items": items})
+    Rules:
+    - Every item already in _config.yml stays exactly where it is.
+    - Items found on disk but NOT in _config.yml are appended to their section.
+    - Sections in ITEM_ORDER but not yet in _config.yml are appended at the end.
+    - Nothing is removed or reordered.
+    """
+    # Build fast lookup of what's already in config
+    existing_index = __existing_nav_index(existing_nav)
 
-    return ordered
+    # Work on a copy so we don't mutate the original
+    result = copy.deepcopy(existing_nav) if existing_nav else []
 
+    # Index result sections by title for fast append
+    result_section_index = {s["title"]: s for s in result}
 
-def __dict_to_nav_list(nav_dict):
-    nav_list = __order_sections(nav_dict, ITEM_ORDER)
-    return nav_list
+    for section_title, items in discovered.items():
+        existing_slugs = existing_index.get(section_title, {})
+
+        new_items = []
+        for item in items:
+            bare = item["slug"].split("/")[-1]
+            if bare not in existing_slugs:
+                new_items.append(item)
+                print(f"  + Adding to nav: [{section_title}] {bare}")
+
+        if not new_items:
+            continue
+
+        if section_title in result_section_index:
+            # Section exists — append missing items at end of it
+            result_section_index[section_title]["items"].extend(new_items)
+        else:
+            # Brand new section — append at end of nav
+            result.append({"title": section_title, "items": new_items})
+            result_section_index[section_title] = result[-1]
+            print(f"  + Adding new section to nav: {section_title}")
+
+    return result
 
 
 # ── Read `_config.yml` ────────────────────────────────────
 
 with open(CONFIG) as f:
     config = yaml.safe_load(f)
+
+existing_nav = config.get("nav", [])
 
 # ── Walk `_docs/` ─────────────────────────────────────────
 
@@ -143,8 +168,6 @@ for root, _, file in os.walk(DOCS_DIR):
         for fname in file:
             if not (fname.endswith(".") or fname == "README.md"):
                 bare_slug = os.path.splitext(fname)[0]
-                # Include subfolder in slug so sidebar.html builds the correct URL
-                # e.g. "CLI/AnyLog-CLI" -> /docs/CLI/AnyLog-CLI/
                 slug = posixpath.join(folder_name, bare_slug) if folder_name != "root" else bare_slug
                 nav_title = __nav_title_override(dir_name, bare_slug)
                 file_title = __extract_title(md_path=os.path.join(root, fname))
@@ -163,15 +186,13 @@ for root, _, file in os.walk(DOCS_DIR):
             "file": posixpath.join(file)
         })
 
-navs = copy.deepcopy(ROOT_PATHS)
-for key in ROOT_PATHS:
-    if not navs.get(key) and navs.get(key) is not None:
-        navs.pop(key)
-ROOT_PATHS = copy.deepcopy(navs)
+# Drop empty sections
+ROOT_PATHS = {k: v for k, v in ROOT_PATHS.items() if v}
 
-# ── Write updated `_config.yml` ───────────────────────────
+# ── Merge: config is source of truth, only add what's missing ────────────────
 
-config["nav"] = __dict_to_nav_list(nav_dict=ROOT_PATHS)
+config["nav"] = __merge_nav(existing_nav, ROOT_PATHS)
+
 with open(CONFIG, 'w') as f:
     yaml.dump(config, f, sort_keys=False)
 

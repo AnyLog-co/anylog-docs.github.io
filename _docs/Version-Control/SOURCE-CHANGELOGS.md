@@ -1,80 +1,18 @@
 ---
-title: AnyLog's Source Code (Changelog)
+title: Changelog
 description: Release history and notable changes across all AnyLog Network versions.
 layout: page
 ---
-<!--
-## Changelog
-- 2026-04-17 | Created document
---> 
 
 ## Unreleased
-<!-- last-processed: a3cd593 -->
-
-<!-- os-dev: a3cd593 (2026-04-10) -->
-
-* **Ori Shadmon** (2026-04-09)
-  * CI/CD: Enable CHANGELOG for os-dev when building Docker
-  * Docker: worflow order/position was in correct; Enable CHANGELOG for os-dev when building Docker
-
-<!-- os-dev: 10d35cc (2026-04-10) -->
-
-* **github-actions[bot]** (2026-04-09)
-  * CI/CD: workflow version control support
-
-<!-- os-dev: 7a35f4c (2026-04-09) -->
-
-* **github-actions[bot]** (2026-04-09)
-  * CI/CD: workflow version control support; param path; logic for  publish
-  * General: workflow version control support
-* **Moshe** (2026-04-09)
-  * Commands (A): fix relating large messages naming
-  * Core utilities (A): fix relating large messages naming
-  * JSON→SQL mapping (A): fix relating large messages naming
-  * Networking (A): fix relating large messages naming
-
-<!-- os-dev: 9bba401 (2026-04-09) -->
-
-* **github-actions[bot]** (2026-04-09)
-  * General: improve changelog config support; chore: update CHANGELOG unreleased [os-dev] [skip ci]
-
-<!-- os-dev: 2981cea (2026-04-09) -->
-* **Ori Shadmon** (2026-03-15 – 2026-04-09)
-  * CI/CD: Version only; mv python tp scripts dir; TAG comments; build + reorg deploy anylog; rules; main branch code; Os dev (#395); version update; merge rs-dev fixes; os-dev branch
-  * Commands (A): merge rs-dev fixes; comment; pkg validation
-  * Core utilities (A): merge rs-dev fixes
-  * Dependencies: Os dev (#395); moved to admin; image builder - missing requirement builder
-  * Docker: Version only; mv python tp scripts dir; revert to use USER - works with open horizon; paths; rm chown; version control; updated dockerfile such that when doing exec users will clearly see anylog@[node-name]-[hostname] rather than anylog@[hostname] - that way its clear when in docker container; build + reorg deploy anylog; workflow fixes; rules; Os dev (#395); version update; moved to admin; cleanup; os-dev branch; build (more geneirc); merge rs-dev fixes; permissions for docker; image builder - missing requirement builder; setup.cfg; builder issues
-  * General: changelog updated; mv python tp scripts dir; CHANGELOG; rm chown; revert chown location; build + reorg deploy anylog; workflow fixes; rules; oshadmon permissions; Os dev (#395); moved to admin; cleanup; ignore log; readme -  bug; hidden import for docker; docker pkgs in hidden; merge rs-dev fixes; os-dev branch; version; builder issues
-  * Networking (A): merge rs-dev fixes
-* **Moshe** (2026-03-15 – 2026-04-08)
-  * Blockchain (A): blockchain trace code; exclude cluster policy fron the namespace
-  * Commands (A): fix in Concatenating strings; fix error messages; fix mcp server; fix bug in read script from policy
-  * Commands (AE): fix dbms processig time
-  * Core utilities (A): Switching configs from Linux to windows or windows to linux; fix dbms processig time; fix in Concatenating strings; http core fix; fix assignment failure; remove git id; pprint; fix messages to client; id; git id; fix bug in mcp server; fix postgreSQL - stop CSV in run immediate; version; fix docker error message; fix grafana; fix mcp server; Fix - REST request; Fix - json post message; Fix - mqtt; Fix - UNS; Fix - get_pull_info; fix mqtt broker; fix bug in read script from policy; add post proxy; fix POST bug; fix mcp bug; exclude cluster policy fron the namespace
-  * Data ingestion (A): fix docker error message; Fix - get_pull_info
-  * Database / SQL (A): fix dbms processig time; fix postgreSQL - stop CSV in run immediate
-  * Dependencies: space
-  * General: remove / moved data dir content; User-Agent to AnyLog-Agent; node scripts updated; blockchain bug; fix mqtt broker; add post proxy
-  * JSON→SQL mapping (A): fix postgreSQL - stop CSV in run immediate
-  * Networking (A): fix MCP descriptions for query and UNS; http core fix; User-Agent to AnyLog-Agent; fix messages to client; fix bug in mcp server; fix mcp server; Fix - REST request; Fix - json post message; Fix - mqtt; fix mqtt broker; fix POST bug; fix mcp bug
-  * Node membership (A): Fix - REST request; Fix - UNS
-  * REST / API (A): fix grafana
-  * Unified Namespace (AE): fix mqtt broker
-* **royshadmon** (2026-03-23 – 2026-04-01)
-  * CI/CD: test auto builder; output installed python packages in format table or json. can also query specific python packages as comma-seperated list, see example; workflow support
-  * Commands (A): output installed python packages in format table or json. can also query specific python packages as comma-seperated list, see example
-  * Docker: test auto builder; output installed python packages in format table or json. can also query specific python packages as comma-seperated list, see example; workflow support
-  * General: adding .swp to gitignore
-* **Moshe Shadmon** (2026-04-01)
-  * CI/CD: Os dev (#396)
-  * Dependencies: Os dev (#396)
-  * Docker: Os dev (#396)
-  * General: Os dev (#396)
+<!-- last-processed: 8fca3c8 -->
 
 <!-- Developers: add bullets below as changes land in your branch -->
 
-### April 2026 (post 1.4.2603)
+---
+## 1.4.2604 (April 2026 · acf221c · 2026-04-29)
+
+### April 2026 (version 1.4.2604)
 
 #### ✨ New Features
 - **Python package inspection tool**: outputs installed packages in table or JSON format, with optional filtering by package name
@@ -91,7 +29,7 @@ layout: page
 - Fixed DBMS processing time calculation
 - Fixed bug in reading scripts from policies
 - Fixed `chown` location issue in Docker container startup
-- Fixed PostgreSQL — stopped generating CSV output during `run immediate` commands
+- Fixed PostgresSQL — stopped generating CSV output during `run immediate` commands
 - Fixed blockchain bug in `pprint` output formatting
 - Fixed messages to client formatting
 
@@ -111,7 +49,8 @@ layout: page
 - Image builder updated to support Unix in addition to Linux
 - Docker package hidden imports consolidated
 - `setup.cfg` updated for packaging configuration
-
+- when merging between os-dev & pre-develop there were workflow issues that were not taken into consideration
+ 
 ---
 
 ## 1.4.2603 (pre-develop · 8a98ca · 2026-03-16)

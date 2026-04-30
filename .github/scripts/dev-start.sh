@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+#set -e
 
 echo "Running docs validation..."
 python3 /srv/content/.github/scripts/validate_docs.py
