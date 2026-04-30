@@ -1,0 +1,41 @@
+name: Sync CHANGELOGs from source repos
+
+on:
+  workflow_dispatch:          # manual trigger from GitHub UI
+  repository_dispatch:        # triggered by source repos via API call
+    types: [changelog-updated]
+  schedule:
+    - cron: '0 6 * * *'      # daily safety net at 06:00 UTC
+
+permissions:
+  contents: write             # needs write to push to pre-develop
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout docs repo (pre-develop)
+        uses: actions/checkout@v4
+        with:
+          ref: pre-develop
+          token: ${{ secrets.SHARED_DOCS_PAT }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Sync CHANGELOGs
+        env:
+          GH_TOKEN: ${{ secrets.SHARED_DOCS_PAT }}
+        run: python .github/scripts/sync_changelogs.py
+
+      - name: Commit if changed
+        run: |
+          git config user.name  "anylog-ci-bot[bot]"
+          git config user.email "anylog-ci-bot[bot]@users.noreply.github.com"
+          git add _docs/Version-Control/
+          git diff --cached --quiet && echo "No changes" || \
+            git commit -s -m "chore: sync CHANGELOGs from source repos [skip ci]"
+          git push

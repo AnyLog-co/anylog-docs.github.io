@@ -137,125 +137,90 @@ length limits.
 
 ## POST requests
 
-POST can be used as a direct alternative to GET, and is also the method for data publishing via topic mapping.
+POST serves four distinct purposes in AnyLog:
 
-### POST as an alternative to GET
+| Use                                               | Description |
+|---------------------------------------------------|---|
+| Publish Data                                      | Ingest time-series data via topic mapping (`run msg client` with `broker=rest`) |
+| Publish metadata                            | Insert policies to the blockchain via `blockchain insert` |
+| Execute commands | Send any AnyLog command to the node — same as GET but via JSON body |
+| GET via JSON body                             | Pass GET-style headers as JSON keys — useful where custom HTTP headers are restricted |
 
-When using POST instead of GET, the headers used in GET become keys in the JSON body. This makes POST the natural choice for browser-based clients and any environment where setting custom HTTP headers is restricted.
+--- 
 
-**GET style:**
-```bash
-curl -X GET 'http://10.0.0.78:32349' \
-  -H 'command: get status' \
-  -H 'User-Agent: AnyLog/1.23'
+### Publishing Data via POST
+
+
+The logic with publishing data via _POST_ allows for a simple logic for getting data into AnyLog with the behavior 
+of MQTT's [mapping policies](/docs/Managing-Data-Southbound/mapping-policies.md) logic.  
+
+As such, POST data publishing requires a `run msg client` with `broker=rest` active on the receiving node. This maps 
+incoming JSON fields to a target database and table; thus the actual idea of publishing data (entirely via REST). 
+
+1. **Define Mapping Policy** - The policy describes how incoming JSON fields map to database columns:
+
+```json
+{
+   "mapping": {
+      "id": "my-mappigng1",
+      "dbms": "bring [dbms]",
+      "table": "bring [table]",
+      "readings": "",
+      "schema": {
+         "timestamp": {
+            "default": "now()", 
+            "type": "timestamp",
+            "bring": "[timestamp]"
+         },
+         "value": {
+            "default": null,
+            "type": "float",
+            "bring": "[value]"
+         }
+     }
+ }}   
 ```
 
-**Equivalent POST style:**
-```bash
-curl -X POST 'http://10.0.0.78:32349' \
-  -H 'Content-Type: application/json' \
-  -d '{"command": "get status", "AnyLog-Agent": "AnyLog/1.23"}'
-```
+2. **Publish Policy** - Publish mapping policy to the blockchain, this would be used in `run msg client` to understand the data coming in. 
 
-Both return the same response. Use `AnyLog-Agent` in the body when calling from a browser.
-
-### Examples
-
-#### Check node status
-```bash
-curl -X POST 'http://10.0.0.78:32349' \
-  -H 'Content-Type: application/json' \
-  -d '{"command": "get status where format=json", "AnyLog-Agent": "AnyLog/1.23"}' \
-  -w "\n"
-```
-
-#### SQL query across the network
-```bash
-curl -X POST 'http://10.0.0.78:32349' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "command": "sql mydb format=json:list and stat=false select * from rand_data where timestamp >= now() - 1 minute limit 10",
-    "AnyLog-Agent": "AnyLog/1.23",
-    "destination": "network"
-  }' \
-  -w "\n"
-```
-
-#### Reset the error log
-```bash
-curl -X POST 'http://10.0.0.78:32349' \
-  -H "command: reset error log" \
-  -H "AnyLoog-Agent: AnyLog/1.23"
-```
-
-#### Set a variable
-```bash
-curl -X POST 'http://10.0.0.78:32349' \
-  -H "command: set company_name = AnyLog" \
-  -H "AnyLoog-Agent: AnyLog/1.23"
-```
-
-### Publish a mapping policy to the blockchain
-
-Before publishing data via POST topic mapping, a mapping policy must exist on the blockchain. Use `blockchain insert` to add it:
-
-```bash
-curl -X POST 'http://10.0.0.78:32349' \
-  -H "command: blockchain insert where policy=!new_policy and local=true and master=!ledger_conn" \
-  -H "AnyLoog-Agent: AnyLog/1.23"
-```
-
-> The `master=!ledger_conn` parameter is optional — include it to also publish the policy to a master ledger node.
-
-**Python example:**
-
-```python
-import json
-import requests
-
-def publish_policy(conn: str, ledger_conn: str, policy: dict, auth: tuple = (), timeout: int = 30) -> bool:
-    headers = {
-        'command': f'blockchain insert where policy=!new_policy and local=true and master={ledger_conn}',
-        'User-Agent': 'AnyLog/1.23',
+```shell
+curl -X POST 'http://10.0.0.69:32149' \
+  -H 'command: blockchain insert where policy=!new_policy and local=true and master_node=!ledger_conn' \
+  -H 'AnyLog-Agent: AnyLog/1.23' \
+  --data-raw '<new_policy={"mapping": {
+    "id": "my-mapping1",
+    "dbms": "bring [dbms]",
+    "table": "bring [table]",
+    "readings": "",
+    "schema": {
+      "timestamp": {
+        "default": "now()",
+        "type": "timestamp",
+        "bring": "[timestamp]"
+      },
+      "value": {
+        "default": null,
+        "type": "float",
+        "bring": "[value]"
+      }
     }
-
-    raw_policy = "<new_policy=%s>" % json.dumps(policy)
-
-    try:
-        r = requests.post(url='http://%s' % conn, headers=headers, data=raw_policy, auth=auth, timeout=timeout)
-    except Exception as e:
-        print('Failed to POST policy against %s (Error: %s)' % (conn, e))
-        return False
-
-    if int(r.status_code) != 200:
-        print('Failed to POST policy against %s (Network Error: %s)' % (conn, r.status_code))
-        return False
-
-    return True
+  }}>'
 ```
 
-### Publish data via POST topic mapping
+3. **Define `msg client`**  - Start message client logic on the operator node 
 
-POST data publishing requires a `run msg client` with `broker=rest` active on the receiving node. This maps incoming JSON fields to a target database and table.
-
-**Step 1 — configure the msg client on the node:**
-
-```anylog
-<run msg client where broker = rest and port = !anylog_rest_port and user-agent = anylog and log = false and topic = (
-  name = new_data and
-  dbms = "bring [dbms]" and
-  table = "bring [table]" and
-  column.timestamp.timestamp = "bring [timestamp]" and
-  column.value = (type = int and value = "bring [value]")
-)>
+```shell
+curl -X POST 'http://10.0.0.69:32149' \
+   -H "command: run msg client where broker=rest and user-agent=anylog and log=false topic=(name=my-topic and policy=my-mapping1)" \
+   -H "User-Agent: AnyLog/1.23"
 ```
 
-**Step 2 — publish data:**
+4. **Publish data** - In the example all the JSON keys would be mapped to the mapping policy. 
 
 ```bash
-curl -X POST 'http://10.0.0.78:32149' \
+curl -X POST 'http://10.0.0.69:32149' \
   -H 'command: data' \
-  -H 'topic: new_data' \
+  -H 'topic: my-topic' \
   -H 'User-Agent: AnyLog/1.23' \
   -H 'Content-Type: text/plain' \
   --data-raw '[
@@ -264,40 +229,108 @@ curl -X POST 'http://10.0.0.78:32149' \
   ]'
 ```
 
-**Python example:**
-
-```python
-import requests
-
-def post_data(conn: str, topic: str, payload: str, auth: tuple = (), timeout: int = 30) -> bool:
-    """
-    Publish data via POST topic mapping.
-    Requires a msg client with broker=rest running on the target node.
-
-    Sample payload:
-        [{"dbms": "mydb", "table": "sensor_data", "timestamp": "2021-10-20T15:35:49Z", "value": 3.14}]
-    """
-    headers = {
-        'command': 'data',
-        'topic': topic,
-        'User-Agent': 'AnyLog/1.23',
-        'Content-Type': 'text/plain'
-    }
-
-    try:
-        r = requests.post('http://%s' % conn, auth=auth, timeout=timeout, headers=headers, data=payload)
-    except Exception as e:
-        print('Failed to send data via POST against %s (Error: %s)' % (conn, e))
-        return False
-
-    if int(r.status_code) != 200:
-        print('Failed to send data via POST against %s (Network Error: %s)' % (conn, r.status_code))
-        return False
-
-    return True
+5. **Validate data is being received** - using `get streaming` validate data is being inserted - this is usually done via REST-GET, however, in order to show 
+the full scope of how to utilize POST, the example check the streaming status for operator (`10.0.0.69:32149`) through the 
+query node `10.0.0.69:32349`. 
+ 
+```shell
+curl -X POST 'http://10.0.0.69:32349' \
+  -H "Content-Type: application/json" \
+  -d '{"command": "get streaming", "User-Agent: AnyLog/1.23", "destination": "10.0.0.69:32148"}'
 ```
 
----
+> Full working examples can be found in
+> <a href="#" onclick="openEnvModal(); return false;">examples/sample-post.py</a>
+
+
+--- 
+
+### Execute commands via POST
+
+POST can execute any AnyLog command by passing the command as an HTTP header, and can be used to bring services up and 
+down as needed without interacting with the actual [CLI](/docs/CLI/AnyLog-CLI.md). Thus Anylog be configured or altered 
+through third-party apps, via our API or simply when [running as a service](/docs/Getting-Started/anylog-as-service.md)
+and the CLI is not enabled.
+
+**Connect to logical database**
+```bash
+curl -X POST 'http://10.0.0.78:32349' \
+  -H "command: connect dbms mydb where type=sqlite " \
+  -H "AnyLog-Agent: AnyLog/1.23"
+```
+
+**Reset the error log**
+```bash
+curl -X POST 'http://10.0.0.78:32349' \
+  -H "command: reset error log" \
+  -H "AnyLog-Agent: AnyLog/1.23"
+```
+
+**Set a variable**
+```bash
+curl -X POST 'http://10.0.0.78:32349' \
+  -H "command: set company_name = AnyLog" \
+  -H "AnyLog-Agent: AnyLog/1.23"
+```
+
+---  
+
+### POST as an alternative to GET
+
+[_GET_](#get-requests) is the most common, and probably most natural form, of executing requests against via cURL. 
+However, it is far more limited in fetch logic and may not be supported with all tooling example Kubernetes and some
+browser-based GUIs; often preferring POST with JSON bodies in order to bypass their security restrictions. For those 
+cases, AnyLog accepts GET request as POST, where the GET headers become the serialized JSON body content of the request. 
+
+In addition, `AnyLog-Agent` as opposed to `User-Agent` is often prefer with browser-through requests as browsers 
+silently ignore any attempt to set User-Agent manually, and its presence in a cross-origin request triggers a CORS 
+preflight that AnyLog nodes are not configured to answer. 
+
+Essentially, `AnyLog-Agent` is a custom header that both sides control, so the node can explicitly whitelist it and 
+browsers can set it without restriction.
+
+**GET style**:
+* basic `get status`
+```bash
+curl -X GET 'http://10.0.0.69:32349' \
+  -H 'command: get status' \
+  -H 'AnyLog-Agent: AnyLog/1.23'
+```
+
+* Query against the data
+```bash
+curl -X GET 'http://10.0.0.69:32349' \
+  -H "command: sql mydb format=json:list and stat=false select * from sensor_data where timestamp >= now() - 1 minute limit 10" \
+  -H "AnyLog-Agent: AnyLog/1.23" \
+  -H "destination: network" \
+  -w "\n"
+```
+
+
+**Equivalent POST style**:
+* basic `get status`
+```bash
+curl -X POST 'http://10.0.0.69:32349' \
+  -H 'Content-Type: application/json' \
+  -d '{"command": "get status", "AnyLog-Agent": "AnyLog/1.23"}'
+```
+
+* Query against the data
+```bash
+curl -X POST 'http://10.0.0.69:32349' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "command": "sql mydb format=json:list and stat=false select * from sensor_data where timestamp >= now() - 1 minute limit 10",
+    "AnyLog-Agent": "AnyLog/1.23",
+    "destination": "network"
+  }' \
+  -w "\n"
+```
+
+Both return the same response. Use `AnyLog-Agent` in the body when calling from a browser.
+
+--- 
+
 
 ## PUT requests — publish data directly
 
@@ -334,94 +367,5 @@ curl -X PUT 'http://10.0.0.78:32149' \
 
 Expected response: `{"AnyLog.status":"Success", "AnyLog.hash": "0dd6b959..."}`
 
-### Python example
-
-```python
-import json
-import requests
-
-def put_data(conn: str, dbms: str, table: str, payload, auth: tuple = (), mode: str = 'streaming', timeout: int = 30) -> bool:
-    """
-    Publish data directly via PUT — no topic mapping required.
-
-    Args:
-        conn:    IP:Port of the target node
-        dbms:    logical database name
-        table:   table name
-        payload: list of dicts or JSON string
-        mode:    'streaming' (buffered) or 'file' (immediate write)
-    """
-    headers = {
-        'type': 'json',
-        'dbms': dbms,
-        'table': table,
-        'mode': mode,
-        'Content-Type': 'text/plain',
-        'User-Agent': 'AnyLog/1.23'
-    }
-
-    if isinstance(payload, (dict, list)):
-        try:
-            payload = json.dumps(payload)
-        except Exception as e:
-            print('Failed to serialize payload (Error: %s)' % e)
-            return False
-
-    try:
-        r = requests.put('http://%s' % conn, auth=auth, timeout=timeout, headers=headers, data=payload)
-    except Exception as e:
-        print('Failed to send data via PUT against %s (Error: %s)' % (conn, e))
-        return False
-
-    if int(r.status_code) != 200:
-        print('Failed to send data via PUT against %s (Network Error: %s)' % (conn, r.status_code))
-        return False
-
-    return True
-```
-
----
-
-## Sending commands to remote nodes
-
-The `destination` header (GET) or body key (POST) routes a command to a specific node or across the network:
-
-```bash
-# GET — send to a specific node
-curl -X GET 'http://10.0.0.78:32349' \
-  -H 'command: get operator' \
-  -H 'User-Agent: AnyLog/1.23' \
-  -H 'destination: 10.0.0.79:32148'
-
-# GET — broadcast SQL to all relevant nodes
-curl -X GET 'http://10.0.0.78:32349' \
-  -H 'command: sql mydb format=table "select count(*) from rand_data"' \
-  -H 'User-Agent: AnyLog/1.23' \
-  -H 'destination: network' \
-  -w "\n"
-
-# POST equivalent — broadcast SQL to all relevant nodes
-curl -X POST 'http://10.0.0.78:32349' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "command": "sql mydb format=json:list and stat=false select count(*) from rand_data",
-    "AnyLog-Agent": "AnyLog/1.23",
-    "destination": "network"
-  }' \
-  -w "\n"
-```
-
-This is the REST equivalent of the CLI's `run client (IP:Port) command` and `run client () sql ...`.
-
----
-
-## Enabling the REST service
-
-If the REST service is not yet running on the target node:
-
-```anylog
-<run rest server where
-  external_ip = [ip] and external_port = [port] and
-  internal_ip = [local_ip] and internal_port = [local_port] and
-  timeout = 0 and ssl = false and bind = false>
-```
+> Full working examples can be found in
+> <a href="#" onclick="openEnvModal(); return false;">examples/sample-put.py</a>

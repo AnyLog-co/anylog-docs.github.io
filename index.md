@@ -15,7 +15,7 @@ title: AnyLog Documentation
 
 [//]: # (<div class="home-diagram" align="center">)
 
-[//]: # (    <object type="image/svg+xml" data="{{ '/assets/img/anylog_network_fabric_animated.svg' | relative_url }}" width="50%" height="50%">)
+[//]: # (    <object type="image/svg+xml" data="{{ '/assets/img/anylog_network_fabric_animated.svg' | relative_url }}" width="10%" height="10%">)
 
 [//]: # (    </object>)
 
