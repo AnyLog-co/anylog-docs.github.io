@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write        # changed from read — needed to push synced files
   pages: write
   id-token: write
 
@@ -18,9 +18,39 @@ concurrency:
 
 jobs:
 
-  # Predecessor: validate ToC and internal links
+  # ── NEW: runs first, before validate ────────────────────────────
+  sync-changelogs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.SHARED_DOCS_PAT }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Sync CHANGELOGs from source repos
+        env:
+          GH_TOKEN: ${{ secrets.SHARED_DOCS_PAT }}
+        run: python .github/scripts/sync_changelogs.py
+
+      - name: Commit synced CHANGELOGs
+        run: |
+          git config user.name  "anylog-ci-bot[bot]"
+          git config user.email "anylog-ci-bot[bot]@users.noreply.github.com"
+          git add _docs/Version-Control/
+          git diff --cached --quiet && echo "No changes" || \
+            git commit -s -m "chore: sync CHANGELOGs [skip ci]"
+          git push
+  # ── END NEW ─────────────────────────────────────────────────────
+
   validate:
     runs-on: ubuntu-latest
+    needs: sync-changelogs       # wait for sync before validating
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,7 +63,6 @@ jobs:
       - name: Validate ToC and internal links
         run: python .github/scripts/validate_docs.py
 
-  # Build
   build:
     runs-on: ubuntu-latest
     needs: validate
@@ -41,6 +70,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: main              # re-checkout after sync commit
       - name: Setup Ruby
         uses: ruby/setup-ruby@4a9ddd6f338a97768b8006bf671dfbad383215f4
         with:
@@ -57,7 +88,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 
-  # Deploy
   deploy:
     environment:
       name: github-pages

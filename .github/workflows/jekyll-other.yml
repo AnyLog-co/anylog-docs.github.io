@@ -7,24 +7,38 @@ on:
     branches: ["main"]
 
 permissions:
-  contents: read
+  contents: write        # changed from read — needed to push synced files
 
 jobs:
   validate:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout repo
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.SHARED_DOCS_PAT }}   # needed to push
 
-      # ------------------------
-      # Python validation
-      # ------------------------
+      # ── NEW ──────────────────────────────────────────────────────
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
+      - name: Sync CHANGELOGs from source repos
+        env:
+          GH_TOKEN: ${{ secrets.SHARED_DOCS_PAT }}
+        run: python .github/scripts/sync_changelogs.py
+
+      - name: Commit synced CHANGELOGs
+        run: |
+          git config user.name  "anylog-ci-bot[bot]"
+          git config user.email "anylog-ci-bot[bot]@users.noreply.github.com"
+          git add _docs/Version-Control/
+          git diff --cached --quiet && echo "No changes" || \
+            git commit -s -m "chore: sync CHANGELOGs [skip ci]"
+          git push
+      # ── END NEW ──────────────────────────────────────────────────
 
       - name: Install Python dependencies
         run: pip install pyyaml
@@ -32,9 +46,6 @@ jobs:
       - name: Validate ToC and internal links
         run: python .github/scripts/validate_docs.py
 
-      # ------------------------
-      # Jekyll validation
-      # ------------------------
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
