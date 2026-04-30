@@ -53,7 +53,7 @@ jobs:
       - name: Sync CHANGELOGs
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: python .github/scripts/sync_changelogs.py
+        run: python .github/scripts/sync_changelog.py
 
       - name: Commit if changed
         run: |
