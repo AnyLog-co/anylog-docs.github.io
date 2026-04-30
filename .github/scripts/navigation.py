@@ -14,6 +14,9 @@ ITEM_ORDER = {
     "Network & Services": [
         "background-services",
         "network-configurations",
+        "node-architecture.md",
+        "using-rest",
+        "messaging-services",
         "blockchain",
         "policies-metadata",
     ],
@@ -22,12 +25,14 @@ ITEM_ORDER = {
         "data-ingestion",
         "mapping-policies",
         "UNS",
+        "UNS-custom",
         "opcua",
         "using-kafka",
         "telegraf",
         "etherip",
         "grpc",
         "node-red",
+        "node-monitoring",
         "syslog",
         "video-streaming",
         "live-data-generator",
@@ -37,7 +42,6 @@ ITEM_ORDER = {
         "northbound-overview",
         "queries",
         "sql-setup",
-        "using-rest",
         "grafana",
         "import-grafana-dashboard",
         "PowerBI",
@@ -45,7 +49,6 @@ ITEM_ORDER = {
         "Google",
         "postgres-connector",
         "notification",
-        "node-red",
     ],
     "Monitoring & Operations": [
         "node-monitoring",
@@ -57,10 +60,12 @@ ITEM_ORDER = {
         "remote-gui",
     ],
     "Version Control": [
-        "SOURCE-CHANGELOGS",
         "SCRIPTS-CHANGELOGS",
+        "DEPLOYMENT_SCRIPTS-CHANGELOGS",
+        "DOCKER_COMPOSE-CHANGELOG"
     ],
     "Reference": [
         "FAQ",
+        "troubleshooting"
     ],
 }

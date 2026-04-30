@@ -1,12 +1,17 @@
 name: Sync CHANGELOGs from source repos
 
 on:
-  workflow_dispatch:          # manual trigger from GitHub UI
-  workflow_call:              # called by jekyll-main.yml and jekyll-other.yml
-  repository_dispatch:        # triggered by source repos via API call
-    types: [changelog-updated]
-  schedule:
-    - cron: '0 6 * * *'      # daily safety net at 06:00 UTC
+  push:
+    branches-ignore: ["main"]
+  pull_request:
+    branches: ["main"]
+
+#  workflow_dispatch:          # manual trigger from GitHub UI
+#  workflow_call:              # called by jekyll-main.yml and jekyll-other.yml
+#  repository_dispatch:        # triggered by source repos via API call
+#    types: [changelog-updated]
+#  schedule:
+#    - cron: '0 6 * * *'      # daily safety net at 06:00 UTC
 
 permissions:
   contents: write
