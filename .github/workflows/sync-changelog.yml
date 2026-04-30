@@ -5,6 +5,12 @@ on:
     branches-ignore: ["main"]
   pull_request:
     branches: ["main"]
+  workflow_dispatch:
+  workflow_call:
+#  repository_dispatch:
+#    types: [changelog-updated]
+#  schedule:
+#    - cron: '0 6 * * *'
 
 permissions:
   contents: write
@@ -14,17 +20,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.ANYLOG_APP_ID }}
+          private-key: ${{ secrets.MOSHE_PEM }}
+          owner: AnyLog-co
+          repositories: >-
+            anylog-docs.github.io,
+            AnyLog-Network,
+            docker-compose,
+            deployment-scripts
+
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           ref: ${{ github.ref_name }}
           fetch-depth: 0
-          token: ${{ secrets.ANYLOG_APP_ID }}
+          token: ${{ steps.app-token.outputs.token }}
           persist-credentials: true
 
       - name: Authenticate git
         run: |
-          git remote set-url origin https://x-access-token:${{ secrets.ANYLOG_APP_ID }}@github.com/AnyLog-co/anylog-docs.github.io.git
+          git remote set-url origin https://x-access-token:${{ steps.app-token.outputs.token }}@github.com/AnyLog-co/anylog-docs.github.io.git
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -33,7 +52,7 @@ jobs:
 
       - name: Sync CHANGELOGs
         env:
-          GH_TOKEN: ${{ secrets.ANYLOG_APP_ID }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: python .github/scripts/sync_changelogs.py
 
       - name: Commit if changed
