@@ -34,7 +34,7 @@ title: AnyLog Documentation
   <a class="home-card" href="{{ '/docs/Managing-Data-Southbound/southbound-overview/' | relative_url }}">
     <div class="home-card-icon">📥</div>
     <h3>Southbound services</h3>
-    <p>OPC-UA, REST, Kafka, gRPC — all the ways to get data in.</p>
+    <p>OPC-UA, Modbus TCP, REST, Kafka, gRPC — all the ways to get data in.</p>
   </a>
   <a class="home-card" href="{{ 'Querying-Data-Northbound/northbound-overview' | relative_url }}">
     <div class="home-card-icon">🔍</div>

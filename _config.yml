@@ -111,6 +111,9 @@ nav:
   - slug: Managing-Data-Southbound/etherip
     title: EtherNet/IP
     file: Managing-Data-Southbound/etherip.md
+  - slug: Managing-Data-Southbound/modbus
+    title: Modbus TCP
+    file: Managing-Data-Southbound/modbus.md
   - slug: Managing-Data-Southbound/grpc
     title: gRPC
     file: Managing-Data-Southbound/grpc.md

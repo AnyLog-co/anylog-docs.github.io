@@ -76,6 +76,7 @@ run blockchain sync where source = master and time = 30 seconds and dest = file 
 | **gRPC** | Subscribe to gRPC stream | [gRPC](/docs/managing-data-southbound/grpc/) |
 | **OPC-UA / PLC** | Active pull from industrial PLCs | [OPC-UA](/docs/managing-data-southbound/opcua/) |
 | **EtherNet/IP** | Active pull from EtherNet/IP devices | [EtherNet/IP](/docs/managing-data-southbound/etherip/) |
+| **Modbus TCP** | Active pull from Modbus TCP devices | [Modbus TCP](/docs/managing-data-southbound/modbus/) |
 | **Syslog** | Receive syslog messages | [Syslog](/docs/managing-data-southbound/syslog/) |
 | **Node-RED** | Via Node-RED flow (REST/MQTT) | [Node-RED](/docs/managing-data-southbound/node-red/) |
 | **EdgeX** | Via EdgeX southbound framework | [EdgeX](/docs/managing-data-southbound/edgex/) |
