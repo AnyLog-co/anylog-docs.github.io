@@ -1,5 +1,6 @@
 ITEM_ORDER = {
     "Getting Started": [
+        "quick-start"
         "getting-started",
         "installing-anylog",
         "install-ova",
@@ -67,6 +68,7 @@ ITEM_ORDER = {
     ],
     "Reference": [
         "FAQ",
+        "test-suite",
         "troubleshooting"
     ],
 }
