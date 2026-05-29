@@ -181,6 +181,9 @@ nav:
   - slug: Monitoring-Operations/high-availability
     title: High Availability (HA)
     file: Monitoring-Operations/high-availability.md
+  - slug: Monitoring-Operations/scheduler
+    title: Scheduler & Scheduled Tasks
+    file: Monitoring-Operations/scheduler.md
 - title: Tools & UI
   items:
   - slug: Tools-UI/mcp

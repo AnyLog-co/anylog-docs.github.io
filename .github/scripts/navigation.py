@@ -53,6 +53,7 @@ ITEM_ORDER = {
         "notification",
     ],
     "Monitoring & Operations": [
+        "scheduler",
         "node-monitoring",
         "aggregations",
         "high-availability",
