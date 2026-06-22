@@ -19,6 +19,8 @@ simplest and fastest way to send messages into third-party applications as it si
 opposed to needing to develop a full application for messaging.
 
 * [Slack](https://api.slack.com/messaging/webhooks)
+* [Telegram](https://core.telegram.org/bots/api)
+* [Pushover](https://pushover.net/api)
 * [Discord](https://docs.gitlab.com/ee/user/project/integrations/discord_notifications.html#create-webhook)
 * [Microsoft Teams](https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook?tabs=newteams%2Cdotnet)
 * [Google Hangouts](https://developers.google.com/workspace/chat/quickstart/webhooks)
@@ -100,5 +102,25 @@ Once sent, an output would appear in the proper Slack channel
 <img src="../../assets/img/notification_slack_messsage.png"  height="50%" width="50%" />
 
 **Note**: _Google Hangouts_, _Discord_ and _Microsoft Teams_ use `content` for the _payload_ key as opposed to `text`. 
+
+### Telegram
+
+Create a bot via <a href="https://t.me/BotFather" target="_blank">@BotFather</a> to obtain an `API_TOKEN`. Use your `CHAT_ID` (or a group chat ID) as the destination for messages.
+
+```anylog
+rest post where url = https://api.telegram.org/bot[API_TOKEN]/sendMessage and headers = {"Content-Type": "application/json"} and body = {"chat_id":"[CHAT_ID]","text":"Door ALARM"}
+```
+
+The `text` field in the body can be any alert message. Use this command directly, in a scheduled task, or as the action in a <a href="{{ '/docs/Monitoring-Operations/node-monitoring/#streaming-conditions-real-time-alerts' | relative_url }}">streaming condition</a>.
+
+### Pushover
+
+Register at <a href="https://pushover.net/" target="_blank">pushover.net</a> to obtain an application `API_TOKEN` and a user or group `USER/GROUP_ID`.
+
+```anylog
+rest post where url = https://api.pushover.net/1/messages.json and headers = {"Content-Type":"application/json"} and body = {"token":"[API_TOKEN]","user":"[USER/GROUP_ID]","message":"Test 1"}
+```
+
+Replace `message` with your alert text. Pushover also supports optional fields such as `title`, `priority`, and `sound` — see the <a href="https://pushover.net/api#messages" target="_blank">Pushover API</a> for the full list.
 
 
