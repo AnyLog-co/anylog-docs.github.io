@@ -6,20 +6,13 @@ title: AnyLog Documentation
 ## Changelog
 - 2026-04-20 | Created document
 - 2026-04-24 | updated document with new image + proper links
+- 2026-06-21 | update image sizing
 -->
 
 <div class="home-hero">
   <h1>AnyLog Documentation</h1>
   <p>AnyLog — Enable independent (industrial) databases to function as a single logical data network.</p>
 </div>
-
-[//]: # (<div class="home-diagram" align="center">)
-
-[//]: # (    <object type="image/svg+xml" data="{{ '/assets/img/anylog_network_fabric_animated.svg' | relative_url }}" width="10%" height="10%">)
-
-[//]: # (    </object>)
-
-[//]: # (</div>)
 
 <div class="home-diagram" align="center">
   {% include anylog_network_fabric_animated.svg %}
@@ -36,7 +29,7 @@ title: AnyLog Documentation
     <h3>Southbound services</h3>
     <p>OPC-UA, Modbus TCP, REST, Kafka, gRPC — all the ways to get data in.</p>
   </a>
-  <a class="home-card" href="{{ 'Querying-Data-Northbound/northbound-overview' | relative_url }}">
+  <a class="home-card" href="{{ '/docs/Querying-Data-Northbound/northbound-overview/' | relative_url }}">
     <div class="home-card-icon">🔍</div>
     <h3>Northbound services</h3>
     <p>Query distributed edge nodes via REST, Kafka, and BI tools.</p>
