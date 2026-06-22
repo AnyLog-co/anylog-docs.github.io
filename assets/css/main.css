@@ -541,6 +541,16 @@ img { max-width: 100%; height: auto; display: block; }
   max-width: 560px;
   margin-bottom: 2rem;
 }
+.home-diagram {
+  width: min(100%, 900px);
+  margin: -1.25rem 0 2rem;
+}
+.home-diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 390px;
+}
 .home-cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -642,6 +652,8 @@ img { max-width: 100%; height: auto; display: block; }
 @media (max-width: 560px) {
   .doc-header h1 { font-size: 1.6rem; }
   .home-hero h1 { font-size: 1.75rem; }
+  .home-diagram { margin: -1rem 0 1.5rem; }
+  .home-diagram svg { max-height: none; }
   .doc-pagination { flex-direction: column; }
   .header-search { display: none; }
 }
