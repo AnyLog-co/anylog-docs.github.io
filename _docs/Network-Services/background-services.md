@@ -607,7 +607,7 @@ configure notification rules.
 | `host` | SMTP server URL | `smtp.gmail.com` |
 | `port` | SMTP server port | |
 | `email` | Sender email address | |
-| `password` | Sender email password | |
+| `password` | Sender email password (for Gmail, use an [App Password](https://myaccount.google.com/apppasswords), not your account password) | |
 | `ssl` | Use secure SMTP connection | `false` |
 
 Example:
@@ -616,8 +616,7 @@ run smtp client where email = anylog.iot@gmail.com and password = mypassword
 ```
 
 
-> To use a Gmail account as sender: <a href="https://accounts.google.com/signup" target="_blank">create a Google account</a> 
-> and enable <a href="https://myaccount.google.com/lesssecureapps" target="_blank">Allow less secure apps</a>.
+> **Gmail accounts:** Use an <a href="https://myaccount.google.com/apppasswords" target="_blank">App Password</a> for the `password` field — not your regular Google account password. App Passwords require <a href="https://myaccount.google.com/security" target="_blank">2-Step Verification</a> to be enabled on the account. Screenshots will be added here in a future update.
 
 ---
 
