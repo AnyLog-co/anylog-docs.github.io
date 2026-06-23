@@ -10,6 +10,26 @@ We decided to Provide the documentation via a website at **https://anylog.networ
  
 ---
 
+## Documentation Source
+
+Documentation content is sourced from the public
+<a href="https://github.com/AnyLog-co/documentation" target="_blank">AnyLog-co/documentation</a>
+repository on the `master` branch.
+
+Do not edit generated Markdown files in `_docs/` in this repository. The Jekyll build runs
+`.github/scripts/sync_external_docs.py`, which clones `AnyLog-co/documentation`, converts every upstream `.md`
+file into a Jekyll collection page, copies supporting assets into `assets/external-docs/`, and regenerates the sidebar
+navigation.
+
+The GitHub Pages workflow rebuilds on pushes and pull requests in this repository, manual workflow dispatch, an hourly
+schedule, and `repository_dispatch` events of type `documentation-updated`.
+
+For immediate publishing when `AnyLog-co/documentation` changes, add a workflow in that repository that sends a
+`repository_dispatch` event to this repository after pushes to `master`. Without that dispatch, the scheduled rebuild
+will still pick up upstream changes within the next hourly run.
+
+---
+
 ## Contributing
 
 This documentation is implementing a change control process. Therefore the repository follows a **PR-based workflow** 
@@ -49,13 +69,15 @@ There are 2 branches kept permanent :
 
 ### 1. Create or edit a page
 
-All documentation lives in the `_docs/` directory. Create a new Markdown file or edit an existing one:
+Documentation pages live in the upstream `AnyLog-co/documentation` repository. Create a new Markdown file or edit an existing one there:
 
 ```
-_docs/<general-topic>/<specific-topic>.md
+<path-in-AnyLog-co/documentation>/<specific-topic>.md
 ```
 
-Every file **must** begin with this front matter block — the `title` field drives the Table of Contents:
+The sync script adds Jekyll front matter automatically. Page titles can still come from upstream front matter or headings, but the left sidebar label is always the Markdown filename without the `.md` extension.
+
+If you do add front matter upstream, this site recognizes the `title` and `description` fields:
 
 ```yaml
 ---
@@ -78,7 +100,9 @@ Evey file **must** contain a header change log so when reading it one knows when
 
 ### 2. Register it in the navigation
 
-If you created a new page, you need to register it so it will be visible in the web site once moved in 'main' : Open `.github/scripts/navigation.py` and add your page's slug to the appropriate section in `ITEM_ORDER`:
+Navigation is generated from the synced upstream files. The left sidebar section title is the folder that contains the Markdown file; root-level Markdown files are grouped under `Documentation`.
+
+`.github/scripts/navigation.py` is now only used for optional ordering overrides for known slugs:
 
 ```python
 ITEM_ORDER = {
@@ -91,9 +115,9 @@ ITEM_ORDER = {
 }
 ```
 
-The slug is the filename without the `.md` extension. The order of slugs within each section controls the order they appear in the sidebar.
+The slug is the synced path without the `.md` extension after the sync script normalizes spaces and punctuation. The sidebar display name is the synced filename without `.md`. The order of slugs within each section controls the order they appear in the sidebar.
 
-`navigation.py` is consumed by `validate_docs.py`, which scans `_docs/`, reconciles it against `ITEM_ORDER`, and writes the `nav` block in `_config.yml`. This runs automatically on `docker compose up` — you do not need to invoke it manually.
+`navigation.py` is consumed by `validate_docs.py`, which scans the generated `_docs/` directory and writes the `nav` block in `_config.yml`. This runs automatically on `docker compose up` and in GitHub Actions — you do not need to invoke it manually.
 
 ---
 

@@ -1,8 +1,3 @@
-<<<<<<< Updated upstream
-<svg width="60%" viewBox="0 0 680 500" role="img" xmlns="http://www.w3.org/2000/svg">
-<title>AnyLog network fabric</title>
-<desc>Distributed edge nodes connected with animated data pulses moving in random directions at random speeds.</desc>
-=======
 <svg class="network-fabric-illustration" width="100%" viewBox="0 0 760 340" role="img" aria-labelledby="fabric-title fabric-desc" xmlns="http://www.w3.org/2000/svg">
 <title id="fabric-title">AnyLog industrial edge data fabric</title>
 <desc id="fabric-desc">Manufacturing, oil and gas, smart city, recycling plant, and edge AI sites exchanging live data through the AnyLog fabric.</desc>
@@ -39,7 +34,6 @@
     <path d="M28 0H0V28" fill="none" stroke="#d7e4ef" stroke-width=".7" opacity=".45"/>
   </pattern>
 </defs>
->>>>>>> Stashed changes
 
 <style>
   .network-fabric-illustration {

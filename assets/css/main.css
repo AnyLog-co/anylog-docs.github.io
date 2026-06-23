@@ -525,8 +525,10 @@ img { max-width: 100%; height: auto; display: block; }
 
 /* ── Homepage ────────────────────────────────────────── */
 .home-hero {
-  max-width: var(--content-max);
-  padding: 2rem 0 3rem;
+  max-width: 900px;
+  padding: 2rem 0 3.5rem;
+  margin: 0 auto;
+  text-align: center;
 }
 .home-hero h1 {
   font-size: 2.25rem;
@@ -538,24 +540,25 @@ img { max-width: 100%; height: auto; display: block; }
 .home-hero p {
   font-size: 1.1rem;
   color: var(--text-muted);
-  max-width: 560px;
-  margin-bottom: 2rem;
+  max-width: 680px;
+  margin: 0 auto 2rem;
 }
 .home-diagram {
-  width: min(100%, 900px);
-  margin: -1.25rem 0 2rem;
+  width: min(100%, 1120px);
+  margin: -1.5rem auto 3.25rem;
 }
 .home-diagram svg {
   display: block;
   width: 100%;
   height: auto;
-  max-height: 390px;
+  max-height: 500px;
 }
 .home-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem;
+  width: min(100%, 1120px);
+  margin: 1rem auto 0;
 }
 .home-card {
   border: 1px solid var(--border);
@@ -564,6 +567,12 @@ img { max-width: 100%; height: auto; display: block; }
   text-decoration: none;
   transition: border-color .15s, box-shadow .15s;
   background: var(--surface);
+  min-height: 188px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 .home-card:hover {
   border-color: var(--teal-mid);
@@ -648,12 +657,15 @@ img { max-width: 100%; height: auto; display: block; }
   .header-nav { display: none; }
   .sidebar-toggle { display: flex; }
   .header-search { max-width: 160px; }
+  .home-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 560px) {
   .doc-header h1 { font-size: 1.6rem; }
   .home-hero h1 { font-size: 1.75rem; }
-  .home-diagram { margin: -1rem 0 1.5rem; }
+  .home-hero { padding-top: 1rem; }
+  .home-diagram { margin: -1rem auto 1.5rem; }
   .home-diagram svg { max-height: none; }
+  .home-cards { grid-template-columns: 1fr; }
   .doc-pagination { flex-direction: column; }
   .header-search { display: none; }
 }

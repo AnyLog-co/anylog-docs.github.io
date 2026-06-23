@@ -25,183 +25,403 @@ exclude:
 - Gemfile
 - Gemfile.lock
 - README.md
+- .external-docs
 - vendor
 include:
 - _includes/sample-post.py
 - _includes/sample-put.py
 - _includes/node_configs.env
 nav:
-- title: Getting Started
+- title: "Documentation"
   items:
-  - slug: Getting-Started/getting-started
-    title: Introduction to AnyLog
-    file: Getting-Started/getting-started.md
-  - slug: Getting-Started/installing-anylog
-    title: Installing & Deploying AnyLog
-    file: Getting-Started/installing-anylog.md
-  - slug: Getting-Started/install-ova
-    title: Installing AnyLog via OVA
-    file: Getting-Started/install-ova.md
-  - slug: Getting-Started/anylog-as-service
-    title: Installing AnyLog as a Service
-    file: Getting-Started/anylog-as-service.md
-  - slug: Getting-Started/deployment-scripts
-    title: Deployment Scripts
-    file: Getting-Started/deployment-scripts.md
-- title: CLI
+  - slug: "readme"
+    title: "Overview"
+    file: "readme.md"
+  - slug: "adding-data"
+    title: "adding data"
+    file: "adding-data.md"
+  - slug: "aggregations"
+    title: "aggregations"
+    file: "aggregations.md"
+  - slug: "alerts-and-monitoring"
+    title: "alerts and monitoring"
+    file: "alerts-and-monitoring.md"
+  - slug: "anylog-commands"
+    title: "anylog commands"
+    file: "anylog-commands.md"
+  - slug: "authentication"
+    title: "authentication"
+    file: "authentication.md"
+  - slug: "background-processes"
+    title: "background processes"
+    file: "background-processes.md"
+  - slug: "blockchain-commands"
+    title: "blockchain commands"
+    file: "blockchain-commands.md"
+  - slug: "blockchain-configuration"
+    title: "blockchain configuration"
+    file: "blockchain-configuration.md"
+  - slug: "blockchain_demo"
+    title: "blockchain_demo"
+    file: "blockchain_demo.md"
+  - slug: "bucket-data-management"
+    title: "bucket data management"
+    file: "bucket-data-management.md"
+  - slug: "cli"
+    title: "cli"
+    file: "cli.md"
+  - slug: "dashboard-generation"
+    title: "dashboard generation"
+    file: "dashboard-generation.md"
+  - slug: "dictionary"
+    title: "dictionary"
+    file: "dictionary.md"
+  - slug: "docker-image"
+    title: "docker image"
+    file: "docker-image.md"
+  - slug: "enthernetip"
+    title: "enthernetip"
+    file: "enthernetip.md"
+  - slug: "file-commands"
+    title: "file commands"
+    file: "file-commands.md"
+  - slug: "getting-started"
+    title: "getting started"
+    file: "getting-started.md"
+  - slug: "helpers"
+    title: "helpers"
+    file: "helpers.md"
+  - slug: "high-availability"
+    title: "high availability"
+    file: "high-availability.md"
+  - slug: "http-commands"
+    title: "http commands"
+    file: "http-commands.md"
+  - slug: "image-mapping"
+    title: "image mapping"
+    file: "image-mapping.md"
+  - slug: "json-data-transformation"
+    title: "json data transformation"
+    file: "json-data-transformation.md"
+  - slug: "logging-events"
+    title: "logging events"
+    file: "logging-events.md"
+  - slug: "managing-data-files-status"
+    title: "managing data files status"
+    file: "managing-data-files-status.md"
+  - slug: "mapping-data-to-tables"
+    title: "mapping data to tables"
+    file: "mapping-data-to-tables.md"
+  - slug: "master-node"
+    title: "master node"
+    file: "master-node.md"
+  - slug: "message-broker"
+    title: "message broker"
+    file: "message-broker.md"
+  - slug: "metadata-management"
+    title: "metadata management"
+    file: "metadata-management.md"
+  - slug: "metadata-requests"
+    title: "metadata requests"
+    file: "metadata-requests.md"
+  - slug: "monitoring-calls"
+    title: "monitoring calls"
+    file: "monitoring-calls.md"
+  - slug: "monitoring-nodes"
+    title: "monitoring nodes"
+    file: "monitoring-nodes.md"
+  - slug: "network-configuration"
+    title: "network configuration"
+    file: "network-configuration.md"
+  - slug: "network-processing"
+    title: "network processing"
+    file: "network-processing.md"
+  - slug: "node-configuration"
+    title: "node configuration"
+    file: "node-configuration.md"
+  - slug: "node_red"
+    title: "node_red"
+    file: "node_red.md"
+  - slug: "opcua"
+    title: "opcua"
+    file: "opcua.md"
+  - slug: "policies"
+    title: "policies"
+    file: "policies.md"
+  - slug: "profiling-and-monitoring-queries"
+    title: "profiling and monitoring queries"
+    file: "profiling-and-monitoring-queries.md"
+  - slug: "queries"
+    title: "queries"
+    file: "queries.md"
+  - slug: "registering-pi-in-the-anylog-network"
+    title: "registering pi in the anylog network"
+    file: "registering-pi-in-the-anylog-network.md"
+  - slug: "scheduled-pull"
+    title: "scheduled pull"
+    file: "scheduled-pull.md"
+  - slug: "secure-network"
+    title: "secure network"
+    file: "secure-network.md"
+  - slug: "software-tpm"
+    title: "software tpm"
+    file: "software-tpm.md"
+  - slug: "sql-setup"
+    title: "sql setup"
+    file: "sql-setup.md"
+  - slug: "starting-an-anylog-instance"
+    title: "starting an anylog instance"
+    file: "starting-an-anylog-instance.md"
+  - slug: "streaming-conditions"
+    title: "streaming conditions"
+    file: "streaming-conditions.md"
+  - slug: "test-commands"
+    title: "test commands"
+    file: "test-commands.md"
+  - slug: "test-suites"
+    title: "test suites"
+    file: "test-suites.md"
+  - slug: "using-edgex"
+    title: "using edgex"
+    file: "using-edgex.md"
+  - slug: "using-ethereum"
+    title: "using ethereum"
+    file: "using-ethereum.md"
+  - slug: "using-grpc"
+    title: "using grpc"
+    file: "using-grpc.md"
+  - slug: "using-kafka"
+    title: "using kafka"
+    file: "using-kafka.md"
+  - slug: "using-rest"
+    title: "using rest"
+    file: "using-rest.md"
+  - slug: "using-syslog"
+    title: "using syslog"
+    file: "using-syslog.md"
+  - slug: "video-streaming"
+    title: "video streaming"
+    file: "video-streaming.md"
+- title: "Advanced"
   items:
-  - slug: CLI/AnyLog-CLI
-    title: AnyLog CLI
-    file: CLI/AnyLog-CLI.md
-  - slug: CLI/node-status
-    title: Node Status
-    file: CLI/node-status.md
-  - slug: CLI/get-cmds
-    title: Get Commands
-    file: CLI/get-cmds.md
-- title: Network & Services
+  - slug: "training/advanced/background-deployment"
+    title: "background deployment"
+    file: "training/advanced/background-deployment.md"
+  - slug: "training/advanced/config-policies"
+    title: "Config Policies"
+    file: "training/advanced/config-policies.md"
+  - slug: "training/advanced/network-setup"
+    title: "Network Setup"
+    file: "training/advanced/network-setup.md"
+  - slug: "training/advanced/pip-install"
+    title: "Pip Install"
+    file: "training/advanced/pip-install.md"
+- title: "Deployments"
   items:
-  - slug: Network-Services/background-services
-    title: Background Services
-    file: Network-Services/background-services.md
-  - slug: Network-Services/network-configurations
-    title: Network Configuration
-    file: Network-Services/network-configurations.md
-  - slug: Network-Services/using-rest
-    title: Using REST
-    file: Network-Services/using-rest.md
-  - slug: Network-Services/messaging-services
-    title: Messaging Service
-    file: Network-Services/messaging-services.md
-  - slug: Network-Services/blockchain
-    title: Blockchain & Metadata
-    file: Network-Services/blockchain.md
-  - slug: Network-Services/policies-metadata
-    title: Policies & Metadata
-    file: Network-Services/policies-metadata.md
-  - slug: Network-Services/node-architecture
-    title: Node Architecture
-    file: Network-Services/node-architecture.md
-- title: Managing Data (Southbound)
+  - slug: "deployments/readme"
+    title: "Overview"
+    file: "deployments/readme.md"
+  - slug: "deployments/anylog_as_service"
+    title: "AnyLog_as_Service"
+    file: "deployments/anylog_as_service.md"
+  - slug: "deployments/code-versions"
+    title: "code versions"
+    file: "deployments/code-versions.md"
+  - slug: "deployments/deploying_dbms"
+    title: "deploying_dbms"
+    file: "deployments/deploying_dbms.md"
+  - slug: "deployments/deploying_node"
+    title: "deploying_node"
+    file: "deployments/deploying_node.md"
+  - slug: "deployments/executing_scripts"
+    title: "executing_scripts"
+    file: "deployments/executing_scripts.md"
+  - slug: "deployments/quick-deployment"
+    title: "Quick Deployment"
+    file: "deployments/quick-deployment.md"
+  - slug: "deployments/syslog"
+    title: "syslog"
+    file: "deployments/syslog.md"
+  - slug: "deployments/updating_scripts"
+    title: "updating_scripts"
+    file: "deployments/updating_scripts.md"
+- title: "Examples"
   items:
-  - slug: Managing-Data-Southbound/southbound-overview
-    title: Data Ingestion (Southbound)
-    file: Managing-Data-Southbound/southbound-overview.md
-  - slug: Managing-Data-Southbound/data-ingestion
-    title: Data Ingestion
-    file: Managing-Data-Southbound/data-ingestion.md
-  - slug: Managing-Data-Southbound/mapping-policies
-    title: Mapping Policies
-    file: Managing-Data-Southbound/mapping-policies.md
-  - slug: Managing-Data-Southbound/UNS
-    title: Unified Namespace
-    file: Managing-Data-Southbound/UNS.md
-  - slug: Managing-Data-Southbound/UNS-custom
-    title: Custom UNS (data stream, ISA-95)
-    file: Managing-Data-Southbound/UNS-custom.md
-  - slug: Managing-Data-Southbound/opcua
-    title: OPC-UA
-    file: Managing-Data-Southbound/opcua.md
-  - slug: Managing-Data-Southbound/using-kafka
-    title: Kafka
-    file: Managing-Data-Southbound/using-kafka.md
-  - slug: Managing-Data-Southbound/telegraf
-    title: Telegraf
-    file: Managing-Data-Southbound/telegraf.md
-  - slug: Managing-Data-Southbound/etherip
-    title: EtherNet/IP
-    file: Managing-Data-Southbound/etherip.md
-  - slug: Managing-Data-Southbound/modbus
-    title: Modbus TCP
-    file: Managing-Data-Southbound/modbus.md
-  - slug: Managing-Data-Southbound/grpc
-    title: gRPC
-    file: Managing-Data-Southbound/grpc.md
-  - slug: Managing-Data-Southbound/node-red
-    title: Node-RED
-    file: Managing-Data-Southbound/node-red.md
-  - slug: Managing-Data-Southbound/node-monitoring
-    title: Node Monitoring
-    file: Managing-Data-Southbound/node-monitoring.md
-  - slug: Managing-Data-Southbound/syslog
-    title: Syslog
-    file: Managing-Data-Southbound/syslog.md
-  - slug: Managing-Data-Southbound/video-streaming
-    title: Video Streaming
-    file: Managing-Data-Southbound/video-streaming.md
-  - slug: Managing-Data-Southbound/live-data-generator
-    title: Live Data Generator
-    file: Managing-Data-Southbound/live-data-generator.md
-  - slug: Managing-Data-Southbound/edgex
-    title: EdgeX Integration
-    file: Managing-Data-Southbound/edgex.md
-- title: Querying Data (Northbound)
+  - slug: "examples/aggregations-examples"
+    title: "Aggregations Examples"
+    file: "examples/aggregations-examples.md"
+  - slug: "examples/blobs_by_example"
+    title: "blobs_by_example"
+    file: "examples/blobs_by_example.md"
+  - slug: "examples/broker-setup"
+    title: "Broker Setup"
+    file: "examples/broker-setup.md"
+  - slug: "examples/configuration"
+    title: "Configuration"
+    file: "examples/configuration.md"
+  - slug: "examples/connecting-nodes"
+    title: "Connecting Nodes"
+    file: "examples/connecting-nodes.md"
+  - slug: "examples/data-monitoring"
+    title: "Data Monitoring"
+    file: "examples/data-monitoring.md"
+  - slug: "examples/debugging"
+    title: "Debugging"
+    file: "examples/debugging.md"
+  - slug: "examples/onboarding-commands"
+    title: "Onboarding Commands"
+    file: "examples/onboarding-commands.md"
+  - slug: "examples/querying-data"
+    title: "Querying Data"
+    file: "examples/querying-data.md"
+  - slug: "examples/resource-monitoring"
+    title: "Resource Monitoring"
+    file: "examples/resource-monitoring.md"
+  - slug: "examples/secure-network"
+    title: "Secure Network"
+    file: "examples/secure-network.md"
+  - slug: "examples/streaming-data-into-anylog"
+    title: "Streaming Data into AnyLog"
+    file: "examples/streaming-data-into-anylog.md"
+  - slug: "examples/testsuite"
+    title: "TestSuite"
+    file: "examples/testsuite.md"
+- title: "License"
   items:
-  - slug: Querying-Data-Northbound/northbound-overview
-    title: Northbound Connectors
-    file: Querying-Data-Northbound/northbound-overview.md
-  - slug: Querying-Data-Northbound/queries
-    title: Querying Data (Northbound)
-    file: Querying-Data-Northbound/queries.md
-  - slug: Querying-Data-Northbound/sql-setup
-    title: SQL & Database Setup
-    file: Querying-Data-Northbound/sql-setup.md
-  - slug: Querying-Data-Northbound/grafana
-    title: Grafana
-    file: Querying-Data-Northbound/grafana.md
-  - slug: Querying-Data-Northbound/import-grafana-dashboard
-    title: Grafana Dashboards
-    file: Querying-Data-Northbound/import-grafana-dashboard.md
-  - slug: Querying-Data-Northbound/PowerBI
-    title: PowerBI
-    file: Querying-Data-Northbound/PowerBI.md
-  - slug: Querying-Data-Northbound/Qlik
-    title: Qlik
-    file: Querying-Data-Northbound/Qlik.md
-  - slug: Querying-Data-Northbound/Google
-    title: Google Drive
-    file: Querying-Data-Northbound/Google.md
-  - slug: Querying-Data-Northbound/postgres-connector
-    title: PostgresSQL Connector
-    file: Querying-Data-Northbound/postgres-connector.md
-  - slug: Querying-Data-Northbound/notification
-    title: Notification Services
-    file: Querying-Data-Northbound/notification.md
-- title: Monitoring & Operations
+  - slug: "license/evaluation-license"
+    title: "Evaluation License"
+    file: "license/evaluation-license.md"
+  - slug: "license/notice-of-open-source-usage"
+    title: "Notice of Open Source Usage"
+    file: "license/notice-of-open-source-usage.md"
+  - slug: "license/privacy-policy"
+    title: "Privacy Policy"
+    file: "license/privacy-policy.md"
+- title: "Networking & Security"
   items:
-  - slug: Monitoring-Operations/node-monitoring
-    title: Monitoring & Alerts
-    file: Monitoring-Operations/node-monitoring.md
-  - slug: Monitoring-Operations/aggregations
-    title: Aggregations
-    file: Monitoring-Operations/aggregations.md
-  - slug: Monitoring-Operations/high-availability
-    title: High Availability (HA)
-    file: Monitoring-Operations/high-availability.md
-- title: Tools & UI
+  - slug: "deployments/networking-and-security/configuring-overlay-with-anylog"
+    title: "Configuring Overlay with AnyLog"
+    file: "deployments/networking-and-security/configuring-overlay-with-anylog.md"
+  - slug: "deployments/networking-and-security/docker_volumes"
+    title: "docker_volumes"
+    file: "deployments/networking-and-security/docker_volumes.md"
+  - slug: "deployments/networking-and-security/kubernetes_networking"
+    title: "kubernetes_networking"
+    file: "deployments/networking-and-security/kubernetes_networking.md"
+  - slug: "deployments/networking-and-security/kubernetes_volumes"
+    title: "kubernetes_volumes"
+    file: "deployments/networking-and-security/kubernetes_volumes.md"
+  - slug: "deployments/networking-and-security/nebula"
+    title: "nebula"
+    file: "deployments/networking-and-security/nebula.md"
+  - slug: "deployments/networking-and-security/nebula_new"
+    title: "nebula_new"
+    file: "deployments/networking-and-security/nebula_new.md"
+  - slug: "deployments/networking-and-security/nebula_through_anylog"
+    title: "nebula_through_anylog"
+    file: "deployments/networking-and-security/nebula_through_anylog.md"
+  - slug: "deployments/networking-and-security/nginx"
+    title: "nginx"
+    file: "deployments/networking-and-security/nginx.md"
+- title: "Northbound Connectors"
   items:
-  - slug: Tools-UI/mcp
-    title: MCP & AI Integration
-    file: Tools-UI/mcp.md
-  - slug: Tools-UI/remote-gui
-    title: Remote GUI
-    file: Tools-UI/remote-gui.md
-- title: Version Control
+  - slug: "northbound-connectors/google"
+    title: "Google"
+    file: "northbound-connectors/google.md"
+  - slug: "northbound-connectors/import_grafana_dashboard"
+    title: "import_grafana_dashboard"
+    file: "northbound-connectors/import_grafana_dashboard.md"
+  - slug: "northbound-connectors/notifciation"
+    title: "notifciation"
+    file: "northbound-connectors/notifciation.md"
+  - slug: "northbound-connectors/postgres-connector"
+    title: "postgres connector"
+    file: "northbound-connectors/postgres-connector.md"
+  - slug: "northbound-connectors/powerbi"
+    title: "PowerBI"
+    file: "northbound-connectors/powerbi.md"
+  - slug: "northbound-connectors/qlik"
+    title: "Qlik"
+    file: "northbound-connectors/qlik.md"
+  - slug: "northbound-connectors/remote_cli"
+    title: "remote_cli"
+    file: "northbound-connectors/remote_cli.md"
+  - slug: "northbound-connectors/using-grafana"
+    title: "using grafana"
+    file: "northbound-connectors/using-grafana.md"
+  - slug: "northbound-connectors/using-postman"
+    title: "using postman"
+    file: "northbound-connectors/using-postman.md"
+- title: "Openhorizon"
   items:
-  - slug: Version-Control/SOURCE-CHANGELOGS
-    title: Source Changelog
-    file: Version-Control/SOURCE-CHANGELOGS.md
-  - slug: Version-Control/DEPLOYMENT_SCRIPTS-CHANGELOGS
-    title: Deployment-Scripts Changelog
-    file: Version-Control/DEPLOYMENT_SCRIPTS-CHANGELOGS.md
-  - slug: Version-Control/DOCKER_COMPOSE-CHANGELOG
-    title: Docker-Compose Changelog
-    file: Version-Control/DOCKER_COMPOSE-CHANGELOG.md
-- title: Reference
+  - slug: "deployments/openhorizon/open-horizon"
+    title: "Open Horizon"
+    file: "deployments/openhorizon/open-horizon.md"
+- title: "Release"
   items:
-  - slug: Reference/FAQ
-    title: FAQ & Troubleshooting
-    file: Reference/FAQ.md
-  - slug: Reference/troubleshooting
-    title: Troubleshooting
-    file: Reference/troubleshooting.md
+  - slug: "release/notes"
+    title: "notes"
+    file: "release/notes.md"
+- title: "Service Anylog"
+  items:
+  - slug: "examples/service-anylog/readme"
+    title: "Overview"
+    file: "examples/service-anylog/readme.md"
+  - slug: "examples/service-anylog/executable"
+    title: "Executable"
+    file: "examples/service-anylog/executable.md"
+  - slug: "examples/service-anylog/service"
+    title: "Service"
+    file: "examples/service-anylog/service.md"
+- title: "Support"
+  items:
+  - slug: "deployments/support/aws"
+    title: "AWS"
+    file: "deployments/support/aws.md"
+  - slug: "deployments/support/cheatsheet"
+    title: "cheatsheet"
+    file: "deployments/support/cheatsheet.md"
+  - slug: "deployments/support/data_from_edgex"
+    title: "data_from_edgex"
+    file: "deployments/support/data_from_edgex.md"
+  - slug: "deployments/support/edgex"
+    title: "EdgeX"
+    file: "deployments/support/edgex.md"
+  - slug: "deployments/support/grafana"
+    title: "Grafana"
+    file: "deployments/support/grafana.md"
+  - slug: "deployments/support/open-horizon"
+    title: "Open Horizon"
+    file: "deployments/support/open-horizon.md"
+  - slug: "deployments/support/remote-cli"
+    title: "Remote-CLI"
+    file: "deployments/support/remote-cli.md"
+  - slug: "deployments/support/setting_up_mongodb"
+    title: "setting_up_mongodb"
+    file: "deployments/support/setting_up_mongodb.md"
+- title: "Training"
+  items:
+  - slug: "training/connectors-to-data-sources"
+    title: "Connectors to Data Sources"
+    file: "training/connectors-to-data-sources.md"
+  - slug: "training/data-generator"
+    title: "Data Generator"
+    file: "training/data-generator.md"
+  - slug: "training/docker-compose"
+    title: "docker-compose"
+    file: "training/docker-compose.md"
+  - slug: "training/fast-deployment"
+    title: "Fast Deployment"
+    file: "training/fast-deployment.md"
+  - slug: "training/overview"
+    title: "Overview"
+    file: "training/overview.md"
+  - slug: "training/prerequisite"
+    title: "prerequisite"
+    file: "training/prerequisite.md"
+  - slug: "training/session-i-demo"
+    title: "Session I (Demo)"
+    file: "training/session-i-demo.md"
+  - slug: "training/session-ii-deployment"
+    title: "Session II (Deployment)"
+    file: "training/session-ii-deployment.md"
