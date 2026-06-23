@@ -1,21 +1,40 @@
 # AnyLog Docs
 
-Technical documentation for [AnyLog Edge Data Fabric](https://www.anylog.network/), built with Jekyll and hosted on GitHub Pages.
+This is the technical documentation for [AnyLog Edge Data Fabric](https://www.anylog.network/), built with Jekyll and hosted on GitHub Pages.
 
 --- 
 
 ## Goal
  
-Build a proper documentation website at **https://anylog.network/docs** using Jekyll (same theme as OpenHorizon), replacing 
-raw GitHub repo access with a structured, navigable site comparable to EdgeX or ReadTheDocs.
+We decided to Provide the documentation via a website at **https://anylog.network/docs** using Jekyll (same theme as OpenHorizon), replacing raw GitHub repo access with a structured, navigable site comparable to EdgeX or ReadTheDocs.
  
+---
+
+## Documentation Source
+
+Documentation content is sourced from the public
+<a href="https://github.com/AnyLog-co/documentation" target="_blank">AnyLog-co/documentation</a>
+repository on the `master` branch.
+
+Do not edit generated Markdown files in `_docs/` in this repository. The Jekyll build runs
+`.github/scripts/sync_external_docs.py`, which clones `AnyLog-co/documentation`, converts every upstream `.md`
+file into a Jekyll collection page, copies supporting assets into `assets/external-docs/`, and regenerates the sidebar
+navigation.
+
+The GitHub Pages workflow rebuilds on pushes and pull requests in this repository, manual workflow dispatch, an hourly
+schedule, and `repository_dispatch` events of type `documentation-updated`.
+
+For immediate publishing when `AnyLog-co/documentation` changes, add a workflow in that repository that sends a
+`repository_dispatch` event to this repository after pushes to `master`. Without that dispatch, the scheduled rebuild
+will still pick up upstream changes within the next hourly run.
+
 ---
 
 ## Contributing
 
 This documentation is implementing a change control process. Therefore the repository follows a **PR-based workflow** 
-There are 2 branches : 
-- ***'main'*** is the current client version (it contains a version file as the source code)
+There are 2 branches kept permanent : 
+- ***'main'*** is the current client version (it contains a version file as the source code) the one that is viewed when accessing the documentation URL (see above)
 - ***'pre-develop'*** is the next version being worked on
 - Once a month , when a new code version is prepared, the documentation files follow the same process with a ***review of pending PRs pull requests*** before the pre-develop is merged on main
 
@@ -36,7 +55,7 @@ There are 2 branches :
 
 ---
  
-## Source repositories
+## Reference : Source repositories
  
 | Repo | Purpose | Status |
 |---|---|---|
@@ -48,15 +67,17 @@ There are 2 branches :
 
 ## Adding or Updating Content
 
-1. Create or edit a page
+### 1. Create or edit a page
 
-All documentation lives in the `_docs/` directory. Create a new Markdown file or edit an existing one:
+Documentation pages live in the upstream `AnyLog-co/documentation` repository. Create a new Markdown file or edit an existing one there:
 
 ```
-_docs/<general-topic>/<specific-topic>.md
+<path-in-AnyLog-co/documentation>/<specific-topic>.md
 ```
 
-Every file **must** begin with this front matter block — the `title` field drives the Table of Contents:
+The sync script adds Jekyll front matter automatically. Page titles can still come from upstream front matter or headings, but the left sidebar label is always the Markdown filename without the `.md` extension.
+
+If you do add front matter upstream, this site recognizes the `title` and `description` fields:
 
 ```yaml
 ---
@@ -67,7 +88,7 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-17 | Created document
-- 2026-05-12 | updated x, y, z
+- 2026-05-12 | updated by ...
 --> 
 ```
 Evey file **must** contain a header change log so when reading it one knows when changed / who did it / what date and Anylog version,  use this table format
@@ -79,7 +100,9 @@ Evey file **must** contain a header change log so when reading it one knows when
 
 ### 2. Register it in the navigation
 
-Open `.github/scripts/navigation.py` and add your page's slug to the appropriate section in `ITEM_ORDER`:
+Navigation is generated from the synced upstream files. The left sidebar section title is the folder that contains the Markdown file; root-level Markdown files are grouped under `Documentation`.
+
+`.github/scripts/navigation.py` is now only used for optional ordering overrides for known slugs:
 
 ```python
 ITEM_ORDER = {
@@ -92,9 +115,9 @@ ITEM_ORDER = {
 }
 ```
 
-The slug is the filename without the `.md` extension. The order of slugs within each section controls the order they appear in the sidebar.
+The slug is the synced path without the `.md` extension after the sync script normalizes spaces and punctuation. The sidebar display name is the synced filename without `.md`. The order of slugs within each section controls the order they appear in the sidebar.
 
-`navigation.py` is consumed by `validate_docs.py`, which scans `_docs/`, reconciles it against `ITEM_ORDER`, and writes the `nav` block in `_config.yml`. This runs automatically on `docker compose up` — you do not need to invoke it manually.
+`navigation.py` is consumed by `validate_docs.py`, which scans the generated `_docs/` directory and writes the `nav` block in `_config.yml`. This runs automatically on `docker compose up` and in GitHub Actions — you do not need to invoke it manually.
 
 ---
 
@@ -126,7 +149,7 @@ layout: page
 <!--
 ## Changelog
 - 2026-04-17 | Created document
-- 2026-05-12 | updated x, y, z
+- 2026-05-12 | updated by 
 --> 
 # Introduction to AnyLog
 [content] 
@@ -184,81 +207,7 @@ Adjust the URLs, front matter, and the description of changes to match whatever 
 
 ---
 
-## Contributing
 
-This repo follows a **PR-based workflow** — do not push directly to `pre-develop` or `main`.
-
-### Branches
-
-| Branch | Purpose |
-|---|---|
-| `main` | Published site — updated on version releases |
-| `pre-develop` | Active development — all PRs target this branch |
-
-### Workflow
-
-1. Make sure your local branch is in sync with `pre-develop`:
-   ```bash
-   git fetch origin
-   git rebase origin/pre-develop
-   ```
-2. Create a feature branch from `pre-develop`, make your changes, then open a pull request **against `pre-develop`**
-3. PRs are reviewed on a **weekly cadence** — expect feedback or a merge within a week of opening
-4. When a new AnyLog version is released, `pre-develop` is merged into `main` and the published site updates automatically via GitHub Pages
-
-> **Note:** The exact process for promoting `pre-develop` → `main` on version releases is still being decided. This README will be updated once the workflow is confirmed.
-
----
-
-## Leveraging Claude LLM to Update a Doc Page
-
-A reliable pattern for getting Claude to rewrite or update a page while keeping it consistent with the rest of the docs:
-
-1. Provide the **raw GitHub URL** of the file to update — in GitHub, open the file and click **Raw**, then copy the address bar URL
-2. Provide the **raw GitHub URL** of an existing page whose layout you want the output to match
-3. Include the required front matter block in your prompt
-4. Ask Claude to rewrite the first file to match the structure and style of the second
-
-Keep the prompt substantive — include at least a short paragraph describing the intent and audience for each major section you want changed, not just bullet points. The more context you give about tone, audience, and structure, the better the result.
-
-### Sample prompt
-
-The following is a real example using `remote-gui.md`. Copy and adapt it for any page you want to update.
-
----
-
-> I need you to update the AnyLog documentation page for the Remote GUI.
->
-> **File to update (raw URL):**
-> `https://raw.githubusercontent.com/AnyLog-co/anylog-docs.github.io/refs/heads/main/_docs/Tools%20%26%20UI/remote-gui.md`
->
-> **Example file to match in style and structure (raw URL):**
-> `https://raw.githubusercontent.com/AnyLog-co/anylog-docs.github.io/refs/heads/main/_docs/getting-started.md`
->
-> **Required front matter — keep this exactly at the top of the file:**
-> ```yaml
-> ---
-> title: Remote GUI
-> description: Architecture and developer reference for the AnyLog Remote GUI.
-> layout: page
-> ---
-> ```
->
-> **What to change:**
->
-> The current page reads like internal notes — it's dense and assumes the reader already knows the codebase. Rewrite it so a new developer joining the project can follow it from top to bottom. The architecture diagram and key terminology table are good and should stay, but the surrounding prose needs more context.
->
-> The "Running locally" section currently has two terminal blocks with commands that aren't explained — add a sentence before each block describing what it does and why. The `uvicorn` command in particular looks like it may have a path issue (`CLI.local-cli-backend.main:app` uses dots but the `cd` above already entered the subdirectory); please flag that or correct it.
->
-> The "Plugin system" section is the most important part for contributors — expand the intro paragraph to explain *when* someone would want to build a plugin versus modifying a core feature. Keep the code examples as-is.
->
-> Use relative links where linking to other pages in `_docs/`. Any link to an external repo or external site should use `<a href="URL" target="_blank">` format. Do not change any section headings — the navigation relies on them.
-
----
-
-Adjust the URLs, front matter, and the description of changes to match whatever page you are working on. 
-
----
 
 ## Local Development with Docker
 

@@ -1,4 +1,7 @@
 _site/
+_docs/
+assets/external-docs/
+.external-docs/
 .sass-cache/
 .jekyll-cache/
 .jekyll-metadata

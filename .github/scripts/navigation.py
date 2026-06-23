@@ -30,6 +30,7 @@ ITEM_ORDER = {
         "using-kafka",
         "telegraf",
         "etherip",
+        "modbus",
         "grpc",
         "node-red",
         "node-monitoring",
