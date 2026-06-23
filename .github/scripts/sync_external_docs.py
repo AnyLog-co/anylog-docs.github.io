@@ -67,6 +67,24 @@ def first_heading(text):
     return None
 
 
+def remove_matching_first_heading(text, title):
+    lines = text.splitlines(keepends=True)
+    for index, line in enumerate(lines):
+        match = re.match(r"^#\s+(.+?)\s*$", line.rstrip("\r\n"))
+        if not match:
+            continue
+
+        if match.group(1).strip().casefold() != title.strip().casefold():
+            return text
+
+        del lines[index]
+        if index < len(lines) and not lines[index].strip():
+            del lines[index]
+        return "".join(lines)
+
+    return text
+
+
 def is_external_url(target):
     parsed = urlsplit(target)
     return parsed.scheme in {"http", "https", "mailto", "tel"} or target.startswith("#")
@@ -79,12 +97,9 @@ def source_checkout():
             raise FileNotFoundError(f"ANYLOG_DOCS_SOURCE_DIR does not exist: {source}")
         return source
 
-    if WORK_DIR.exists():
-        run(["git", "fetch", "--depth", "1", "origin", DOCS_REF], cwd=WORK_DIR)
-        run(["git", "checkout", "FETCH_HEAD"], cwd=WORK_DIR)
-    else:
-        WORK_DIR.parent.mkdir(parents=True, exist_ok=True)
-        run(["git", "clone", "--depth", "1", "--branch", DOCS_REF, DOCS_REPO, str(WORK_DIR)])
+    shutil.rmtree(WORK_DIR, ignore_errors=True)
+    WORK_DIR.parent.mkdir(parents=True, exist_ok=True)
+    run(["git", "clone", "--depth", "1", "--branch", DOCS_REF, DOCS_REPO, str(WORK_DIR)])
     return WORK_DIR
 
 
@@ -170,6 +185,7 @@ def write_doc(source_path, rel, mapping, doc_map, asset_map):
     existing_front_matter, body = split_front_matter(raw)
     title = existing_front_matter.get("title") or first_heading(body) or title_from_path(rel)
     description = existing_front_matter.get("description", "")
+    body = remove_matching_first_heading(body, title)
     body = rewrite_links(body, rel, doc_map, asset_map)
 
     front_matter = [

@@ -6,7 +6,7 @@ layout: null
   {
     "url":     "{{ doc.url | relative_url }}",
     "title":   {{ doc.title   | jsonify }},
-    "content": {{ doc.content | strip_html | strip_newlines | truncatewords: 100 | jsonify }}
+    "content": {{ doc.content | strip_html | normalize_whitespace | jsonify }}
   }{% unless forloop.last %},{% endunless %}
   {% endfor %}
 ]
