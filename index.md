@@ -26,24 +26,24 @@ title: AnyLog Documentation
 </div>
 
 <div class="home-cards" align="center">
-  <a class="home-card" href="{{ '/docs/Getting-Started/getting-started/' | relative_url }}">
+  <a class="home-card" href="{{ '/docs/getting-started/' | relative_url }}">
     <div class="home-card-icon">🚀</div>
     <h3>Getting Started</h3>
     <p>Install, configure, and run your first AnyLog node.</p>
   </a>
-  <a class="home-card" href="{{ '/docs/Managing-Data-Southbound/southbound-overview/' | relative_url }}">
+  <a class="home-card" href="{{ '/docs/adding-data/' | relative_url }}">
     <div class="home-card-icon">📥</div>
     <h3>Southbound services</h3>
     <p>OPC-UA, Modbus TCP, REST, Kafka, gRPC — all the ways to get data in.</p>
   </a>
-  <a class="home-card" href="{{ 'Querying-Data-Northbound/northbound-overview' | relative_url }}">
+  <a class="home-card" href="{{ '/docs/queries/' | relative_url }}">
     <div class="home-card-icon">🔍</div>
     <h3>Northbound services</h3>
     <p>Query distributed edge nodes via REST, Kafka, and BI tools.</p>
   </a>
-  <a class="home-card" href="{{ '/docs/Reference/FAQ' | relative_url }}">
+  <a class="home-card" href="{{ '/docs/readme/' | relative_url }}">
     <div class="home-card-icon">❓</div>
-    <h3>FAQ</h3>
-    <p>Common questions and troubleshooting.</p>
+    <h3>Docs index</h3>
+    <p>Browse the source documentation index and topic map.</p>
   </a>
 </div>

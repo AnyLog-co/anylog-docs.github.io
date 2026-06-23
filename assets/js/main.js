@@ -19,22 +19,6 @@ if (toggle) toggle.addEventListener('click', () =>
 );
 if (overlay) overlay.addEventListener('click', closeSidebar);
 
-// ── Sidebar nav filter ────────────────────────────────────────────────────────
-const sidebarSearch = document.getElementById('doc-search');
-if (sidebarSearch) {
-  sidebarSearch.addEventListener('input', () => {
-    const q = sidebarSearch.value.toLowerCase().trim();
-    document.querySelectorAll('.nav-section ul li').forEach(li => {
-      const text = li.textContent.toLowerCase();
-      li.style.display = (!q || text.includes(q)) ? '' : 'none';
-    });
-    document.querySelectorAll('.nav-section').forEach(section => {
-      const visible = [...section.querySelectorAll('li')].some(li => li.style.display !== 'none');
-      section.style.display = visible ? '' : 'none';
-    });
-  });
-}
-
 // ── Dark / light mode ─────────────────────────────────────────────────────────
 const themeToggle = document.getElementById('theme-toggle');
 const root = document.documentElement;
@@ -51,119 +35,212 @@ if (themeToggle) {
   });
 }
 
-// ── Full-text search (Lunr.js) ────────────────────────────────────────────────
-let lunrIndex = null;
-let searchDocs = [];
+// ── Full-text search ──────────────────────────────────────────────────────────
+(function () {
+  const searchTargets = [
+    {
+      input: document.getElementById('doc-search'),
+      results: document.getElementById('doc-search-results'),
+      itemTag: 'a',
+      limit: 10,
+      onQueryChange(query) {
+        const nav = document.querySelector('.sidebar-nav');
+        if (nav) nav.hidden = Boolean(query);
+      },
+    },
+    {
+      input: document.getElementById('header-search-input'),
+      results: document.getElementById('header-search-results'),
+      itemTag: 'a',
+      limit: 8,
+    },
+    {
+      input: document.getElementById('search-input'),
+      results: document.getElementById('search-results'),
+      itemTag: 'li',
+      limit: 8,
+      activeClass: 'active',
+    },
+  ].filter(target => target.input && target.results);
 
-const headerSearchInput   = document.getElementById('header-search-input');
-const headerSearchResults = document.getElementById('header-search-results');
+  if (!searchTargets.length || typeof lunr === 'undefined') return;
 
-// only load the index if the search input exists on this page
-if (headerSearchInput) {
-  fetch('/search-index.json')
-    .then(r => r.json())
+  let docs = [];
+  let docsByUrl = new Map();
+  let idx = null;
+  let loadError = false;
+  const indexReady = fetch('/search-index.json')
+    .then(response => response.json())
     .then(data => {
-      searchDocs = data;
-      lunrIndex = lunr(function () {
+      docs = data.map(doc => ({
+        ...doc,
+        content: doc.content || '',
+      }));
+      docsByUrl = new Map(docs.map(doc => [doc.url, doc]));
+      idx = lunr(function () {
         this.ref('url');
-        this.field('title', { boost: 10 });
+        this.field('title', { boost: 12 });
+        this.field('url', { boost: 3 });
         this.field('content');
-        data.forEach(doc => this.add(doc));
+        docs.forEach(doc => this.add(doc));
       });
     })
     .catch(() => {
-      // search-index.json not yet built — fail silently
+      loadError = true;
     });
 
-  headerSearchInput.addEventListener('input', () => {
-    const q = headerSearchInput.value.trim();
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
+    }[char]));
+  }
 
-    if (!q || !lunrIndex) {
-      headerSearchResults.hidden = true;
-      return;
-    }
+  function queryTerms(query) {
+    return query
+      .toLowerCase()
+      .replace(/[^a-z0-9_]+/g, ' ')
+      .split(/\s+/)
+      .filter(Boolean);
+  }
 
-    let hits = [];
+  function searchQuery(terms) {
+    return terms.map(term => `${term}*`).join(' ');
+  }
+
+  function manualMatches(terms) {
+    if (!terms.length) return [];
+
+    return docs
+      .map(doc => {
+        const haystack = `${doc.title} ${doc.url} ${doc.content}`.toLowerCase();
+        const matched = terms.filter(term => haystack.includes(term));
+        if (!matched.length) return null;
+
+        const title = doc.title.toLowerCase();
+        const score = matched.length * 2 + matched.filter(term => title.includes(term)).length * 3;
+        return { ref: doc.url, score };
+      })
+      .filter(Boolean)
+      .sort((a, b) => b.score - a.score);
+  }
+
+  function searchDocs(query) {
+    const terms = queryTerms(query);
+    if (!terms.length || !idx) return [];
+
     try {
-      hits = lunrIndex.search(q + '*').slice(0, 8);
+      const hits = idx.search(searchQuery(terms));
+      if (hits.length) return hits;
     } catch (_) {
-      // lunr throws on some partial queries — ignore
+      // Lunr can throw while the user is typing partial syntax-like input.
     }
 
+    return manualMatches(terms);
+  }
+
+  function snippetFor(doc, terms) {
+    const content = doc.content || '';
+    const lowerContent = content.toLowerCase();
+    const index = terms.reduce((best, term) => {
+      const found = lowerContent.indexOf(term);
+      return found === -1 || (best !== -1 && found >= best) ? best : found;
+    }, -1);
+
+    if (index === -1) {
+      return content.slice(0, 140).trim();
+    }
+
+    const start = Math.max(0, index - 55);
+    const end = Math.min(content.length, index + 120);
+    const prefix = start > 0 ? '...' : '';
+    const suffix = end < content.length ? '...' : '';
+    return `${prefix}${content.slice(start, end).trim()}${suffix}`;
+  }
+
+  function resultHtml(doc, query) {
+    const terms = queryTerms(query);
+    const title = escapeHtml(doc.title || doc.url);
+    const url = escapeHtml(doc.url);
+    const snippet = escapeHtml(snippetFor(doc, terms));
+
+    return `
+      <a href="${url}">
+        <span class="result-title">${title}</span>
+        <span class="result-path">${url}</span>
+        <span class="result-snippet">${snippet}</span>
+      </a>
+    `;
+  }
+
+  function setResultsVisible(target, visible) {
+    if (target.activeClass) {
+      target.results.classList.toggle(target.activeClass, visible);
+    } else {
+      target.results.hidden = !visible;
+    }
+  }
+
+  function renderResults(target, hits, query) {
     if (!hits.length) {
-      headerSearchResults.hidden = true;
+      target.results.innerHTML = '<div class="search-empty">No results</div>';
+      setResultsVisible(target, true);
       return;
     }
 
-    headerSearchResults.innerHTML = hits.map(({ ref }) => {
-      const doc = searchDocs.find(d => d.url === ref);
+    target.results.innerHTML = hits.slice(0, target.limit).map(hit => {
+      const doc = docsByUrl.get(hit.ref);
       if (!doc) return '';
-      return `<a href="${doc.url}"><span class="result-title">${doc.title}</span></a>`;
+      const html = resultHtml(doc, query);
+      return target.itemTag === 'li' ? `<li>${html}</li>` : html;
     }).join('');
+    setResultsVisible(target, true);
+  }
 
-    headerSearchResults.hidden = false;
-  });
+  searchTargets.forEach(target => {
+    target.input.addEventListener('input', () => {
+      const query = target.input.value.trim();
+      if (target.onQueryChange) target.onQueryChange(query);
 
-  // close results when clicking outside the search widget
-  document.addEventListener('click', e => {
-    if (!e.target.closest('.header-search')) {
-      headerSearchResults.hidden = true;
-    }
-  });
+      if (!query) {
+        target.results.innerHTML = '';
+        setResultsVisible(target, false);
+        return;
+      }
 
-  // close on Escape
-  headerSearchInput.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      headerSearchResults.hidden = true;
-      headerSearchInput.blur();
-    }
-  });
-}
-// ── Search ────────────────────────────────────────────────
-(function () {
-  const input = document.getElementById('search-input');
-  const results = document.getElementById('search-results');
-  if (!input || !results) return;
+      if (loadError) {
+        target.results.innerHTML = '<div class="search-empty">Search index unavailable</div>';
+        setResultsVisible(target, true);
+        return;
+      }
 
-  let idx, docs;
+      if (!idx) {
+        target.results.innerHTML = '<div class="search-empty">Loading search...</div>';
+        setResultsVisible(target, true);
+        indexReady.then(() => renderResults(target, searchDocs(query), query));
+        return;
+      }
 
-  // Fetch and build the lunr index once
-  fetch('/search-index.json')
-    .then(r => r.json())
-    .then(data => {
-      docs = data;
-      idx = lunr(function () {
-        this.ref('url');
-        this.field('title', { boost: 10 });
-        this.field('content');
-        data.forEach(d => this.add(d));
-      });
+      renderResults(target, searchDocs(query), query);
     });
 
-  input.addEventListener('input', function () {
-    const q = this.value.trim();
-    results.innerHTML = '';
-    if (!q || !idx) { results.classList.remove('active'); return; }
-
-    const hits = idx.search(q + '*');   // trailing wildcard for partial match
-    if (!hits.length) {
-      results.innerHTML = '<li style="padding:.6rem 1rem;color:var(--text-muted,#64748b)">No results</li>';
-    } else {
-      hits.slice(0, 8).forEach(hit => {
-        const doc = docs.find(d => d.url === hit.ref);
-        if (!doc) return;
-        const li = document.createElement('li');
-        li.innerHTML = `<a href="${doc.url}"><strong>${doc.title}</strong><span>${doc.content.slice(0, 80)}…</span></a>`;
-        results.appendChild(li);
-      });
-    }
-    results.classList.add('active');
+    target.input.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        target.input.value = '';
+        target.input.dispatchEvent(new Event('input'));
+        target.input.blur();
+      }
+    });
   });
 
-  // Close results when clicking outside
-  document.addEventListener('click', e => {
-    if (!input.contains(e.target) && !results.contains(e.target)) {
-      results.classList.remove('active');
-    }
+  document.addEventListener('click', event => {
+    searchTargets.forEach(target => {
+      if (!target.input.contains(event.target) && !target.results.contains(event.target)) {
+        setResultsVisible(target, false);
+      }
+    });
   });
 })();

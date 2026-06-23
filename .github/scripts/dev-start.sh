@@ -1,5 +1,8 @@
 #!/bin/bash
-#set -e
+set -euo pipefail
+
+echo "Syncing external documentation..."
+python3 /srv/content/.github/scripts/sync_external_docs.py
 
 echo "Running docs validation..."
 python3 /srv/content/.github/scripts/validate_docs.py

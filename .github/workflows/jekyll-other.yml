@@ -26,8 +26,8 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install Python dependencies
-        run: pip install pyyaml
+      - name: Sync external documentation
+        run: python .github/scripts/sync_external_docs.py
 
       - name: Validate ToC and internal links
         run: python .github/scripts/validate_docs.py
