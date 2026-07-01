@@ -237,3 +237,28 @@ docker compose up -d
 ```
 
 The `-v` flag removes the cached volume so it gets recreated with the correct permissions.
+
+## Local Mac Development
+
+Use the local launcher when you want to run Jekyll directly on macOS without Docker:
+
+```bash
+python3 scripts/dev.py
+```
+
+The launcher pulls the external documentation, rebuilds `_docs/` and `_config.yml`, installs Bundler and gems into
+`vendor/`, and starts Jekyll at **http://localhost:4000**.
+
+macOS system Ruby is not supported for this project because it often lacks the headers needed to build Jekyll's native
+gems. Use Ruby 3.x rather than Ruby 4 for GitHub Pages compatibility. Install Homebrew Ruby 3.3 first:
+
+```bash
+brew install ruby@3.3
+python3 scripts/dev.py
+```
+
+Or let the launcher install Homebrew Ruby 3.3:
+
+```bash
+python3 scripts/dev.py --install-ruby
+```

@@ -144,7 +144,10 @@ def resolve_target(current_rel, target, doc_map, asset_map):
         return target
 
     source_root = Path("/source-root")
-    normalized = source_root / current_rel.parent / raw_path
+    if raw_path.startswith("/"):
+        normalized = source_root / raw_path.lstrip("/")
+    else:
+        normalized = source_root / current_rel.parent / raw_path
     try:
         rel_candidate = normalized.resolve().relative_to(source_root)
     except ValueError:
