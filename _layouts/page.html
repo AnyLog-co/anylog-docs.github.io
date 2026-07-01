@@ -43,7 +43,7 @@ layout: default
   <script>
   function openEnvModal(filepath) {
     var url = filepath || '{{ "/assets/img/node_configs.env" | relative_url }}';
-    fetch('/' + url)
+    fetch(url)
       .then(r => r.text())
       .then(text => {
         document.getElementById('env-content').textContent = text;

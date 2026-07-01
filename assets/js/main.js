@@ -69,7 +69,8 @@ if (themeToggle) {
   let docsByUrl = new Map();
   let idx = null;
   let loadError = false;
-  const indexReady = fetch('/search-index.json')
+  const baseUrl = (window.siteBaseUrl || '').replace(/\/$/, '');
+  const indexReady = fetch(`${baseUrl}/search-index.json`)
     .then(response => response.json())
     .then(data => {
       docs = data.map(doc => ({

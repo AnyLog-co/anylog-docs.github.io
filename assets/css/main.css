@@ -99,7 +99,7 @@ img { max-width: 100%; height: auto; display: block; }
 .logo-wordmark {
   font-size: 15px;
   font-weight: 600;
-  color: var(--white);
+  color: #ffffff;
   letter-spacing: -.01em;
 }
 .logo-wordmark em {
@@ -180,8 +180,7 @@ img { max-width: 100%; height: auto; display: block; }
   transition: color .15s;
   text-decoration: none;
 }
-.header-nav a:hover,
-.header-nav a.active { color: var(--white); }
+.header-nav a:hover { color: var(--white); }
 .btn-github {
   display: flex;
   align-items: center;

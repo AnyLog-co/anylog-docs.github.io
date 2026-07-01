@@ -51,6 +51,8 @@ jobs:
           python-version: "3.12"
       - name: Sync external documentation
         run: python .github/scripts/sync_external_docs.py
+      - name: Regenerate navigation
+        run: python .github/scripts/validate_docs.py
       - name: Setup Ruby
         uses: ruby/setup-ruby@4a9ddd6f338a97768b8006bf671dfbad383215f4
         with:
