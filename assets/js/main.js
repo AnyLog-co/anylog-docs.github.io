@@ -19,6 +19,28 @@ if (toggle) toggle.addEventListener('click', () =>
 );
 if (overlay) overlay.addEventListener('click', closeSidebar);
 
+// ── Keep the current page visible in the sidebar ────────────────────────────
+(function () {
+  if (!sidebar) return;
+
+  const activeLink = sidebar.querySelector('.nav-page-link.active[aria-current="page"]');
+  if (!activeLink) return;
+
+  window.requestAnimationFrame(() => {
+    const sidebarRect = sidebar.getBoundingClientRect();
+    const activeRect = activeLink.getBoundingClientRect();
+    const isAbove = activeRect.top < sidebarRect.top + 72;
+    const isBelow = activeRect.bottom > sidebarRect.bottom - 24;
+
+    if (isAbove || isBelow) {
+      activeLink.scrollIntoView({
+        block: 'center',
+        inline: 'nearest',
+      });
+    }
+  });
+})();
+
 // ── Dark / light mode ─────────────────────────────────────────────────────────
 const themeToggle = document.getElementById('theme-toggle');
 const root = document.documentElement;
@@ -76,6 +98,11 @@ if (themeToggle) {
 (function () {
   const content = document.querySelector('.doc-content');
   if (!content) return;
+  const baseUrl = (window.siteBaseUrl || '').replace(/\/$/, '');
+
+  function iconUrl(path) {
+    return `${baseUrl}${path}`;
+  }
 
   async function copyText(text) {
     if (navigator.clipboard && window.isSecureContext) {
@@ -108,36 +135,44 @@ if (themeToggle) {
     if (pre.id === 'env-content') return;
 
     const container = blockContainerFor(pre);
-    if (!container || container.querySelector('.copy-code-button')) return;
+    if (!container || container.querySelector('.doc-code-toolbar')) return;
 
     container.classList.add('doc-code-block');
 
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'copy-code-button';
-    button.textContent = 'Copy';
-    button.setAttribute('aria-label', 'Copy code');
+    const toolbar = document.createElement('div');
+    toolbar.className = 'doc-code-toolbar';
 
-    button.addEventListener('click', async () => {
+    const copyButton = document.createElement('button');
+    copyButton.type = 'button';
+    copyButton.className = 'doc-code-button copy-code-button';
+    copyButton.setAttribute('aria-label', 'Copy code');
+    copyButton.setAttribute('title', 'Copy code');
+    copyButton.innerHTML = `
+      <img src="${iconUrl('/assets/img/icons/copy-light.png')}" alt="" class="copy-icon theme-icon-light" />
+      <img src="${iconUrl('/assets/img/icons/copy-dark.png')}" alt="" class="copy-icon theme-icon-dark" />
+    `;
+
+    copyButton.addEventListener('click', async () => {
       const text = codeTextFor(pre);
       if (!text) return;
 
-      const previousLabel = button.textContent;
+      copyButton.classList.remove('failed');
+      copyButton.classList.remove('copied');
       try {
         await copyText(text);
-        button.textContent = 'Copied';
-        button.classList.add('copied');
+        copyButton.classList.add('copied');
       } catch (_) {
-        button.textContent = 'Failed';
+        copyButton.classList.add('failed');
       }
 
       window.setTimeout(() => {
-        button.textContent = previousLabel;
-        button.classList.remove('copied');
+        copyButton.classList.remove('copied');
+        copyButton.classList.remove('failed');
       }, 1800);
     });
 
-    container.appendChild(button);
+    toolbar.appendChild(copyButton);
+    container.appendChild(toolbar);
   });
 })();
 
