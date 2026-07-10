@@ -176,21 +176,24 @@ def resolve_target(current_rel, target, doc_map, asset_map):
     fragment = f"#{split.fragment}" if split.fragment else ""
     query = f"?{split.query}" if split.query else ""
 
+    def liquid_relative_url(url):
+        return "{{ " + json.dumps(url) + " | relative_url }}"
+
     if rel_candidate in doc_map:
-        return doc_map[rel_candidate]["url"] + fragment
+        return liquid_relative_url(doc_map[rel_candidate]["url"] + fragment)
 
     if rel_candidate.suffix == "":
         md_candidate = rel_candidate.with_suffix(".md")
         if md_candidate in doc_map:
-            return doc_map[md_candidate]["url"] + fragment
+            return liquid_relative_url(doc_map[md_candidate]["url"] + fragment)
 
         for index_name in ("README.md", "readme.md", "Overview.md", "overview.md"):
             index_candidate = rel_candidate / index_name
             if index_candidate in doc_map:
-                return doc_map[index_candidate]["url"] + fragment
+                return liquid_relative_url(doc_map[index_candidate]["url"] + fragment)
 
     if rel_candidate in asset_map:
-        return asset_map[rel_candidate]["url"] + query + fragment
+        return liquid_relative_url(asset_map[rel_candidate]["url"] + query + fragment)
 
     return target
 
