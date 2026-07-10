@@ -19,6 +19,28 @@ if (toggle) toggle.addEventListener('click', () =>
 );
 if (overlay) overlay.addEventListener('click', closeSidebar);
 
+// ── Keep the current page visible in the sidebar ────────────────────────────
+(function () {
+  if (!sidebar) return;
+
+  const activeLink = sidebar.querySelector('.nav-page-link.active[aria-current="page"]');
+  if (!activeLink) return;
+
+  window.requestAnimationFrame(() => {
+    const sidebarRect = sidebar.getBoundingClientRect();
+    const activeRect = activeLink.getBoundingClientRect();
+    const isAbove = activeRect.top < sidebarRect.top + 72;
+    const isBelow = activeRect.bottom > sidebarRect.bottom - 24;
+
+    if (isAbove || isBelow) {
+      activeLink.scrollIntoView({
+        block: 'center',
+        inline: 'nearest',
+      });
+    }
+  });
+})();
+
 // ── Dark / light mode ─────────────────────────────────────────────────────────
 const themeToggle = document.getElementById('theme-toggle');
 const root = document.documentElement;

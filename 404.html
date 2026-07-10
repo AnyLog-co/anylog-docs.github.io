@@ -1,0 +1,81 @@
+---
+layout: default
+title: Page Not Found
+permalink: /404.html
+---
+
+<section class="not-found-shell">
+  <div class="not-found-hero">
+    <p class="not-found-eyebrow">404</p>
+    <h1>We couldn't find that page.</h1>
+    <p class="not-found-copy">
+      The link may be from an older markdown path, a renamed document, or a page that no longer exists.
+      Start from the closest match below, or jump back into the docs from the home sections underneath.
+    </p>
+    <div class="not-found-actions">
+      <a class="not-found-button primary" href="{{ '/docs/readme/' | relative_url }}">Docs overview</a>
+      <a class="not-found-button" href="{{ '/' | relative_url }}">Back home</a>
+    </div>
+    <div id="not-found-suggestion" class="not-found-suggestion" hidden></div>
+  </div>
+</section>
+
+<section class="not-found-home">
+  {% include home_content.html %}
+</section>
+
+<script>
+  (function () {
+    const box = document.getElementById('not-found-suggestion');
+    if (!box) return;
+
+    const baseUrl = (window.siteBaseUrl || '').replace(/\/$/, '');
+    const currentPath = decodeURIComponent(window.location.pathname.replace(baseUrl, ''));
+    const tokens = currentPath
+      .replace(/\.md$/i, '')
+      .replace(/[_-]+/g, ' ')
+      .replace(/[^a-zA-Z0-9/ ]+/g, ' ')
+      .split(/[\/\s]+/)
+      .map(token => token.toLowerCase())
+      .filter(token => token && !/^\d+$/.test(token) && !['docs', 'md', 'a', 'an', 'the', 'and', 'or', 'of', 'to'].includes(token));
+
+    if (!tokens.length) return;
+
+    function scoreDoc(doc) {
+      const title = String(doc.title || '').toLowerCase();
+      const url = decodeURIComponent(String(doc.url || '')).toLowerCase();
+      let score = 0;
+
+      tokens.forEach(token => {
+        if (title.includes(token)) score += 6;
+        if (url.includes(token)) score += 4;
+      });
+
+      if (url.endsWith('/' + tokens[tokens.length - 1] + '/')) score += 8;
+      return score;
+    }
+
+    fetch(baseUrl + '/search-index.json')
+      .then(response => response.ok ? response.json() : [])
+      .then(docs => {
+        let best = null;
+
+        docs.forEach(doc => {
+          const score = scoreDoc(doc);
+          if (!best || score > best.score) {
+            best = { ...doc, score };
+          }
+        });
+
+        if (!best || best.score < 10) return;
+
+        box.hidden = false;
+        box.innerHTML = `
+          <span class="not-found-suggestion-label">Closest match</span>
+          <a class="not-found-suggestion-link" href="${best.url}">${best.title || best.url}</a>
+          <span class="not-found-suggestion-path">${best.url}</span>
+        `;
+      })
+      .catch(() => {});
+  })();
+</script>
