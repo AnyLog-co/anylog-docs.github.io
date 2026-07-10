@@ -11,21 +11,7 @@
     </div>
 
     <nav class="sidebar-nav">
-      {% for section in site.nav %}
-      <div class="nav-section">
-        <p class="nav-section-title">{{ section.title }}</p>
-        <ul>
-          {% for item in section.items %}
-          <li>
-            <a href="{{ '/docs/' | append: item.slug | append: '/' | relative_url }}"
-               {% if page.url contains item.slug %}class="active"{% endif %}>
-              {{ item.title }}
-            </a>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-      {% endfor %}
+      {% include nav_tree.html nodes=site.nav depth=0 %}
     </nav>
 
     <div class="sidebar-footer">
