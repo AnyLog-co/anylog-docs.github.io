@@ -35,6 +35,112 @@ if (themeToggle) {
   });
 }
 
+// ── Documentation images ─────────────────────────────────────────────────────
+(function () {
+  const content = document.querySelector('.doc-content');
+  if (!content) return;
+
+  function replaceBrokenImage(img) {
+    if (!img || img.dataset.fallbackApplied === 'true') return;
+    img.dataset.fallbackApplied = 'true';
+
+    const fallback = document.createElement('div');
+    fallback.className = 'doc-image-fallback';
+
+    const label = document.createElement('strong');
+    label.textContent = img.alt || 'Image unavailable';
+    fallback.appendChild(label);
+
+    const src = img.getAttribute('src');
+    if (src) {
+      const path = document.createElement('div');
+      path.textContent = src;
+      fallback.appendChild(path);
+    }
+
+    img.replaceWith(fallback);
+  }
+
+  content.querySelectorAll('img').forEach(img => {
+    img.loading = img.loading || 'lazy';
+    img.decoding = 'async';
+    img.addEventListener('error', () => replaceBrokenImage(img), { once: true });
+
+    if (img.complete && img.naturalWidth === 0) {
+      replaceBrokenImage(img);
+    }
+  });
+})();
+
+// ── Copy buttons for code blocks ────────────────────────────────────────────
+(function () {
+  const content = document.querySelector('.doc-content');
+  if (!content) return;
+
+  async function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+
+    const helper = document.createElement('textarea');
+    helper.value = text;
+    helper.setAttribute('readonly', '');
+    helper.style.position = 'absolute';
+    helper.style.left = '-9999px';
+    document.body.appendChild(helper);
+    helper.select();
+    document.execCommand('copy');
+    helper.remove();
+  }
+
+  function codeTextFor(pre) {
+    const code = pre.querySelector('code');
+    return (code ? code.textContent : pre.textContent || '').replace(/\s+$/, '');
+  }
+
+  function blockContainerFor(pre) {
+    const highlighted = pre.closest('.highlighter-rouge, .highlight');
+    return highlighted || pre;
+  }
+
+  content.querySelectorAll('pre').forEach(pre => {
+    if (pre.id === 'env-content') return;
+
+    const container = blockContainerFor(pre);
+    if (!container || container.querySelector('.copy-code-button')) return;
+
+    container.classList.add('doc-code-block');
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'copy-code-button';
+    button.textContent = 'Copy';
+    button.setAttribute('aria-label', 'Copy code');
+
+    button.addEventListener('click', async () => {
+      const text = codeTextFor(pre);
+      if (!text) return;
+
+      const previousLabel = button.textContent;
+      try {
+        await copyText(text);
+        button.textContent = 'Copied';
+        button.classList.add('copied');
+      } catch (_) {
+        button.textContent = 'Failed';
+      }
+
+      window.setTimeout(() => {
+        button.textContent = previousLabel;
+        button.classList.remove('copied');
+      }, 1800);
+    });
+
+    container.appendChild(button);
+  });
+})();
+
 // ── Full-text search ──────────────────────────────────────────────────────────
 (function () {
   const searchTargets = [
@@ -43,10 +149,6 @@ if (themeToggle) {
       results: document.getElementById('doc-search-results'),
       itemTag: 'a',
       limit: 10,
-      onQueryChange(query) {
-        const nav = document.querySelector('.sidebar-nav');
-        if (nav) nav.hidden = Boolean(query);
-      },
     },
     {
       input: document.getElementById('header-search-input'),
@@ -204,7 +306,6 @@ if (themeToggle) {
   searchTargets.forEach(target => {
     target.input.addEventListener('input', () => {
       const query = target.input.value.trim();
-      if (target.onQueryChange) target.onQueryChange(query);
 
       if (!query) {
         target.results.innerHTML = '';

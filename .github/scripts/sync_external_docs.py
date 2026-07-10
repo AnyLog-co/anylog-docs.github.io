@@ -16,7 +16,7 @@ ASSETS_DIR = ROOT / "assets" / "external-docs"
 WORK_DIR = ROOT / ".external-docs" / "documentation"
 
 DOCS_REPO = os.environ.get("ANYLOG_DOCS_REPO", "https://github.com/AnyLog-co/documentation.git")
-DOCS_REF = os.environ.get("ANYLOG_DOCS_REF", "master")
+DOCS_REF = os.environ.get("ANYLOG_DOCS_REF", "pre-develop")
 SOURCE_DIR = os.environ.get("ANYLOG_DOCS_SOURCE_DIR")
 
 FRONT_MATTER_RE = re.compile(r"\A---\s*\n(.*?)\n---\s*\n?", re.DOTALL)
@@ -103,11 +103,30 @@ def source_checkout():
     return WORK_DIR
 
 
+def should_skip_rel(rel):
+    parts = rel.parts
+    if any(part.startswith(".") for part in parts):
+        return True
+
+    top_level = parts[0] if parts else ""
+    if re.match(r"^99(?:\b|[^A-Za-z0-9].*)", top_level):
+        return True
+    if top_level == "ORPHANS":
+        return True
+
+    upper_top_level = top_level.upper()
+    if "INTERNAL" in upper_top_level or "DRAFT" in upper_top_level:
+        return True
+
+    return False
+
+
 def iter_files(source):
     for path in source.rglob("*"):
         if not path.is_file():
             continue
-        if ".git" in path.relative_to(source).parts:
+        rel = path.relative_to(source)
+        if should_skip_rel(rel):
             continue
         yield path
 
@@ -165,6 +184,11 @@ def resolve_target(current_rel, target, doc_map, asset_map):
         if md_candidate in doc_map:
             return doc_map[md_candidate]["url"] + fragment
 
+        for index_name in ("README.md", "readme.md", "Overview.md", "overview.md"):
+            index_candidate = rel_candidate / index_name
+            if index_candidate in doc_map:
+                return doc_map[index_candidate]["url"] + fragment
+
     if rel_candidate in asset_map:
         return asset_map[rel_candidate]["url"] + query + fragment
 
@@ -186,7 +210,10 @@ def rewrite_links(text, current_rel, doc_map, asset_map):
 def write_doc(source_path, rel, mapping, doc_map, asset_map):
     raw = source_path.read_text(encoding="utf-8", errors="replace")
     existing_front_matter, body = split_front_matter(raw)
-    title = existing_front_matter.get("title") or first_heading(body) or title_from_path(rel)
+    if rel.as_posix().lower() == "readme.md":
+        title = "Overview"
+    else:
+        title = existing_front_matter.get("title") or first_heading(body) or title_from_path(rel)
     description = existing_front_matter.get("description", "")
     body = remove_matching_first_heading(body, title)
     body = rewrite_links(body, rel, doc_map, asset_map)

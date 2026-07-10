@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUNDLER_VERSION = "2.3.25"
+MIN_GITHUB_PAGES_VERSION = 200
 
 
 def run(cmd, env=None):
@@ -191,9 +192,30 @@ def sync_docs():
     run([sys.executable, ".github/scripts/validate_docs.py"])
 
 
+def locked_github_pages_version():
+    lockfile = ROOT / "Gemfile.lock"
+    if not lockfile.exists():
+        return None
+
+    for line in lockfile.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("github-pages ("):
+            continue
+        version = stripped.removeprefix("github-pages (").removesuffix(")")
+        try:
+            return int(version.split(".", 1)[0])
+        except ValueError:
+            return None
+
+    return None
+
+
 def ensure_bundle(bundle, env):
     run([*bundle, "config", "set", "path", "vendor/bundle"], env=env)
     run([*bundle, "lock", "--add-platform", *local_platforms()], env=env)
+    github_pages_version = locked_github_pages_version()
+    if github_pages_version is not None and github_pages_version < MIN_GITHUB_PAGES_VERSION:
+        run([*bundle, "update", "github-pages", "jekyll-feed", "jekyll-seo-tag", "webrick"], env=env)
     run([*bundle, "install"], env=env)
 
 
