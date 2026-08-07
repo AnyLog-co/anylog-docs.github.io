@@ -342,6 +342,7 @@ def rewrite_links(text, current_rel, doc_map, asset_map, doc_lookup):
     text = remove_hidden_link_lines(text)
     text = MD_LINK_RE.sub(replace_md, text)
     text = HTML_SRC_RE.sub(replace_html, text)
+    text = remove_hidden_link_lines(text)
     return text
 
 
