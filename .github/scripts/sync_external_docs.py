@@ -138,7 +138,7 @@ def source_checkout():
 
     shutil.rmtree(WORK_DIR, ignore_errors=True)
     WORK_DIR.parent.mkdir(parents=True, exist_ok=True)
-    run(["git", "clone", "--depth", "1", "--branch", DOCS_REF, DOCS_REPO, str(WORK_DIR)])
+    run(["git", "clone", "--branch", DOCS_REF, DOCS_REPO, str(WORK_DIR)])
     return WORK_DIR
 
 
@@ -401,7 +401,21 @@ def enable_readme_markdown_in_html(text):
     )
 
 
-def write_doc(source_path, rel, mapping, doc_map, asset_map, doc_lookup):
+def last_updated_for(source_root, rel):
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(source_root), "log", "-1", "--format=%cs", "--", rel.as_posix()],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return ""
+
+    return result.stdout.strip()
+
+
+def write_doc(source_root, source_path, rel, mapping, doc_map, asset_map, doc_lookup):
     raw = source_path.read_text(encoding="utf-8", errors="replace")
     existing_front_matter, body = split_front_matter(raw)
     if rel.as_posix().lower() == "readme.md":
@@ -421,6 +435,7 @@ def write_doc(source_path, rel, mapping, doc_map, asset_map, doc_lookup):
         f"description: {json.dumps(description)}",
         "layout: page",
         f"source_path: {json.dumps(rel.as_posix())}",
+        f"last_updated: {json.dumps(last_updated_for(source_root, rel))}",
         "---",
         "",
     ]
@@ -443,7 +458,7 @@ def sync():
     for source_path in iter_files(source):
         rel = source_path.relative_to(source)
         if rel in doc_map:
-            write_doc(source_path, rel, doc_map[rel], doc_map, asset_map, doc_lookup)
+            write_doc(source, source_path, rel, doc_map[rel], doc_map, asset_map, doc_lookup)
         elif rel in asset_map:
             output = asset_map[rel]["output"]
             output.parent.mkdir(parents=True, exist_ok=True)
