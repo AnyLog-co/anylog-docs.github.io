@@ -78,13 +78,24 @@ def natural_key(value):
     return [int(part) if part.isdigit() else part for part in parts]
 
 
+def source_order_key(value):
+    match = re.match(r"^\s*(\d+(?:-\d+)*)(?:\s*-\s*|\s+)", value)
+    if not match:
+        return (1, (), natural_key(value))
+
+    order = tuple(int(part) for part in match.group(1).split("-"))
+    title = value[match.end():].strip()
+    return (0, order, natural_key(title))
+
+
 def sort_entries(entries):
     def key(entry):
         if entry["kind"] == "page" and entry.get("is_overview"):
-            return (0, natural_key(entry.get("sort_key", entry["title"])))
-        if entry["kind"] == "section":
-            return (1, natural_key(entry.get("sort_key", entry["title"])))
-        return (2, natural_key(entry.get("sort_key", entry["title"])))
+            return (0, (), (), ())
+
+        sort_key = entry.get("sort_key", entry["title"])
+        kind_order = 0 if entry["kind"] == "section" else 1
+        return (1, source_order_key(sort_key), kind_order, natural_key(entry["title"]))
 
     return sorted(entries, key=key)
 
