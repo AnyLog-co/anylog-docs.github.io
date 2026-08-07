@@ -339,6 +339,7 @@ def rewrite_links(text, current_rel, doc_map, asset_map, doc_lookup):
             return match.group(1) + "#" + match.group(3)
         return match.group(1) + resolved + match.group(3)
 
+    text = remove_hidden_link_lines(text)
     text = MD_LINK_RE.sub(replace_md, text)
     text = HTML_SRC_RE.sub(replace_html, text)
     text = remove_hidden_link_lines(text)
@@ -355,6 +356,51 @@ def remove_hidden_link_lines(text):
     return "".join(lines)
 
 
+def clean_readme_toc(text):
+    lines = []
+    in_toc = False
+
+    def clean_markdown_labels(line):
+        return re.sub(
+            r"\[([^\[\]]+)\]",
+            lambda match: "[" + strip_order_prefix(match.group(1)) + "]",
+            line,
+        )
+
+    for line in text.splitlines(keepends=True):
+        if "<!-- TOC:START" in line:
+            in_toc = True
+            lines.append(line)
+            continue
+
+        if "<!-- TOC:END" in line:
+            in_toc = False
+            lines.append(line)
+            continue
+
+        if in_toc:
+            if has_hidden_path_part(unquote(line)):
+                continue
+
+            line = clean_markdown_labels(line)
+            plain_item = re.match(r"^(\s*-\s+)([^\[\]\n]+?)(\r?\n?)$", line)
+            if plain_item:
+                line = plain_item.group(1) + strip_order_prefix(plain_item.group(2)) + plain_item.group(3)
+
+        lines.append(line)
+
+    return "".join(lines)
+
+
+def enable_readme_markdown_in_html(text):
+    return re.sub(
+        r'<div(\s+align=["\']justified["\'])(?![^>]*\smarkdown=)',
+        r'<div\1 markdown="1"',
+        text,
+        flags=re.IGNORECASE,
+    )
+
+
 def write_doc(source_path, rel, mapping, doc_map, asset_map, doc_lookup):
     raw = source_path.read_text(encoding="utf-8", errors="replace")
     existing_front_matter, body = split_front_matter(raw)
@@ -365,6 +411,9 @@ def write_doc(source_path, rel, mapping, doc_map, asset_map, doc_lookup):
     description = existing_front_matter.get("description", "")
     body = remove_matching_first_heading(body, title)
     body = rewrite_links(body, rel, doc_map, asset_map, doc_lookup)
+    if rel.as_posix().lower() == "readme.md":
+        body = enable_readme_markdown_in_html(body)
+        body = clean_readme_toc(body)
 
     front_matter = [
         "---",

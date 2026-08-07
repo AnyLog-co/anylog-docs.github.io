@@ -7,6 +7,8 @@ highlighter: rouge
 kramdown:
   input: GFM
   syntax_highlighter: rouge
+  parse_block_html: true
+  parse_span_html: true
 collections:
   docs:
     output: true
