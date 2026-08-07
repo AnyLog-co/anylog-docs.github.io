@@ -41,8 +41,14 @@ def safe_relative_path(path):
     return Path(*[slugify_component(part) for part in path.parts])
 
 
+def strip_order_prefix(value):
+    value = re.sub(r"^\s*(?:\d+(?:-\d+)*|[A-Z])(?:\s*-\s*|\s+)", "", value)
+    return value.strip() or value
+
+
 def title_from_path(path):
-    stem = path.stem.replace("_", " ").replace("-", " ")
+    stem = strip_order_prefix(path.stem)
+    stem = stem.replace("_", " ").replace("-", " ")
     return " ".join(word.capitalize() for word in stem.split()) or "Untitled"
 
 
@@ -119,6 +125,10 @@ def is_external_url(target):
     return parsed.scheme in {"http", "https", "mailto", "tel"} or target.startswith("#")
 
 
+def has_hidden_path_part(path):
+    return any(re.match(r"^99(?:\b|[^A-Za-z0-9].*)", part) for part in Path(path).parts)
+
+
 def source_checkout():
     if SOURCE_DIR:
         source = Path(SOURCE_DIR).expanduser().resolve()
@@ -137,9 +147,9 @@ def should_skip_rel(rel):
     if any(part.startswith(".") for part in parts):
         return True
 
-    top_level = parts[0] if parts else ""
-    if re.match(r"^99(?:\b|[^A-Za-z0-9].*)", top_level):
+    if has_hidden_path_part(rel):
         return True
+    top_level = parts[0] if parts else ""
     if top_level == "ORPHANS":
         return True
 
@@ -267,6 +277,8 @@ def resolve_target(current_rel, target, doc_map, asset_map, doc_lookup):
     raw_path = unquote(split.path)
     if not raw_path:
         return target
+    if has_hidden_path_part(raw_path):
+        return None
 
     source_root = Path("/source-root")
     if raw_path.startswith("/"):
@@ -314,14 +326,33 @@ def resolve_target(current_rel, target, doc_map, asset_map, doc_lookup):
 
 def rewrite_links(text, current_rel, doc_map, asset_map, doc_lookup):
     def replace_md(match):
-        return match.group(1) + resolve_target(current_rel, match.group(2), doc_map, asset_map, doc_lookup) + match.group(3)
+        resolved = resolve_target(current_rel, match.group(2), doc_map, asset_map, doc_lookup)
+        if resolved is None:
+            label = match.group(1)
+            label_match = re.match(r"!?\[([^\]]*)\]\(", label)
+            return label_match.group(1) if label_match else match.group(0)
+        return match.group(1) + resolved + match.group(3)
 
     def replace_html(match):
-        return match.group(1) + resolve_target(current_rel, match.group(2), doc_map, asset_map, doc_lookup) + match.group(3)
+        resolved = resolve_target(current_rel, match.group(2), doc_map, asset_map, doc_lookup)
+        if resolved is None:
+            return match.group(1) + "#" + match.group(3)
+        return match.group(1) + resolved + match.group(3)
 
     text = MD_LINK_RE.sub(replace_md, text)
     text = HTML_SRC_RE.sub(replace_html, text)
+    text = remove_hidden_link_lines(text)
     return text
+
+
+def remove_hidden_link_lines(text):
+    lines = []
+    for line in text.splitlines(keepends=True):
+        decoded = unquote(line)
+        if "](" in line and has_hidden_path_part(decoded):
+            continue
+        lines.append(line)
+    return "".join(lines)
 
 
 def write_doc(source_path, rel, mapping, doc_map, asset_map, doc_lookup):
@@ -330,7 +361,7 @@ def write_doc(source_path, rel, mapping, doc_map, asset_map, doc_lookup):
     if rel.as_posix().lower() == "readme.md":
         title = "Overview"
     else:
-        title = existing_front_matter.get("title") or first_heading(body) or title_from_path(rel)
+        title = strip_order_prefix(existing_front_matter.get("title") or first_heading(body) or title_from_path(rel))
     description = existing_front_matter.get("description", "")
     body = remove_matching_first_heading(body, title)
     body = rewrite_links(body, rel, doc_map, asset_map, doc_lookup)

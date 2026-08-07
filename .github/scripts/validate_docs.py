@@ -42,11 +42,11 @@ def source_path_for(md_path, rel_path):
 def page_title_for(source_path):
     if source_path.name.lower() == "readme.md":
         return "Overview"
-    return source_path.stem
+    return strip_order_prefix(source_path.stem)
 
 
 def strip_order_prefix(value):
-    value = re.sub(r"^\s*\d+\s*-\s*", "", value)
+    value = re.sub(r"^\s*(?:\d+(?:-\d+)*|[A-Z])(?:\s*-\s*|\s+)", "", value)
     return value.strip() or value
 
 
@@ -60,9 +60,9 @@ def should_include_source_path(source_path):
     if any(part.startswith(".") for part in parts):
         return False
 
-    top_level = parts[0] if parts else ""
-    if re.match(r"^99(?:\b|[^A-Za-z0-9].*)", top_level):
+    if any(re.match(r"^99(?:\b|[^A-Za-z0-9].*)", part) for part in parts):
         return False
+    top_level = parts[0] if parts else ""
     if top_level == "ORPHANS":
         return False
 
