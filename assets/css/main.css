@@ -184,7 +184,7 @@ img { max-width: 100%; height: auto; display: block; }
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: .55rem;
 }
 .header-nav a {
   font-size: 13.5px;
@@ -199,12 +199,14 @@ img { max-width: 100%; height: auto; display: block; }
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 5px 12px;
+  padding: 5px 10px;
   border: 1px solid rgba(255,255,255,.18);
   border-radius: var(--radius);
   background: rgba(255,255,255,.07);
   color: rgba(255,255,255,.75) !important;
   font-size: 13px !important;
+  line-height: 1.2;
+  white-space: nowrap;
   transition: background .15s, border-color .15s;
 }
 .btn-github:hover,
