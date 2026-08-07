@@ -143,6 +143,8 @@
 <path id="return-ai" d="M379 162 C379 145 379 124 380 103" fill="none"/>
 <path id="route-cross-1" class="route route-teal" d="M142 126 C205 184 260 207 323 193" opacity=".34"/>
 <path id="route-cross-2" class="route route-blue" d="M618 218 C558 185 500 161 437 191" opacity=".34"/>
+<path id="return-cross-1" d="M323 193 C260 207 205 184 142 126" fill="none"/>
+<path id="return-cross-2" d="M437 191 C500 161 558 185 618 218" fill="none"/>
 
 <!-- Animated data packets -->
 <g>
@@ -188,6 +190,18 @@
   <circle class="return-pulse" r="3.5" fill="#afa9ec">
     <animateMotion dur="3.4s" repeatCount="indefinite" begin="1.1s"><mpath href="#return-ai"/></animateMotion>
   </circle>
+  <circle class="pulse" r="3.6" fill="#1d9e75">
+    <animateMotion dur="4.9s" repeatCount="indefinite" begin=".5s"><mpath href="#route-cross-1"/></animateMotion>
+  </circle>
+  <circle class="return-pulse" r="3.2" fill="#5dcaa5">
+    <animateMotion dur="5.2s" repeatCount="indefinite" begin="2s"><mpath href="#return-cross-1"/></animateMotion>
+  </circle>
+  <circle class="pulse" r="3.6" fill="#378add">
+    <animateMotion dur="4.6s" repeatCount="indefinite" begin=".9s"><mpath href="#route-cross-2"/></animateMotion>
+  </circle>
+  <circle class="return-pulse" r="3.2" fill="#85b7eb">
+    <animateMotion dur="5.1s" repeatCount="indefinite" begin="2.4s"><mpath href="#return-cross-2"/></animateMotion>
+  </circle>
 </g>
 
 <!-- Central AnyLog fabric -->
@@ -196,12 +210,12 @@
   <path d="M308 136 H452 L492 187 L452 238 H308 L268 187 Z" fill="url(#fabric-core)" opacity=".98" filter="url(#soft-shadow)"/>
   <path d="M308 136 H452 L492 187 L452 238 H308 L268 187 Z" fill="none" stroke="#ffffff" stroke-opacity=".58" stroke-width="1.4"/>
   <path d="M310 187 L344 162 H416 L450 187 L416 214 H344 Z" fill="none" stroke="#ffffff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" opacity=".86"/>
-  <image class="core-logo" href="/assets/img/logo-circle-blue.png" x="287" y="178" width="18" height="18" preserveAspectRatio="xMidYMid meet"/>
-  <image class="core-logo" href="/assets/img/logo-circle-blue.png" x="328" y="142" width="18" height="18" preserveAspectRatio="xMidYMid meet"/>
-  <image class="core-logo" href="/assets/img/logo-circle-blue.png" x="414" y="142" width="18" height="18" preserveAspectRatio="xMidYMid meet"/>
-  <image class="core-logo" href="/assets/img/logo-circle-blue.png" x="455" y="178" width="18" height="18" preserveAspectRatio="xMidYMid meet"/>
-  <image class="core-logo" href="/assets/img/logo-circle-blue.png" x="414" y="216" width="18" height="18" preserveAspectRatio="xMidYMid meet"/>
-  <image class="core-logo" href="/assets/img/logo-circle-blue.png" x="328" y="216" width="18" height="18" preserveAspectRatio="xMidYMid meet"/>
+  <image class="core-logo" href="{{ '/assets/img/logo-circle-blue.png' | relative_url }}" x="287" y="178" width="18" height="18" preserveAspectRatio="xMidYMid meet"/>
+  <image class="core-logo" href="{{ '/assets/img/logo-circle-blue.png' | relative_url }}" x="328" y="142" width="18" height="18" preserveAspectRatio="xMidYMid meet"/>
+  <image class="core-logo" href="{{ '/assets/img/logo-circle-blue.png' | relative_url }}" x="414" y="142" width="18" height="18" preserveAspectRatio="xMidYMid meet"/>
+  <image class="core-logo" href="{{ '/assets/img/logo-circle-blue.png' | relative_url }}" x="455" y="178" width="18" height="18" preserveAspectRatio="xMidYMid meet"/>
+  <image class="core-logo" href="{{ '/assets/img/logo-circle-blue.png' | relative_url }}" x="414" y="216" width="18" height="18" preserveAspectRatio="xMidYMid meet"/>
+  <image class="core-logo" href="{{ '/assets/img/logo-circle-blue.png' | relative_url }}" x="328" y="216" width="18" height="18" preserveAspectRatio="xMidYMid meet"/>
   <text x="380" y="185" text-anchor="middle" fill="#ffffff" font-size="12.8" font-weight="700">AnyLog</text>
   <text x="380" y="199" text-anchor="middle" fill="#ffffff" font-size="8.2" font-weight="600" opacity=".88">EDGE DATA FABRIC</text>
 </g>
