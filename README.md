@@ -2,6 +2,22 @@
 
 This is the technical documentation for [AnyLog Edge Data Fabric](https://www.anylog.network/), built with Jekyll and hosted on GitHub Pages.
 
+---
+
+## How to deploy
+
+1. Make sure you have `make`, `docker`, and `docker compose` installed
+2. Clone the [Frontend](https://github.com/AnyLog-co/anylog-docs.github.io) & [Content](https://github.com/AnyLog-co/documentation) repositories
+3. Start the docs locally:
+```shell
+make up LOCAL_DOCS=${PATH to documentation}
+
+# Example
+
+make up LOCAL_DOCS=/mnt/c/Users/oshad/AnyLog-docs/documentation
+```
+
+
 --- 
 
 ## Goal
