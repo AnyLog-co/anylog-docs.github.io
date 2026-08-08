@@ -16,7 +16,7 @@ ASSETS_DIR = ROOT / "assets" / "external-docs"
 WORK_DIR = ROOT / ".external-docs" / "documentation"
 
 DOCS_REPO = os.environ.get("ANYLOG_DOCS_REPO", "https://github.com/AnyLog-co/documentation.git")
-DOCS_REF = os.environ.get("ANYLOG_DOCS_REF", "pre-develop")
+DOCS_REF = os.environ.get("ANYLOG_DOCS_REF", "main")
 SOURCE_DIR = os.environ.get("ANYLOG_DOCS_SOURCE_DIR")
 
 FRONT_MATTER_RE = re.compile(r"\A---\s*\n(.*?)\n---\s*\n?", re.DOTALL)
