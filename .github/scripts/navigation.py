@@ -1,5 +1,6 @@
 ITEM_ORDER = {
     "Getting Started": [
+        "quick-start"
         "getting-started",
         "installing-anylog",
         "install-ova",
@@ -52,6 +53,7 @@ ITEM_ORDER = {
         "notification",
     ],
     "Monitoring & Operations": [
+        "scheduler",
         "node-monitoring",
         "aggregations",
         "high-availability",
@@ -67,6 +69,7 @@ ITEM_ORDER = {
     ],
     "Reference": [
         "FAQ",
+        "test-suite",
         "troubleshooting"
     ],
 }
