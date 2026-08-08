@@ -30,7 +30,7 @@ check-dir:
 	fi
 
 up: check-dir
-	LOCAL_DOCS=$(LOCAL_DOCS) docker compose -f $(COMPOSE_FILE) up -d
+	LOCAL_DOCS=$(LOCAL_DOCS) docker compose -f $(COMPOSE_FILE) up --build -d
 
 logs:
 	docker logs -f $(CONTAINER)
