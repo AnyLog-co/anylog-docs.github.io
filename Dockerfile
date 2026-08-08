@@ -6,9 +6,11 @@ WORKDIR /srv/content
 USER root
 ENV BUNDLE_PATH=/srv/bundle
 
-RUN apk add --no-cache python3 bash \
-    && mkdir -p /srv/bundle && \
-    chmod -R 777 /srv/bundle
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        python3 bash \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /srv/bundle \
+    && chmod -R 777 /srv/bundle
 
 # Keep container running root for gem installation and avoid permission issues
 # Scripts will handle gem install automatically
