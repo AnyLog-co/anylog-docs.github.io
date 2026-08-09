@@ -1,0 +1,8 @@
+1. start
+
+$env:LOCAL_DOCS="C:\AnyLog-code\documentation"; docker compose -f .\docker-compose.yaml up --build -d
+
+
+2. stop
+
+docker compose -f .\docker-compose.yaml down -v --rmi all
