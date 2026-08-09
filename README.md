@@ -15,6 +15,9 @@ make up LOCAL_DOCS=${PATH to documentation}
 # Example
 
 make up LOCAL_DOCS=/mnt/c/Users/oshad/AnyLog-docs/documentation
+
+# Example - Windows CMD
+$env:LOCAL_DOCS="C:\AnyLog-code\documentation"; docker compose -f .\docker-compose.yaml up --build -d
 ```
 
 
