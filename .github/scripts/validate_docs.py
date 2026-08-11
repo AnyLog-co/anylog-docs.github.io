@@ -97,8 +97,92 @@ def section_for(source_path):
     return titleize(source_path.parent.name)
 
 
+<<<<<<< Updated upstream
 def discover_docs():
     nav = {}
+=======
+def strip_order_prefix(value):
+    value = re.sub(r"^\s*(?:\d+(?:-\d+)*|[A-Z])(?:\s*-\s*|\s+)", "", value)
+    return value.strip() or value
+
+
+def folder_title_for(path):
+    name = path.name or "Documentation"
+    return strip_order_prefix(name)
+
+
+def should_include_source_path(source_path):
+    parts = source_path.parts
+    if any(part.startswith(".") for part in parts):
+        return False
+
+    if len(parts) == 1 and source_path.name.lower() != "readme.md":
+        return False
+
+    if any(re.match(r"^99(?:\b|[^A-Za-z0-9].*)", part) for part in parts):
+        return False
+    top_level = parts[0] if parts else ""
+    if top_level == "ORPHANS":
+        return False
+
+    upper_top_level = top_level.upper()
+    if "INTERNAL" in upper_top_level or "DRAFT" in upper_top_level:
+        return False
+
+    return True
+
+
+def natural_key(value):
+    parts = re.split(r"(\d+)", value.casefold())
+    return [int(part) if part.isdigit() else part for part in parts]
+
+
+def source_order_key(value):
+    match = re.match(r"^\s*(\d+(?:-\d+)*)(?:\s*-\s*|\s+)", value)
+    if not match:
+        return (1, (), natural_key(value))
+
+    order = tuple(int(part) for part in match.group(1).split("-"))
+    title = value[match.end():].strip()
+    return (0, order, natural_key(title))
+
+
+def sort_entries(entries):
+    def key(entry):
+        if entry["kind"] == "page" and entry.get("is_overview"):
+            return (0, (), (), ())
+
+        sort_key = entry.get("sort_key", entry["title"])
+        kind_order = 0 if entry["kind"] == "section" else 1
+        return (1, source_order_key(sort_key), kind_order, natural_key(entry["title"]))
+
+    return sorted(entries, key=key)
+
+
+def ensure_section(container, source_folder, safe_folder):
+    sections = container.setdefault("sections", {})
+    key = source_folder.as_posix()
+    section = sections.get(key)
+    if section:
+        return section
+
+    section = {
+        "kind": "section",
+        "title": folder_title_for(source_folder),
+        "sort_key": source_folder.name,
+        "match_path": "/docs/" + safe_folder.as_posix().strip("/") + "/" if safe_folder.parts else "/docs/",
+        "children": [],
+        "sections": {},
+    }
+    sections[key] = section
+    container["children"].append(section)
+    return section
+
+
+def discover_tree():
+    root = {"children": [], "sections": {}}
+
+>>>>>>> Stashed changes
     for md_path in sorted(DOCS_DIR.rglob("*.md")):
         rel = md_path.relative_to(DOCS_DIR)
         source_path = source_path_for(md_path, rel)

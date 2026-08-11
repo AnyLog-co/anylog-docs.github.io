@@ -103,6 +103,30 @@ def source_checkout():
     return WORK_DIR
 
 
+<<<<<<< Updated upstream
+=======
+def should_skip_rel(rel):
+    parts = rel.parts
+    if any(part.startswith(".") for part in parts):
+        return True
+
+    if len(parts) == 1 and rel.name.lower() != "readme.md":
+        return True
+
+    if has_hidden_path_part(rel):
+        return True
+    top_level = parts[0] if parts else ""
+    if top_level == "ORPHANS":
+        return True
+
+    upper_top_level = top_level.upper()
+    if "INTERNAL" in upper_top_level or "DRAFT" in upper_top_level:
+        return True
+
+    return False
+
+
+>>>>>>> Stashed changes
 def iter_files(source):
     for path in source.rglob("*"):
         if not path.is_file():
