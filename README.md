@@ -14,7 +14,7 @@ We decided to Provide the documentation via a website at **https://anylog.networ
 
 Documentation content is sourced from the public
 <a href="https://github.com/AnyLog-co/documentation" target="_blank">AnyLog-co/documentation</a>
-repository on the `master` branch.
+repository on the `main` branch.
 
 Do not edit generated Markdown files in `_docs/` in this repository. The Jekyll build runs
 `.github/scripts/sync_external_docs.py`, which clones `AnyLog-co/documentation`, converts every upstream `.md`
@@ -25,7 +25,7 @@ The GitHub Pages workflow rebuilds on pushes and pull requests in this repositor
 schedule, and `repository_dispatch` events of type `documentation-updated`.
 
 For immediate publishing when `AnyLog-co/documentation` changes, add a workflow in that repository that sends a
-`repository_dispatch` event to this repository after pushes to `master`. Without that dispatch, the scheduled rebuild
+`repository_dispatch` event to this repository after pushes to `main`. Without that dispatch, the scheduled rebuild
 will still pick up upstream changes within the next hourly run.
 
 ---
@@ -33,24 +33,21 @@ will still pick up upstream changes within the next hourly run.
 ## Contributing
 
 This documentation is implementing a change control process. Therefore the repository follows a **PR-based workflow** 
-There are 2 branches kept permanent : 
-- ***'main'*** is the current client version (it contains a version file as the source code) the one that is viewed when accessing the documentation URL (see above)
-- ***'pre-develop'*** is the next version being worked on
-- Once a month , when a new code version is prepared, the documentation files follow the same process with a ***review of pending PRs pull requests*** before the pre-develop is merged on main
+Documentation changes are managed through pull requests against the `main` branch, which is the branch viewed when accessing the documentation URL (see above).
 
 **Required actions :** 
-- Find the file you want to update and fork it from 'pre-develop' (or create a new file)
+- Find the file you want to update and fork it from `main` (or create a new file)
 - IF you work locally
-  1. Make sure your local copy is in sync with `pre-develop`:
+  1. Make sure your local copy is in sync with `main`:
    ```bash
    git fetch origin
-   git rebase origin/pre-develop
+   git rebase origin/main
    ```
-  2. Create a feature branch or fork the file, make your changes, then open a pull request **against `pre-develop`**
+  2. Create a feature branch or fork the file, make your changes, then open a pull request **against `main`**
 
 - once edited, create a **pull request** for review and inclusion at the next update cycle
 
-*note:* direct pushes to `main` or 'pre-develop' are blocked
+*note:* direct pushes to `main` are blocked
 *note2:* GitHub Pages builds and publishes automatically once the PR is merged
 
 ---
@@ -237,3 +234,28 @@ docker compose up -d
 ```
 
 The `-v` flag removes the cached volume so it gets recreated with the correct permissions.
+
+## Local Mac Development
+
+Use the local launcher when you want to run Jekyll directly on macOS without Docker:
+
+```bash
+python3 scripts/dev.py
+```
+
+The launcher pulls the external documentation, rebuilds `_docs/` and `_config.yml`, installs Bundler and gems into
+`vendor/`, and starts Jekyll at **http://localhost:4000**.
+
+macOS system Ruby is not supported for this project because it often lacks the headers needed to build Jekyll's native
+gems. Use Ruby 3.x rather than Ruby 4 for GitHub Pages compatibility. Install Homebrew Ruby 3.3 first:
+
+```bash
+brew install ruby@3.3
+python3 scripts/dev.py
+```
+
+Or let the launcher install Homebrew Ruby 3.3:
+
+```bash
+python3 scripts/dev.py --install-ruby
+```

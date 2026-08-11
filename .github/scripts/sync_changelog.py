@@ -1,5 +1,5 @@
 """
-Fetches CHANGELOG.md from the pre-develop branch of each source repo
+Fetches CHANGELOG.md from the main branch of each source repo
 and writes them into _docs/Version-Control/ in the docs repo.
 
 Triggered by sync-changelogs.yml (schedule, manual, or repository_dispatch).
@@ -19,19 +19,19 @@ ROOT_PATH = os.path.dirname(__file__).split(".github")[0]
 SOURCES = [
     {
         "repo":   "AnyLog-co/AnyLog-Network",
-        "branch": "pre-develop",
+        "branch": "main",
         "file":   "CHANGELOG.md",
         "dest":   f"{ROOT_PATH}/_docs/Version-Control/SOURCE-CHANGELOGS.md",
     },
     {
         "repo":   "AnyLog-co/docker-compose",
-        "branch": "pre-develop",
+        "branch": "main",
         "file":   "CHANGELOG.md",
         "dest":   f"{ROOT_PATH}/_docs/Version-Control/DOCKER_COMPOSE-CHANGELOG.md",
     },
     {
         "repo":   "AnyLog-co/deployment-scripts",
-        "branch": "pre-develop",
+        "branch": "main",
         "file":   "CHANGELOG.md",
         "dest":   f"{ROOT_PATH}/_docs/Version-Control/DEPLOYMENT_SCRIPTS-CHANGELOGS.md",
     },

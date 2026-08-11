@@ -1,0 +1,30 @@
+<ul class="nav-tree nav-tree-depth-{{ include.depth | default: 0 }}">
+  {% for node in include.nodes %}
+  {% assign is_active = false %}
+  {% assign is_ancestor = false %}
+  {% if node.kind == "page" %}
+    {% if page.url == node.url %}
+      {% assign is_active = true %}
+    {% endif %}
+  {% else %}
+    {% if page.url contains node.match_path %}
+      {% assign is_ancestor = true %}
+    {% endif %}
+  {% endif %}
+  <li class="nav-item nav-item-depth-{{ include.depth | default: 0 }} nav-item-{{ node.kind }}{% if is_active %} is-active{% endif %}{% if is_ancestor %} is-ancestor{% endif %}">
+    {% if node.kind == "page" %}
+    <a href="{{ node.url | relative_url }}" class="nav-page-link{% if is_active %} active{% endif %}"{% if is_active %} aria-current="page"{% endif %}>
+      {{ node.title }}
+    </a>
+    {% else %}
+    <details class="nav-folder"{% if is_ancestor or include.depth == 0 or include.depth == nil %} open{% endif %}>
+      <summary class="nav-folder-summary{% if is_ancestor %} active{% endif %}"{% if is_ancestor %} aria-current="true"{% endif %}>
+        <span class="nav-folder-label">{{ node.title }}</span>
+      </summary>
+      {% assign child_depth = include.depth | default: 0 | plus: 1 %}
+      {% include nav_tree.html nodes=node.children depth=child_depth %}
+    </details>
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>

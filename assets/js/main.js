@@ -19,6 +19,28 @@ if (toggle) toggle.addEventListener('click', () =>
 );
 if (overlay) overlay.addEventListener('click', closeSidebar);
 
+// ── Keep the current page visible in the sidebar ────────────────────────────
+(function () {
+  if (!sidebar) return;
+
+  const activeLink = sidebar.querySelector('.nav-page-link.active[aria-current="page"]');
+  if (!activeLink) return;
+
+  window.requestAnimationFrame(() => {
+    const sidebarRect = sidebar.getBoundingClientRect();
+    const activeRect = activeLink.getBoundingClientRect();
+    const isAbove = activeRect.top < sidebarRect.top + 72;
+    const isBelow = activeRect.bottom > sidebarRect.bottom - 24;
+
+    if (isAbove || isBelow) {
+      activeLink.scrollIntoView({
+        block: 'center',
+        inline: 'nearest',
+      });
+    }
+  });
+})();
+
 // ── Dark / light mode ─────────────────────────────────────────────────────────
 const themeToggle = document.getElementById('theme-toggle');
 const root = document.documentElement;
@@ -35,6 +57,125 @@ if (themeToggle) {
   });
 }
 
+// ── Documentation images ─────────────────────────────────────────────────────
+(function () {
+  const content = document.querySelector('.doc-content');
+  if (!content) return;
+
+  function replaceBrokenImage(img) {
+    if (!img || img.dataset.fallbackApplied === 'true') return;
+    img.dataset.fallbackApplied = 'true';
+
+    const fallback = document.createElement('div');
+    fallback.className = 'doc-image-fallback';
+
+    const label = document.createElement('strong');
+    label.textContent = img.alt || 'Image unavailable';
+    fallback.appendChild(label);
+
+    const src = img.getAttribute('src');
+    if (src) {
+      const path = document.createElement('div');
+      path.textContent = src;
+      fallback.appendChild(path);
+    }
+
+    img.replaceWith(fallback);
+  }
+
+  content.querySelectorAll('img').forEach(img => {
+    img.loading = img.loading || 'lazy';
+    img.decoding = 'async';
+    img.addEventListener('error', () => replaceBrokenImage(img), { once: true });
+
+    if (img.complete && img.naturalWidth === 0) {
+      replaceBrokenImage(img);
+    }
+  });
+})();
+
+// ── Copy buttons for code blocks ────────────────────────────────────────────
+(function () {
+  const content = document.querySelector('.doc-content');
+  if (!content) return;
+  const baseUrl = (window.siteBaseUrl || '').replace(/\/$/, '');
+
+  function iconUrl(path) {
+    return `${baseUrl}${path}`;
+  }
+
+  async function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+
+    const helper = document.createElement('textarea');
+    helper.value = text;
+    helper.setAttribute('readonly', '');
+    helper.style.position = 'absolute';
+    helper.style.left = '-9999px';
+    document.body.appendChild(helper);
+    helper.select();
+    document.execCommand('copy');
+    helper.remove();
+  }
+
+  function codeTextFor(pre) {
+    const code = pre.querySelector('code');
+    return (code ? code.textContent : pre.textContent || '').replace(/\s+$/, '');
+  }
+
+  function blockContainerFor(pre) {
+    const highlighted = pre.closest('.highlighter-rouge, .highlight');
+    return highlighted || pre;
+  }
+
+  content.querySelectorAll('pre').forEach(pre => {
+    if (pre.id === 'env-content') return;
+
+    const container = blockContainerFor(pre);
+    if (!container || container.querySelector('.doc-code-toolbar')) return;
+
+    container.classList.add('doc-code-block');
+
+    const toolbar = document.createElement('div');
+    toolbar.className = 'doc-code-toolbar';
+
+    const copyButton = document.createElement('button');
+    copyButton.type = 'button';
+    copyButton.className = 'doc-code-button copy-code-button';
+    copyButton.setAttribute('aria-label', 'Copy code');
+    copyButton.setAttribute('title', 'Copy code');
+    copyButton.innerHTML = `
+      <img src="${iconUrl('/assets/img/icons/copy-light.png')}" alt="" class="copy-icon theme-icon-light" />
+      <img src="${iconUrl('/assets/img/icons/copy-dark.png')}" alt="" class="copy-icon theme-icon-dark" />
+    `;
+
+    copyButton.addEventListener('click', async () => {
+      const text = codeTextFor(pre);
+      if (!text) return;
+
+      copyButton.classList.remove('failed');
+      copyButton.classList.remove('copied');
+      try {
+        await copyText(text);
+        copyButton.classList.add('copied');
+      } catch (_) {
+        copyButton.classList.add('failed');
+      }
+
+      window.setTimeout(() => {
+        copyButton.classList.remove('copied');
+        copyButton.classList.remove('failed');
+      }, 1800);
+    });
+
+    toolbar.appendChild(copyButton);
+    container.appendChild(toolbar);
+  });
+})();
+
 // ── Full-text search ──────────────────────────────────────────────────────────
 (function () {
   const searchTargets = [
@@ -43,10 +184,6 @@ if (themeToggle) {
       results: document.getElementById('doc-search-results'),
       itemTag: 'a',
       limit: 10,
-      onQueryChange(query) {
-        const nav = document.querySelector('.sidebar-nav');
-        if (nav) nav.hidden = Boolean(query);
-      },
     },
     {
       input: document.getElementById('header-search-input'),
@@ -69,7 +206,8 @@ if (themeToggle) {
   let docsByUrl = new Map();
   let idx = null;
   let loadError = false;
-  const indexReady = fetch('/search-index.json')
+  const baseUrl = (window.siteBaseUrl || '').replace(/\/$/, '');
+  const indexReady = fetch(`${baseUrl}/search-index.json`)
     .then(response => response.json())
     .then(data => {
       docs = data.map(doc => ({
@@ -203,7 +341,6 @@ if (themeToggle) {
   searchTargets.forEach(target => {
     target.input.addEventListener('input', () => {
       const query = target.input.value.trim();
-      if (target.onQueryChange) target.onQueryChange(query);
 
       if (!query) {
         target.results.innerHTML = '';

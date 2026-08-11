@@ -1,7 +1,7 @@
 <header class="site-header">
   <div class="header-inner">
     <a class="site-logo" href="{{ '/' | relative_url }}">
-      <img src="{{ '/assets/img/Logo-White.png' | relative_url }}" alt="AnyLog" height="18" />
+      <img src="{{ '/assets/img/logo-circle-blue.png' | relative_url }}" alt="AnyLog" height="18" />
       <span class="logo-wordmark">AnyLog <em>Docs</em></span>
     </a>
 
@@ -14,8 +14,15 @@
     </div>
 
     <nav class="header-nav">
-      <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>Home</a>
-      <a href="https://www.anylog.network/" target="_blank" rel="noopener">anylog.network ↗</a>
+      <a href="https://www.anylog.network/" target="_blank" rel="noopener" class="btn-header">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M2 12h20"/>
+          <path d="M12 2a15.3 15.3 0 0 1 0 20"/>
+          <path d="M12 2a15.3 15.3 0 0 0 0 20"/>
+        </svg>
+        anylog.network
+      </a>
       <a href="https://github.com/AnyLog-co" target="_blank" rel="noopener" class="btn-github">
         <svg height="15" viewBox="0 0 16 16" width="15" fill="currentColor" aria-hidden="true">
           <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
@@ -28,6 +35,21 @@
             0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
         </svg>
         GitHub
+      </a>
+      <a href="https://medium.com/anylog-network" target="_blank" rel="noopener" class="btn-header">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M13.54 12a6.8 6.8 0 0 1-6.77 6.82A6.8 6.8 0 0 1 0 12a6.8 6.8 0 0 1 6.77-6.82A6.8 6.8 0 0 1 13.54 12zm7.42 0c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
+        </svg>
+        Medium Blog
+      </a>
+      <a href="https://arxiv.org/abs/2607.28836" target="_blank" rel="noopener" class="btn-header">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <path d="M14 2v6h6"/>
+          <path d="M8 13h8"/>
+          <path d="M8 17h5"/>
+        </svg>
+        White Paper
       </a>
     </nav>
 

@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
+import re
 from pathlib import Path
-
-from navigation import ITEM_ORDER
 
 
 ROOT = Path(__file__).resolve().parents[2]
 CONFIG = ROOT / "_config.yml"
 DOCS_DIR = ROOT / "_docs"
+
 
 class DirectoryNotFound(Exception):
     pass
@@ -32,58 +32,6 @@ def read_front_matter(path):
     return values
 
 
-def titleize(value):
-    value = value.replace("_", " ").replace("-", " ")
-    return " ".join(word.capitalize() for word in value.split()) or "Documentation"
-
-
-def slug_from_entry(entry):
-    if isinstance(entry, dict):
-        return entry["slug"]
-    return entry
-
-
-def nav_title_for(source_path):
-    if source_path.name.lower() == "readme.md":
-        return "Overview"
-    return source_path.stem
-
-
-def order_items(section, items):
-    overview_items = [item for item in items if item.get("is_overview")]
-    items = [item for item in items if not item.get("is_overview")]
-
-    order = [slug_from_entry(e) for e in ITEM_ORDER.get(section, [])]
-    if not order:
-        return overview_items + sorted(items, key=lambda item: item["title"].lower())
-
-    ordered = []
-    remaining = {item["slug"].split("/")[-1]: item for item in items}
-    for slug in order:
-        if slug in remaining:
-            ordered.append(remaining.pop(slug))
-
-    ordered.extend(sorted(remaining.values(), key=lambda item: item["title"].lower()))
-    return overview_items + ordered
-
-
-def order_sections(nav_dict):
-    preferred = list(ITEM_ORDER.keys())
-    if "Documentation" in nav_dict and "Documentation" not in preferred:
-        preferred.insert(0, "Documentation")
-
-    ordered = []
-    for section in preferred:
-        if section in nav_dict:
-            ordered.append({"title": section, "items": order_items(section, nav_dict[section])})
-
-    for section in sorted(nav_dict):
-        if section not in preferred:
-            ordered.append({"title": section, "items": order_items(section, nav_dict[section])})
-
-    return ordered
-
-
 def source_path_for(md_path, rel_path):
     source_path = read_front_matter(md_path).get("source_path")
     if source_path:
@@ -91,16 +39,12 @@ def source_path_for(md_path, rel_path):
     return rel_path
 
 
-def section_for(source_path):
-    if source_path.parent == Path("."):
-        return "Documentation"
-    return titleize(source_path.parent.name)
+def page_title_for(source_path):
+    if source_path.name.lower() == "readme.md":
+        return "Overview"
+    return strip_order_prefix(source_path.stem)
 
 
-<<<<<<< Updated upstream
-def discover_docs():
-    nav = {}
-=======
 def strip_order_prefix(value):
     value = re.sub(r"^\s*(?:\d+(?:-\d+)*|[A-Z])(?:\s*-\s*|\s+)", "", value)
     return value.strip() or value
@@ -182,19 +126,49 @@ def ensure_section(container, source_folder, safe_folder):
 def discover_tree():
     root = {"children": [], "sections": {}}
 
->>>>>>> Stashed changes
     for md_path in sorted(DOCS_DIR.rglob("*.md")):
         rel = md_path.relative_to(DOCS_DIR)
         source_path = source_path_for(md_path, rel)
-        section = section_for(source_path)
-        slug = rel.with_suffix("").as_posix()
-        nav.setdefault(section, []).append({
-            "slug": slug,
-            "title": nav_title_for(source_path),
-            "file": rel.as_posix(),
-            "is_overview": source_path.name.lower() == "readme.md",
-        })
-    return nav
+        if not should_include_source_path(source_path):
+            continue
+        safe_path = rel.with_suffix("")
+
+        container = root
+        source_parts = list(source_path.parts[:-1])
+        safe_parts = list(safe_path.parts[:-1])
+
+        for index, folder_name in enumerate(source_parts):
+            source_folder = Path(*source_parts[: index + 1])
+            safe_folder = Path(*safe_parts[: index + 1])
+            container = ensure_section(container, source_folder, safe_folder)
+
+        container["children"].append(
+            {
+                "kind": "page",
+                "title": page_title_for(source_path),
+                "sort_key": source_path.name,
+                "slug": safe_path.as_posix(),
+                "url": "/docs/" + safe_path.as_posix() + "/",
+                "match_path": "/docs/" + safe_path.as_posix() + "/",
+                "file": rel.as_posix(),
+                "source_path": source_path.as_posix(),
+                "is_overview": source_path.name.lower() == "readme.md",
+            }
+        )
+
+    finalize_tree(root)
+    return root["children"]
+
+
+def finalize_tree(node):
+    children = []
+    for child in node["children"]:
+        if child["kind"] == "section":
+            finalize_tree(child)
+            child.pop("sections", None)
+        children.append(child)
+
+    node["children"] = sort_entries(children)
 
 
 def config_without_nav():
@@ -210,15 +184,27 @@ def yaml_quote(value):
     return f'"{escaped}"'
 
 
-def render_nav(nav):
+def render_nodes(nodes, indent=0):
+    lines = []
+    prefix = "  " * indent
+    for node in nodes:
+        lines.append(f"{prefix}- kind: {yaml_quote(node['kind'])}")
+        lines.append(f"{prefix}  title: {yaml_quote(node['title'])}")
+        lines.append(f"{prefix}  match_path: {yaml_quote(node['match_path'])}")
+        if node["kind"] == "page":
+            lines.append(f"{prefix}  slug: {yaml_quote(node['slug'])}")
+            lines.append(f"{prefix}  url: {yaml_quote(node['url'])}")
+            lines.append(f"{prefix}  file: {yaml_quote(node['file'])}")
+            lines.append(f"{prefix}  source_path: {yaml_quote(node['source_path'])}")
+        else:
+            lines.append(f"{prefix}  children:")
+            lines.extend(render_nodes(node["children"], indent + 2))
+    return lines
+
+
+def render_nav(nodes):
     lines = ["nav:"]
-    for section in nav:
-        lines.append(f"- title: {yaml_quote(section['title'])}")
-        lines.append("  items:")
-        for item in section["items"]:
-            lines.append(f"  - slug: {yaml_quote(item['slug'])}")
-            lines.append(f"    title: {yaml_quote(item['title'])}")
-            lines.append(f"    file: {yaml_quote(item['file'])}")
+    lines.extend(render_nodes(nodes, 0))
     return "\n".join(lines) + "\n"
 
 
@@ -230,8 +216,7 @@ def main():
     if not DOCS_DIR.is_dir():
         raise DirectoryNotFound(f"Failed to locate docs directory: {DOCS_DIR}")
 
-    CONFIG.write_text(config_without_nav() + render_nav(order_sections(discover_docs())), encoding="utf-8")
-
+    CONFIG.write_text(config_without_nav() + render_nav(discover_tree()), encoding="utf-8")
     print("Navigation sync complete.")
 
 
