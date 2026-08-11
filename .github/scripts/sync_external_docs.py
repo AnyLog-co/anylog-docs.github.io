@@ -147,6 +147,9 @@ def should_skip_rel(rel):
     if any(part.startswith(".") for part in parts):
         return True
 
+    if len(parts) == 1 and rel.name.lower() != "readme.md":
+        return True
+
     if has_hidden_path_part(rel):
         return True
     top_level = parts[0] if parts else ""
