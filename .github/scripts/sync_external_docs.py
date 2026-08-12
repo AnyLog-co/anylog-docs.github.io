@@ -308,9 +308,10 @@ def resolve_target(current_rel, target, doc_map, asset_map, doc_lookup):
         return liquid_relative_url(doc_map[rel_candidate]["url"] + fragment)
 
     if rel_candidate.suffix == "":
-        md_candidate = rel_candidate.with_suffix(".md")
-        if md_candidate in doc_map:
-            return liquid_relative_url(doc_map[md_candidate]["url"] + fragment)
+        if rel_candidate.name:
+            md_candidate = rel_candidate.with_suffix(".md")
+            if md_candidate in doc_map:
+                return liquid_relative_url(doc_map[md_candidate]["url"] + fragment)
 
         for index_name in ("README.md", "readme.md", "Overview.md", "overview.md"):
             index_candidate = rel_candidate / index_name
