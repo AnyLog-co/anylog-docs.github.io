@@ -7,9 +7,12 @@ services:
       - "4000:4000"
       - "35729:35729"
     command: bash /srv/content/.github/scripts/dev-start.sh
+    environment:
+      - ANYLOG_DOCS_SOURCE_DIR=/srv/documentation
     volumes:
-      - .:/srv/content:cached      # your docs project
-      - bundle-cache:/srv/bundle   # Docker-managed volume for gems
+      - ${LOCAL_DOCS:-.}:/srv/documentation:cached
+      - .:/srv/content:cached
+      - bundle-cache:/srv/bundle
 
 volumes:
   bundle-cache:

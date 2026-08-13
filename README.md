@@ -1,103 +1,82 @@
 # AnyLog Docs
 
-This is the technical documentation for [AnyLog Edge Data Fabric](https://www.anylog.network/), built with Jekyll and hosted on GitHub Pages.
+This is the technical documentation for [AnyLog Edge Data Fabric](https://www.anylog.network/), built with Jekyll and 
+hosted on GitHub Pages.
+
+This repository is the **backend** — it builds and serves the documentation site. The actual documentation content lives 
+in a separate repository; see [Documentation Source](#documentation-source) below.
+
+**Goal**: We decided to provide the documentation via a website at **https://anylog.network/docs** using Jekyll (same 
+theme as OpenHorizon), replacing raw GitHub repo access with a structured, navigable site comparable to EdgeX or 
+ReadTheDocs.
+
+**Reference**: Source Repositories
+
+| Repo | Default Branch | Purpose |
+|---|---|---|
+| [AnyLog-co/documentation](https://github.com/AnyLog-co/documentation) | main | Documentation content — source of truth, synced into this site |
+| [AnyLog-co/anylog-docs.github.io](https://github.com/AnyLog-co/anylog-docs.github.io) | main | This repo — the Jekyll backend that builds and serves the site |
+
 
 --- 
 
-## Goal
- 
-We decided to Provide the documentation via a website at **https://anylog.network/docs** using Jekyll (same theme as OpenHorizon), replacing raw GitHub repo access with a structured, navigable site comparable to EdgeX or ReadTheDocs.
- 
----
+## Quick Start (Local Deployment)
 
-## Documentation Source
+1. Make sure you have `make`, `docker`, and `docker compose` installed.
+2. Clone this repo (the backend) and the [content repository](https://github.com/AnyLog-co/documentation).
+3. From this repo, start the docs locally, pointing `LOCAL_DOCS` at your local clone of the content repo:
 
-Documentation content is sourced from the public
-<a href="https://github.com/AnyLog-co/documentation" target="_blank">AnyLog-co/documentation</a>
-repository on the `main` branch.
+```shell
+make up LOCAL_DOCS=${PATH to documentation}
 
-Do not edit generated Markdown files in `_docs/` in this repository. The Jekyll build runs
-`.github/scripts/sync_external_docs.py`, which clones `AnyLog-co/documentation`, converts every upstream `.md`
-file into a Jekyll collection page, copies supporting assets into `assets/external-docs/`, and regenerates the sidebar
-navigation.
-
-The GitHub Pages workflow rebuilds on pushes and pull requests in this repository, manual workflow dispatch, an hourly
-schedule, and `repository_dispatch` events of type `documentation-updated`.
-
-For immediate publishing when `AnyLog-co/documentation` changes, add a workflow in that repository that sends a
-`repository_dispatch` event to this repository after pushes to `main`. Without that dispatch, the scheduled rebuild
-will still pick up upstream changes within the next hourly run.
-
----
-
-## Contributing
-
-This documentation is implementing a change control process. Therefore the repository follows a **PR-based workflow** 
-Documentation changes are managed through pull requests against the `main` branch, which is the branch viewed when accessing the documentation URL (see above).
-
-**Required actions :** 
-- Find the file you want to update and fork it from `main` (or create a new file)
-- IF you work locally
-  1. Make sure your local copy is in sync with `main`:
-   ```bash
-   git fetch origin
-   git rebase origin/main
-   ```
-  2. Create a feature branch or fork the file, make your changes, then open a pull request **against `main`**
-
-- once edited, create a **pull request** for review and inclusion at the next update cycle
-
-*note:* direct pushes to `main` are blocked
-*note2:* GitHub Pages builds and publishes automatically once the PR is merged
-
----
- 
-## Reference : Source repositories
- 
-| Repo | Purpose | Status |
-|---|---|---|
-| **https://github.com/AnyLog-co/documentation** | Old docs — ~279 files, comprehensive but unorganised, not a website | Source of truth for migration |
-| **EdgeLake documentation site** | Ori's first Jekyll attempt — limited, semi-organised | To be deprecated |
-| **https://github.com/AnyLog-co/anylog-docs.github.io** (branch: `main`) | New Jekyll site — active development | Work in progress |
-
----
-
-## Adding or Updating Content
-
-### 1. Create or edit a page
-
-Documentation pages live in the upstream `AnyLog-co/documentation` repository. Create a new Markdown file or edit an existing one there:
-
-```
-<path-in-AnyLog-co/documentation>/<specific-topic>.md
+# Example
+make up LOCAL_DOCS=/mnt/c/Users/oshad/AnyLog-docs/documentation
 ```
 
-The sync script adds Jekyll front matter automatically. Page titles can still come from upstream front matter or headings, but the left sidebar label is always the Markdown filename without the `.md` extension.
+4. Open **http://localhost:4000** in your browser. Edits to files under `LOCAL_DOCS` are picked up live — no restart 
+needed.
 
-If you do add front matter upstream, this site recognizes the `title` and `description` fields:
+5. When you're done:
 
-```yaml
----
-title: Introduction to AnyLog
-description: Understanding AnyLog's architecture, node types, and core concepts.
-layout: page
----
-<!--
-## Changelog
-- 2026-04-17 | Created document
-- 2026-05-12 | updated by ...
---> 
+```shell
+make down
 ```
-Evey file **must** contain a header change log so when reading it one knows when changed / who did it / what date and Anylog version,  use this table format
-| Date of change | Relevant Anylog code version | Author | Description |
-|---|---|---|---|
-| - | - | - | Documentation Copyright Anylog.co 2026 |
-| 2026-04-19 | All | Eric Aquaronne | update readme for Anylog |
 
+> If `LOCAL_DOCS` is omitted, it defaults to `.` (this repo itself) — you almost always want to point it at your content 
+> repo clone instead.
 
-### 2. Register it in the navigation
+---
 
-Navigation is generated from the synced upstream files. The left sidebar section title is the folder that contains the Markdown file; root-level Markdown files are grouped under `Documentation`.
+## Maintaining the Backend
+
+This repo wraps a small Docker setup with a `Makefile` for convenience. The three pieces:
+
+**`Makefile`** — the entry point for local development.
+
+| Target  | What it does |
+|---|---|
+| `up`    | `docker compose up --build -d` — builds and starts the container |
+| `down`  | `docker compose down` — stops the container |
+| `logs`  | `docker logs -f anylog-docs` — follows the container's logs |
+| `clean` | `docker compose down -v --rmi all` — stops the container and removes its volumes and images |
+| `help`  | Prints usage (also the default target if you just run `make`) |
+
+All targets accept `LOCAL_DOCS=<path>`. `up`, `down`, and `clean` validate that the path exists before doing anything (unless it's left at the default `.`).
+
+**`docker-compose.yaml`** — defines a single `docs` service, built from the local `Dockerfile`:
+- Exposes port `4000` (the Jekyll site) and `35729` (LiveReload).
+- Runs `.github/scripts/dev-start.sh` as its startup command.
+- Mounts `${LOCAL_DOCS:-.}` to `/srv/documentation` (the content source) and this repo to `/srv/content` (the Jekyll site itself), both `cached` for performance.
+- Persists Bundler's gem cache in a named volume (`bundle-cache`) mounted at `/srv/bundle`, so `bundle install` doesn't rerun from scratch on every rebuild.
+
+**`Dockerfile`** — built on `jekyll/jekyll:4`, with `python3` and `bash` installed for the repo's helper scripts. It 
+runs as `root` to avoid gem-install and bundle permission issues; `BUNDLE_PATH` is set to `/srv/bundle` to match 
+the compose volume above.
+
+### Navigation / Sidebar Generation
+
+Navigation is generated from the synced upstream files. The left sidebar section title is the folder that contains the 
+Markdown file; root-level Markdown files are grouped under `Documentation`.
 
 `.github/scripts/navigation.py` is now only used for optional ordering overrides for known slugs:
 
@@ -112,121 +91,36 @@ ITEM_ORDER = {
 }
 ```
 
-The slug is the synced path without the `.md` extension after the sync script normalizes spaces and punctuation. The sidebar display name is the synced filename without `.md`. The order of slugs within each section controls the order they appear in the sidebar.
+The slug is the synced path without the `.md` extension after the sync script normalizes spaces and punctuation. The 
+sidebar display name is the synced filename without `.md`. The order of slugs within each section controls the order 
+they appear in the sidebar.
 
-`navigation.py` is consumed by `validate_docs.py`, which scans the generated `_docs/` directory and writes the `nav` block in `_config.yml`. This runs automatically on `docker compose up` and in GitHub Actions — you do not need to invoke it manually.
+`navigation.py` is consumed by `validate_docs.py`, which scans the generated `_docs/` directory and writes the `nav` 
+block in `_config.yml`. This runs automatically on `docker compose up` and in GitHub Actions — you do not need to 
+invoke it manually.
 
----
+### Running Without Make
 
-## Editing/Writing Guidelines
-
-- **Use absolute permalink paths** for links between doc pages — Jekyll builds each page at `/docs/<section>/<slug>/` regardless of which folder the source file is in, so relative paths will break:
-```markdown
-  [Install](/docs/getting-started/installing-anylog/)
-  [Background Services](/docs/network-services/background-services/#rest-service)
-```
-  The slug is always the filename without `.md`, lowercased, under its section directory name (also lowercased with hyphens).
-- **External links** must open in a new tab:
-```html
-  <a href="https://example.com" target="_blank">Link text</a>
-```
-- Keep front matter `description` to a single sentence — it appears as the subtitle under the page title
-- Keep to short sentences, add drawings/pics (PNG files) to make it easy to understand for readers that probably will be more OT than IT skills base
-
----
-
-- The title at the top is also used as the page title, there's no need for double title 
-**Example**: How not to define the Makefile  
-```markdown
----
-title: Introduction to AnyLog
-description: Understanding AnyLog's architecture, node types, and core concepts.
-layout: page
----
-<!--
-## Changelog
-- 2026-04-17 | Created document
-- 2026-05-12 | updated by 
---> 
-# Introduction to AnyLog
-[content] 
-```
-
----
-
-## Leveraging Claude LLM to Update a Doc Page
-
-A reliable pattern for getting Claude to rewrite or update a page while keeping it consistent with the rest of the docs:
-
-1. Provide the **raw GitHub URL** of the file to update — in GitHub, open the file and click **Raw**, then copy the address bar URL
-2. Provide the **raw GitHub URL** of an existing page whose layout you want the output to match
-3. Include the required front matter block in your prompt
-4. Ask Claude to rewrite the first file to match the structure and style of the second
-
-Keep the prompt substantive — include at least a short paragraph describing the intent and audience for each major section you want changed, not just bullet points. The more context you give about tone, audience, and structure, the better the result.
-
-### Sample prompt
-
-The following is a real example using `remote-gui.md`. Copy and adapt it for any page you want to update.
-
----
-
-> I need you to update the AnyLog documentation page for the Remote GUI.
->
-> **File to update (raw URL):**
-> `https://raw.githubusercontent.com/AnyLog-co/anylog-docs.github.io/refs/heads/main/_docs/Tools-UI/remote-gui.md`
->
-> **Example file to match in style and structure (raw URL):**
-> `https://raw.githubusercontent.com/AnyLog-co/anylog-docs.github.io/refs/heads/main/_docs/Getting-Started/getting-started.md`
->
-> **Required front matter — keep this exactly at the top of the file:**
-> ```yaml
-> ---
-> title: Remote GUI
-> description: Architecture and developer reference for the AnyLog Remote GUI.
-> layout: page
-> ---
-> ```
->
-> **What to change:**
->
-> The current page reads like internal notes — it's dense and assumes the reader already knows the codebase. Rewrite it so a new developer joining the project can follow it from top to bottom. The architecture diagram and key terminology table are good and should stay, but the surrounding prose needs more context.
->
-> The "Running locally" section currently has two terminal blocks with commands that aren't explained — add a sentence before each block describing what it does and why. The `uvicorn` command in particular looks like it may have a path issue (`CLI.local-cli-backend.main:app` uses dots but the `cd` above already entered the subdirectory); please flag that or correct it.
->
-> The "Plugin system" section is the most important part for contributors — expand the intro paragraph to explain *when* someone would want to build a plugin versus modifying a core feature. Keep the code examples as-is.
->
-> Use absolute permalink paths for links to other pages in `_docs/` — e.g. `/docs/network-services/background-services/`. Any link to an external repo or external site should use `<a href="URL" target="_blank">` format. Do not change any section headings — the navigation relies on them.
-
----
-
-Adjust the URLs, front matter, and the description of changes to match whatever page you are working on.
-
----
-
-
-
-## Local Development with Docker
-
-The easiest way to preview the docs locally is via Docker — no Ruby or Jekyll installation required.
-
-**Prerequisites:** [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/)
+You can drive Docker Compose directly instead of going through `make`:
 
 ```bash
 git clone https://github.com/AnyLog-co/anylog-docs.github.io.git
 cd anylog-docs.github.io
-docker compose up -d
+
+LOCAL_DOCS=/path/to/AnyLog-co/documentation docker compose up --build -d
 ```
 
-Once running, open your browser to **http://localhost:4000**.
-
-The container mounts your local `_docs/` directory, so edits are reflected live — no restart needed. To stop:
+Open **http://localhost:4000**. To stop:
 
 ```bash
 docker compose down
 ```
 
-**Troubleshooting:** If the container exits immediately with a bundle write permissions error (`There was an error while trying to write to /srv/bundle`), run:
+> Don't skip `LOCAL_DOCS` here — without it, the compose file falls back to mounting the current directory (this repo) 
+> as the documentation source, which has no content to render.
+
+**Troubleshooting:** If the container exits immediately with a bundle write-permissions error (`There was an error 
+while trying to write to /srv/bundle`), clear the cached volume and retry:
 
 ```bash
 docker compose down -v
@@ -235,7 +129,7 @@ docker compose up -d
 
 The `-v` flag removes the cached volume so it gets recreated with the correct permissions.
 
-## Local Mac Development
+### Local Mac Development
 
 Use the local launcher when you want to run Jekyll directly on macOS without Docker:
 
@@ -259,3 +153,57 @@ Or let the launcher install Homebrew Ruby 3.3:
 ```bash
 python3 scripts/dev.py --install-ruby
 ```
+
+---
+
+## Documentation Source
+
+Documentation content is sourced from the public
+<a href="https://github.com/AnyLog-co/documentation" target="_blank">AnyLog-co/documentation</a>
+repository on the `main` branch.
+
+Do not edit generated Markdown files in `_docs/` in this repository. The Jekyll build runs
+`.github/scripts/sync_external_docs.py`, which clones `AnyLog-co/documentation`, converts every upstream `.md`
+file into a Jekyll collection page, copies supporting assets into `assets/external-docs/`, and regenerates the sidebar
+navigation.
+
+The GitHub Pages workflow rebuilds on pushes and pull requests in this repository, manual workflow dispatch, an hourly
+schedule, and `repository_dispatch` events of type `documentation-updated`.
+
+For immediate publishing when `AnyLog-co/documentation` changes, add a workflow in that repository that sends a
+`repository_dispatch` event to this repository after pushes to `main`. Without that dispatch, the scheduled rebuild
+will still pick up upstream changes within the next hourly run.
+
+**Editing documentation content itself — creating or updating pages, front matter, page IDs, and formatting 
+conventions — happens in the content repo, not here:**
+- Content repo: [AnyLog-co/documentation](https://github.com/AnyLog-co/documentation)
+- How to update documentation: [HOWTO.md](https://github.com/AnyLog-co/documentation/blob/os-dev/HOWTO.md)
+
+---
+
+## Contributing
+
+Changes to **this repository** (the Jekyll backend itself — templates, build scripts, `Makefile`, CI config, etc.) 
+follow the same staged workflow as the content repo: this repository is implementing a change control process, so it 
+follows a **PR-based workflow** against the **`pre-develop`** branch, not `main`. `main` is the published branch 
+backing the live documentation URL (see [Documentation Source](#documentation-source)); changes land there once 
+`pre-develop` is promoted to `main`.
+
+**Required actions:**
+- Find the file you want to update and branch/fork it from `pre-develop` (or create a new file)
+- If you work locally:
+  1. Make sure your local copy is in sync with `pre-develop`:
+   ```bash
+   git fetch origin
+   git rebase origin/pre-develop
+   ```
+  2. Create a feature branch or fork the file, make your changes, then open a pull request **against `pre-develop`**
+
+- Once edited, create a **pull request** for review and inclusion at the next update cycle
+
+*Note:* direct pushes to `pre-develop` are blocked.
+*Note 2:* merging into `pre-develop` does not publish immediately — the live site rebuilds once `pre-develop` is 
+promoted to `main`.
+
+> Content authoring conventions (page creation, front matter, permalinks, image paths) live in the content repo's 
+> [HOWTO.md](https://github.com/AnyLog-co/documentation/blob/os-dev/HOWTO.md), not in this repository.

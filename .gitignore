@@ -1,5 +1,5 @@
 _site/
-_docs/
+_docs/*
 assets/external-docs/
 .external-docs/
 .sass-cache/
