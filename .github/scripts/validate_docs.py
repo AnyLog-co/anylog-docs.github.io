@@ -60,6 +60,9 @@ def should_include_source_path(source_path):
     if any(part.startswith(".") for part in parts):
         return False
 
+    if len(parts) == 1 and source_path.name.lower() != "readme.md":
+        return False
+
     if any(re.match(r"^99(?:\b|[^A-Za-z0-9].*)", part) for part in parts):
         return False
     top_level = parts[0] if parts else ""

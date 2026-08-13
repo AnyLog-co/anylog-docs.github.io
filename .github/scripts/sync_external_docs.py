@@ -16,7 +16,7 @@ ASSETS_DIR = ROOT / "assets" / "external-docs"
 WORK_DIR = ROOT / ".external-docs" / "documentation"
 
 DOCS_REPO = os.environ.get("ANYLOG_DOCS_REPO", "https://github.com/AnyLog-co/documentation.git")
-DOCS_REF = os.environ.get("ANYLOG_DOCS_REF", "pre-develop")
+DOCS_REF = os.environ.get("ANYLOG_DOCS_REF", "main")
 SOURCE_DIR = os.environ.get("ANYLOG_DOCS_SOURCE_DIR")
 
 FRONT_MATTER_RE = re.compile(r"\A---\s*\n(.*?)\n---\s*\n?", re.DOTALL)
@@ -145,6 +145,9 @@ def source_checkout():
 def should_skip_rel(rel):
     parts = rel.parts
     if any(part.startswith(".") for part in parts):
+        return True
+
+    if len(parts) == 1 and rel.name.lower() != "readme.md":
         return True
 
     if has_hidden_path_part(rel):
@@ -305,9 +308,10 @@ def resolve_target(current_rel, target, doc_map, asset_map, doc_lookup):
         return liquid_relative_url(doc_map[rel_candidate]["url"] + fragment)
 
     if rel_candidate.suffix == "":
-        md_candidate = rel_candidate.with_suffix(".md")
-        if md_candidate in doc_map:
-            return liquid_relative_url(doc_map[md_candidate]["url"] + fragment)
+        if rel_candidate.name:
+            md_candidate = rel_candidate.with_suffix(".md")
+            if md_candidate in doc_map:
+                return liquid_relative_url(doc_map[md_candidate]["url"] + fragment)
 
         for index_name in ("README.md", "readme.md", "Overview.md", "overview.md"):
             index_candidate = rel_candidate / index_name
